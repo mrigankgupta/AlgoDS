@@ -1,45 +1,7 @@
 //: Playground - noun: a place where people can play
 
 import UIKit
-
-//Stack
-struct Stack<T> {
-    var arr = [T]()
-    
-    mutating func push(_ value:T) {
-        arr.append(value)
-    }
-    
-    mutating func pop() -> T? {
-        return arr.popLast()
-    }
-    
-    func count() -> Int {
-        return arr.count
-    }
-}
-
-struct Queue<T> {
-    var arr = [T]()
-    
-    mutating func add(_ value:T) {
-        arr.append(value)
-    }
-    
-    mutating func remove() -> T? {
-        if arr.count > 0 {
-            return arr.remove(at: 0)
-        }
-        return nil
-    }
-    
-    func count() -> Int {
-        return arr.count
-    }
-    
-}
-
-// level order traversal
+import DataStructSet
 
 class Node<T>{
     var data: T
@@ -120,6 +82,7 @@ class BinaryTree {
             }
         }
     }
+    
     func preorderTraversal<T>(root:Node<T>?) {
         if root == nil {
             return
@@ -145,9 +108,11 @@ class BinaryTree {
             }
         }
     }
+    
     func height<T>(_ root:Node<T>?) -> Int {
         return treeHeightRec(root,0)
     }
+    
     func treeHeightRec<T>(_ root:Node<T>?,_ h: Int) -> Int {
         if root == nil {
             return -1 //root has single node. height will be zero
@@ -186,9 +151,9 @@ var root:Node<Int>?
 for i in [1,8,7,4,6,3,5,2] {
     root = bt.insertRec(root: root, value: i)
 }
-//bt.inorderTraversalRec(root: root)
-//bt.inorderTraversal(root: root)
-//bt.preorderTraversal(root: root)
-//bt.height(root)
+bt.inorderTraversalRec(root: root)
+bt.inorderTraversal(root: root)
+bt.preorderTraversal(root: root)
+bt.height(root)
 bt.levelOrderTraversal(root: root)
 
