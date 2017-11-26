@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A4946811FBFF85F00203255 /* BinaryTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4946801FBFF85F00203255 /* BinaryTree.swift */; };
 		3A4946821FBFF94000203255 /* BinaryTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4946801FBFF85F00203255 /* BinaryTree.swift */; };
+		3A4946841FC00EF200203255 /* BinarySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4946831FC00EF200203255 /* BinarySearch.swift */; };
 		3A9C14891FB62BE500487C2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C14881FB62BE500487C2C /* AppDelegate.swift */; };
 		3A9C148B1FB62BE500487C2C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C148A1FB62BE500487C2C /* ViewController.swift */; };
 		3A9C148E1FB62BE500487C2C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A9C148C1FB62BE500487C2C /* Main.storyboard */; };
@@ -55,6 +56,7 @@
 
 /* Begin PBXFileReference section */
 		3A4946801FBFF85F00203255 /* BinaryTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryTree.swift; sourceTree = "<group>"; };
+		3A4946831FC00EF200203255 /* BinarySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinarySearch.swift; sourceTree = "<group>"; };
 		3A9C14851FB62BE500487C2C /* AlgoDS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlgoDS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A9C14881FB62BE500487C2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A9C148A1FB62BE500487C2C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				3A9C14DD1FB6947A00487C2C /* Queue.swift */,
 				3A9C14DA1FB6939600487C2C /* Stack.swift */,
 				3A4946801FBFF85F00203255 /* BinaryTree.swift */,
+				3A4946831FC00EF200203255 /* BinarySearch.swift */,
 			);
 			path = AlgoDS;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 			files = (
 				3A9C148B1FB62BE500487C2C /* ViewController.swift in Sources */,
 				3A9C14DB1FB6939600487C2C /* Stack.swift in Sources */,
+				3A4946841FC00EF200203255 /* BinarySearch.swift in Sources */,
 				3A4946811FBFF85F00203255 /* BinaryTree.swift in Sources */,
 				3A9C14891FB62BE500487C2C /* AppDelegate.swift in Sources */,
 				3A9C14DE1FB6947A00487C2C /* Queue.swift in Sources */,
