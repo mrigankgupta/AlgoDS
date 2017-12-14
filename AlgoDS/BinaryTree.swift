@@ -9,11 +9,11 @@
 import Foundation
 
 public class Node<T>{
-    public
-    var data: T
-    var left:Node?
-    var right:Node?
-    init(data:T) {
+    
+    public var data: T
+    public var left:Node?
+    public var right:Node?
+    public init(data:T) {
         self.data = data
     }
 }
@@ -114,7 +114,24 @@ public class BinaryTree {
             current = que.remove()
         }
     }
-    
+    public func buildBinaryTree<T>(preOr:[T], inOr:[T]) -> Node<T>? where T: Equatable{
+        if preOr.count == 0 || inOr.count == 0
+            || preOr.count != inOr.count {
+            return nil
+        }
+        let r = preOr[0]
+        let root = Node(data:r)
+        let split = inOr.split {$0 == r}
+        if split.count > 1 {
+            let inOrL = Array(split[0])
+            let inOrR = Array(split[1])
+            let preOrL = Array(preOr[1...inOrL.count])
+            let preOrR = Array(preOr[(preOrL.count+1)...])
+            root.right = buildBinaryTree(preOr: preOrR, inOr: inOrR)
+            root.left = buildBinaryTree(preOr: preOrL, inOr: inOrL)
+        }
+        return root
+    }
 }
 
 public class BinarySearchTree: BinaryTree {
@@ -154,3 +171,4 @@ public class BinarySearchTree: BinaryTree {
         return root
     }
 }
+
