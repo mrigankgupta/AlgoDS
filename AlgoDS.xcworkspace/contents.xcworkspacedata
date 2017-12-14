@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:AlgoDS.playground">
-   </FileRef>
-   <FileRef
       location = "container:AlgoDS.xcodeproj">
    </FileRef>
 </Workspace>
