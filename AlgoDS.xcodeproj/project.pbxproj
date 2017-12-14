@@ -63,7 +63,7 @@
 		3A4946831FC00EF200203255 /* BinarySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinarySearch.swift; sourceTree = "<group>"; };
 		3A55F39A1FCC8E8900F434AA /* SinglyLinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglyLinkedList.swift; sourceTree = "<group>"; };
 		3A55F39D1FCC8F3000F434AA /* HashTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
-		3A6870E71FE005CE00DBC6EB /* AlgoDSPlay.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = AlgoDSPlay.playground; path = AlgoDS/AlgoDSPlay.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		3A6870E71FE005CE00DBC6EB /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = AlgoDS/MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3A9C14851FB62BE500487C2C /* AlgoDS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlgoDS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A9C14881FB62BE500487C2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A9C148A1FB62BE500487C2C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -119,7 +119,7 @@
 		3A9C147C1FB62BE500487C2C = {
 			isa = PBXGroup;
 			children = (
-				3A6870E71FE005CE00DBC6EB /* AlgoDSPlay.playground */,
+				3A6870E71FE005CE00DBC6EB /* MyPlayground.playground */,
 				3A9C14871FB62BE500487C2C /* AlgoDS */,
 				3A9C149C1FB62BE500487C2C /* AlgoDSTests */,
 				3A9C14A71FB62BE500487C2C /* AlgoDSUITests */,
