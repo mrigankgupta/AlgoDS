@@ -29,7 +29,7 @@ public class Element<T> {
 }
 
 
-public class HashTable<T: KeyValue> {
+public struct HashTable<T: KeyValue> {
     
     var arr:[Element<T>?]
     var alphaM:Int!
@@ -38,7 +38,7 @@ public class HashTable<T: KeyValue> {
         self.arr = [Element<T>?](repeating: nil, count: alphaM)// initializing with nil
     }
     
-    public func update(value:T) {
+    public mutating func update(value:T) {
         let hash = value.k.hashValue
         let index = compressionMap(hashCode: hash, range: alphaM)
         
