@@ -7,7 +7,8 @@
 //
 
 import Foundation
-func binarySearch(arr:[Int], value:Int) -> Int? {
+
+public func binarySearch(arr:[Int], value:Int) -> Int? {
     var l = 0
     var r = arr.count-1
     var m:Int!
@@ -26,9 +27,8 @@ func binarySearch(arr:[Int], value:Int) -> Int? {
     return nil
 }
 
-print(binarySearch(arr: [1,2,3,4,5,6,7,8], value: 1))
 
-func binarySearchRec(arr:[Int], value:Int) -> Int? {
+public func binarySearchRec(arr:[Int], value:Int) -> Int? {
     return bs(arr: arr, l: 0, r: arr.count-1, v: value)
 }
 
@@ -46,4 +46,4 @@ func bs(arr:[Int], l:Int, r:Int, v:Int) -> Int? {
         return bs(arr: arr, l:l, r:m-1, v: v)
     }
 }
-print(binarySearchRec(arr: [1,2,3,4,5,6,7,8], value: 0))
+

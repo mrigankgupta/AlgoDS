@@ -170,5 +170,149 @@ public class BinarySearchTree: BinaryTree {
         }
         return root
     }
+    
+    public func deletion<T>(root:inout Node<T>?, value:T) -> Bool where T: Comparable & Equatable {
+        if root == nil {
+            return false
+        }
+        
+        let (node,parent) = findParentAndNode(with:value, root:root)
+        if node == nil {
+            return false
+        }else if parent == nil && (node?.left == nil || node?.right == nil) {
+            if node?.left != nil {
+                root = node?.left
+            }else{
+                root = node?.right
+            }
+        }else if node?.left != nil && node?.right != nil {
+            // find predesessor or secessor and replace
+            let (predes, _) = predesecessor(root: root, value: value)
+            if predes == nil {// root
+                root = root?.right
+            }else {
+                predes?.right = node?.right
+                if parent != nil {
+                    if parent?.left?.data == value {
+                        parent?.left = predes
+                    }else{
+                        parent?.right = predes
+                    }
+                }
+            }
+        }else if node?.left != nil {
+            if isLeftOf(parent: parent, value: value) {
+                parent?.left = node?.left
+            }else{
+                parent?.right = node?.left
+            }
+        }else if node?.right != nil {
+            if isLeftOf(parent: parent, value: value) {
+                parent?.left = node?.right
+            }else{
+                parent?.right = node?.right
+            }
+        }else {
+            if parent?.left?.data == node?.data {
+                parent?.left = nil
+            }else{
+                parent?.right = nil
+            }
+        }
+        return true
+    }
+    
+    public func isLeftOf<T>(parent:Node<T>?, value:T) -> Bool where T: Comparable & Equatable {
+        if parent?.left?.data == value {
+            return true
+        }else{
+            return false
+        }
+    }
+    
+    public func predesecessor<T>(root:Node<T>?, value:T) -> (Node<T>?, Node<T>?) where T: Comparable & Equatable {
+        // biggest in left side of node
+        if root == nil {
+            return (nil, nil)
+        }
+        var (predes, parent) : (Node<T>?, Node<T>?)
+        //find element node and check left
+        let elementNode = find(root: root, value: value)
+        if let firstLeft = elementNode?.left {
+            (predes, parent) = maximum(root: firstLeft)
+            if parent == nil {
+                parent = elementNode
+            }
+        }else {
+            // Search the node and record last right until you
+            // get the node
+            var next = root
+            var lastRightParent: Node<T>?
+            var prev: Node<T>?
+            while next != nil {
+                if next!.data < value {
+                    parent = prev
+                    prev = next
+                    lastRightParent = next
+                    next = next?.right
+                }else if next!.data > value {
+                    prev = next
+                    next = next?.left
+                } else if value == next!.data {
+                    predes = lastRightParent
+                    break
+                }
+            }
+        }
+        return (predes, parent)
+    }
+    
+    public func maximum<T>(root:Node<T>?) -> (Node<T>?, Node<T>?) where T: Equatable & Comparable {
+        if root == nil {
+            return (nil, nil)
+        }
+        var nxt = root
+        var parent: Node<T>?
+        var mx : Node<T>?
+        while nxt != nil {
+            parent = mx
+            mx = nxt
+            nxt = nxt!.right
+        }
+        return (mx, parent)
+    }
+    
+    public func find<T>(root:Node<T>?, value:T) -> Node<T>? where T: Equatable & Comparable {
+        if root == nil {
+            return nil
+        }
+        if root!.data == value {
+            return root
+        }else if value < root!.data {
+            return find(root:root?.left, value:value)
+        }else {
+            return find(root:root?.right, value:value)
+        }
+    }
+    
+    public func findParentAndNode<T>(with value:T,root:Node<T>?) -> (Node<T>?, Node<T>?) where T: Equatable & Comparable {
+        if root == nil {
+            return (nil, nil)
+        }
+        var current = root
+        var prev : Node<T>?
+        while current != nil {
+            if current!.data == value {
+                return (current, prev)
+            }else if value < current!.data {
+                prev = current
+                current = current?.left
+            }else {
+                prev = current
+                current = current?.right
+            }
+        }
+        return (current, prev)
+    }
 }
 
