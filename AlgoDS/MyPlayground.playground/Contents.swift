@@ -85,9 +85,9 @@ merge(arr: &c,l:0,m:5,r:c.count-1)
 print(c)
 mergeSort(arr: &a, left: 0, right: a.count-1)
 print(a)
-noHeap = [10,12,15,4,1,5,9,3]
+var noHeap = [10,12,15,4,1,5,9,3]
 buildHeap(arr: &noHeap)
-var noHeap = [7,1,2]
+noHeap = [7,1,2]
 heapSort(arr: &noHeap, count: noHeap.count)
 print(noHeap)
 heapify(arr: &noHeap, index: 0, count:noHeap.count)
@@ -119,6 +119,4 @@ func peekFindBinary<T>(arr:[T], l:Int, r:Int) -> T? where T : Equatable & Compar
 }
 print(peekFind(arr: c))
 var i = peekFindBinary(arr: c, l: 0, r: c.count-1)
-
-
 

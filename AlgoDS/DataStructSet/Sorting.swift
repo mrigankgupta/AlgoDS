@@ -122,7 +122,7 @@ public func mergeSort<T>(arr:inout [T], left:Int, right:Int) where T: Equatable 
     }
 }
 
-func merge<T>(arr:inout [T], l:Int, m:Int, r:Int) where T: Equatable & Comparable {
+public func merge<T>(arr:inout [T], l:Int, m:Int, r:Int) where T: Equatable & Comparable {
     var i = l
     var j = m+1
     var index = l
