@@ -240,6 +240,7 @@ public class BinarySearchTree: BinaryTree {
         let elementNode = find(root: root, value: value)
         if let firstLeft = elementNode?.left {
             (predes, parent) = maximum(root: firstLeft)
+            //root node
             if parent == nil {
                 parent = elementNode
             }
