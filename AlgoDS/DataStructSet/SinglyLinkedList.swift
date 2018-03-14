@@ -16,11 +16,11 @@ public class SNode<T> {
     }
 }
 
-public class SinglyLinkedList {
-    
+public class SinglyLinkedList<T> {
+    public var head: SNode<T>?
     public init(){}
     
-    public func insert<T>(root:SNode<T>?, value:T) -> SNode<T>? {
+    public func insert(root:SNode<T>?, value:T) -> SNode<T>? {
         var current = root
         let new = SNode(data: value)
         
@@ -36,7 +36,7 @@ public class SinglyLinkedList {
         return root
     }
     
-    public func print<T>(root:SNode<T>?) {
+    public func print(root:SNode<T>?) {
         if root == nil {
             return
         }
@@ -53,6 +53,33 @@ public class DNode<T> {
         self.data = data
         self.next = nil
         self.prev = nil
+    }
+}
+
+extension SinglyLinkedList: Sequence {
+    
+    public func makeIterator() -> SinglyLinkedListIterator<T> {
+        return SinglyLinkedListIterator(root: self.head)
+    }
+}
+
+public struct SinglyLinkedListIterator<T> : IteratorProtocol {
+    
+    public typealias Element = T
+    
+    var current: SNode<T>?
+    
+    init(root:SNode<T>?) {
+        self.current = root
+    }
+    
+    mutating public func next() -> T? {
+        if current == nil {
+            return nil
+        }
+        let data = current?.data
+        current = current?.next
+        return data
     }
 }
 
@@ -88,8 +115,4 @@ public class DoubleLinkedList {
         print("")
     }
 }
-
-
-
-
 
