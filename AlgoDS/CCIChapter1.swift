@@ -13,7 +13,7 @@ import Foundation
  using indeces.
  If you want to remove something from String while enumerating
  use str.indices.reversed() as its safe to remove element while traversing in reverse order
- as after removal of an element, trailing elements of that elements needs to be shifted one place left
+ as after removal of an element, trailing elements of that array needs to be shifted one place left
  
  //array of Characters
  let charArr1 = [Character](myString)
@@ -34,7 +34,7 @@ extension Character {
     }
     public func ascii() -> Int {
         if let val = self.unicodeValue() {
-            return Int(bitPattern:UInt(val))
+            return Int(bitPattern:UInt(val))//TODO:Remind yourself
         }
         return -1
     }
@@ -60,7 +60,7 @@ func anagram(str1:String, str2:String) -> Bool {
         return false
     }
     for ch1 in str1 {
-        for i in copy.indices.reversed() {//DO_NOTE
+        for i in copy.indices.reversed() {//TODO:Remind yourself
             if ch1 == copy[i] {
                 copy.remove(at: i)
                 break;
@@ -142,7 +142,7 @@ func urlify(str:String, rep:String) -> String {
 
 //Q4
 func permutationPalindrome(str:String) -> Bool {
-    let strCh = [Character](str.lowercased())//DO_NOTE
+    let strCh = [Character](str.lowercased())////TODO:Remind yourself
     var charCount = [Int](repeating:0,count:128)
     for ch in strCh {
         let asciiVal = ch.ascii()
@@ -393,6 +393,5 @@ func isStringRotated(str:String, rot:String) -> Bool {
 //print(isStringRotated(str: "waterBottle", rot: "erBottlewat"))
 //print(isStringRotated(str: "waterBottle", rot: "Bottlewater"))
 //print(isStringRotated(str: "waterBottle", rot: "Bottlewoter"))
-
 
 

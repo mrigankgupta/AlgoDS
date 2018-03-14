@@ -8,19 +8,30 @@
 
 import Foundation
 
+/*
+ Heap are complete binary tree
+ If height of heap is h then
+ Complete binary tree of height h has nodes 2^(h+1) - 1
+ so total nodes in heap will be 2^(h) - 1 < n < 2^(h+1) - 1
+ n = floor(log(base2) h)
+ Heap with Array
+ parent = i/2
+ left child = 2i
+ right child = 2i+1
+ 
+ */
 // *****Heap*****//
-
+//TODO:insetion
 public func heapify<T>(arr:inout [T], index:Int, count:Int) where T: Comparable & Equatable {
-    let left = (index+1)*2-1
-    let right = (index+1)*2
+    let left = 2*(index+1)-1
+    let right = 2*(index+1)
     var minI = left
     
-    if right < count {
-        if arr[left] > arr[right] {
-            minI = right
-        }
-    }else if right != count {
+    if right > count - 1 {
         return
+    }
+    if arr[left] > arr[right] {
+        minI = right
     }
     
     while arr[index] > arr[minI] {
