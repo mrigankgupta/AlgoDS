@@ -9,7 +9,6 @@
 import Foundation
 
 public class Node<T>{
-    
     public var data: T
     public var left:Node?
     public var right:Node?
@@ -21,6 +20,33 @@ public class Node<T>{
 public class BinaryTree {
     
     public init() {}
+    
+    // level order insertion
+    public func levelOrderInsert<T>(root:Node<T>?, data:T) -> Node<T> {
+        if root == nil {
+            return Node<T>(data: data)
+        }
+        let current: Node<T> = root!
+        var qu = Queue<Node<T>>()
+        qu.add(current)
+        while qu.count() > 0 {
+            let next = qu.remove()
+            if next!.left != nil {
+                qu.add(next!.left!)
+            }else {
+                next?.left = Node(data: data)
+                break
+            }
+            if next!.right != nil {
+                qu.add(next!.right!)
+            }else{
+                next?.right = Node(data: data)
+                break
+            }
+        }
+        return root!
+    }
+
     public func inorderTraversalRec<T>(root:Node<T>?) {
         if root == nil {
             return
@@ -81,23 +107,34 @@ public class BinaryTree {
     }
     
     public func height<T>(_ root:Node<T>?) -> Int {
-        return treeHeightRec(root,0)
-    }
-    
-    public func treeHeightRec<T>(_ root:Node<T>?,_ h: Int) -> Int {
         if root == nil {
             return -1 //root has single node. height will be zero
         }
-        let l = treeHeightRec(root?.left, h) + 1
-        let r = treeHeightRec(root?.right, h) + 1
-        if l > r {
-            return l
-        }else {
-            return r
-        }
+        let l = height(root?.left)
+        let r = height(root?.right)
+        return max(l, r) + 1
     }
     
     public func levelOrderTraversal<T>(root:Node<T>?) {
+        let h = height(root)
+        for i in (0...h).reversed() {
+            levelOrderPrint(root: root, level: h, pLevel:i)
+        }
+    }
+    
+    public func levelOrderPrint<T>(root:Node<T>?, level:Int, pLevel:Int) {
+        if root == nil {
+            return
+        }
+        let current:Node<T> = root!
+        if pLevel == level {
+            print(current.data)
+        }
+        levelOrderPrint(root: current.left, level: level-1, pLevel:pLevel)
+        levelOrderPrint(root: current.right, level: level-1, pLevel:pLevel)
+    }
+    
+    public func levelOrderTraversalEfficient<T>(root:Node<T>?) {
         if root == nil {
             return
         }

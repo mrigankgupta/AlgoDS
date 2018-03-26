@@ -17,6 +17,7 @@ public class TrieNode <T : Hashable>{
         self.end = end
     }
 }
+
 public class Trie {
     public init() {
         

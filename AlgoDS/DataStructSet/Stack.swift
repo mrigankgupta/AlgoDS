@@ -23,4 +23,8 @@ public struct Stack<T> {
     public func count() -> Int {
         return arr.count
     }
+    
+    public func top() -> T? {
+        return arr.last
+    }
 }
