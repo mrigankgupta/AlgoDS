@@ -22,7 +22,7 @@ import Foundation
  */
 // *****Heap*****//
 //TODO:insetion
-public func heapify<T>(arr:inout [T], index:Int, count:Int) where T: Comparable & Equatable {
+public func heapify<T>(arr:inout [T], index:Int, count:Int) where T: Comparable {
     let left = 2*(index+1)-1
     let right = 2*(index+1)
     var minI = left
@@ -41,14 +41,14 @@ public func heapify<T>(arr:inout [T], index:Int, count:Int) where T: Comparable 
 }
 
 
-public func buildHeap<T>(arr:inout [T]) where T: Comparable & Equatable {
+public func buildHeap<T>(arr:inout [T]) where T: Comparable {
     for i in (0...arr.count/2).reversed() {
         heapify(arr: &arr, index: i, count:arr.count)
     }
 }
 
 
-public func heapSort<T>(arr:inout [T], count:Int) where T: Comparable & Equatable {
+public func heapSort<T>(arr:inout [T], count:Int) where T: Comparable {
     var end = count-1
     while end >= 0 {
         _ = delete(arr: &arr, count: end)
@@ -56,9 +56,20 @@ public func heapSort<T>(arr:inout [T], count:Int) where T: Comparable & Equatabl
     }
 }
 
-public func delete<T>(arr:inout [T], count:Int) -> T where T: Comparable & Equatable {
+public func delete<T>(arr:inout [T], count:Int) -> T where T: Comparable {
     let min = arr[0]
     arr.swapAt(0, count)
     heapify(arr: &arr, index: 0, count: count)
     return min
+}
+
+func insert<T:Comparable>(arr:inout [T], new:T) {
+    arr.append(new)
+    var index = arr.count - 1
+    var parent = index/2
+    while index > 0 && arr[parent] > arr[index] {
+        arr.swapAt(parent, index)
+        index = parent
+        parent = index/2
+    }
 }

@@ -197,3 +197,27 @@ return pairs
 pairCubeCount(num: 9)
 pairCubeCount(num: 28)
 
+//Fibnachi
+func fibnachi(_ n:Int) -> Int {
+    if n == 1 {
+        return 1
+    }else if n == 0 {
+        return 0
+    }
+    return fibnachi(n-1) + fibnachi(n-2)
+}
+
+fibnachi(4)
+
+func fibnachiIterative(_ n:Int) -> Int {
+    var fn = 0
+    var fn1 = 1
+    var fn0 = 0
+    for _ in 2...n {
+        fn = fn1 + fn0
+        fn0 = fn1
+        fn1 = fn
+    }
+    return fn
+}
+fibnachi(4)

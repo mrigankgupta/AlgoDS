@@ -1,8 +1,9 @@
 //: Playground - noun: a place where people can play
 
 import UIKit
-import DataStructSet
 import Foundation
+import DataStructSet
+
 /*
 var bt = BinarySearchTree()
 var root:Node<Int>?
@@ -98,140 +99,14 @@ heapSort(arr: &noHeap, count: noHeap.count)
 print(noHeap)
 heapify(arr: &noHeap, index: 0, count:noHeap.count)
 
-
-//class NodeD<T> {
-//    var data : T!
-//    var left : NodeD?
-//    var right: NodeD?
-//    
-//    init(data:T) {
-//        self.data = data
-//        self.left = nil
-//        self.right = nil
-//    }
-//}
-//
-//
-//func find<T>(root:NodeD<T>?,value:T) -> NodeD<T>? where T: Comparable & Equatable {
-//    if root == nil {
-//        return nil
-//    }
-//    if root!.data > value {
-//        return find(root: root?.left, value: value)
-//    }else if root!.data < value {
-//        return find(root: root?.right, value: value)
-//    }else if root!.data == value {
-//        return root
-//    }
-//    return nil
-//}
-//
-//func max<T>(root:NodeD<T>?) -> NodeD<T>? where T: Comparable & Equatable {
-//    if root == nil {
-//        return nil
-//    }
-//    var next = root
-//    var prev : NodeD<T>?
-//    while next != nil {
-//        prev = next
-//        next = next!.right
-//    }
-//    return prev
-//}
-//
-//func prede<T>(root:NodeD<T>?, value:T) -> NodeD<T>? where T: Comparable & Equatable {
-//    if root == nil {
-//        return nil
-//    }
-//    let element = find(root: root, value: value)
-//    if element?.left != nil {
-//        return max(root:element!.left)
-//    }else {
-//        var next = root
-//        var lastRight: NodeD<T>?
-//        while next != nil {
-//            if next!.data > value {
-//                next = next?.left
-//            }else if next!.data < value {
-//                lastRight = next
-//                next = next?.right
-//            }else if next!.data == value {
-//                break
-//            }
-//        }
-//        return lastRight
-//    }
-//}
-//
-//func build<T>(root:NodeD<T>?, value:T) -> NodeD<T> where T: Comparable & Equatable {
-//    let node = NodeD(data: value)
-//    if root == nil {
-//        return node
-//    }
-//    var next = root
-//    var prev : NodeD<T>?
-//    while next != nil {
-//        if next!.data > value {
-//            prev = next
-//            next = next?.left
-//        }else if next!.data < value {
-//            prev = next
-//            next = next?.right
-//        }
-//    }
-//    if prev!.data > value {
-//        prev?.left = node
-//    }else {
-//        prev?.right = node
-//    }
-//    return root!
-//}
-//
-//func inorder<T>(root:NodeD<T>?) {
-//    if root == nil {
-//        return
-//    }
-//    inorder(root: root!.left)
-//    print(root!.data)
-//    inorder(root: root!.right)
-//}
-//print("hi")
-//let arr = [20, 9, 8, 10, 13, 16, 29, 4, 12]
-//var rr : NodeD<Int>?
-//for item in arr {
-//    rr = build(root: rr, value: item)
-//}
-//
-//inorder(root: rr)
-//find(root: rr, value: 4)?.data
-//max(root: rr)?.data
-//
-//prede(root: rr, value: 12)?.data
-
-
-func fibnachi(_ n:Int) -> Int {
-    if n == 1 {
-        return 1
-    }else if n == 0 {
-        return 0
-    }
-    return fibnachi(n-1) + fibnachi(n-2)
+var rt : Node<Int>?
+let tre = BinaryTree()
+for i in [5,2,4,3,6,7,1,9,8] {
+    rt = tre.levelOrderInsert(root: rt, data: i)
 }
 
-fibnachi(4)
+tre.levelOrderTraversal(root: rt)
 
-func fibnachiIterative(_ n:Int) -> Int {
-    var fn = 0
-    var fn1 = 1
-    var fn0 = 0
-    for _ in 2...n {
-        fn = fn1 + fn0
-        fn0 = fn1
-        fn1 = fn
-    }
-    return fn
-}
-fibnachi(4)
 
 let str = ["abc","abgl","cdf","abcd","lmn"]
 var tRoot: TrieNode<Character>?
@@ -292,24 +167,345 @@ func insertInHeap(arr:inout [Int], new:Int) {
 }
 insertInHeap(arr: &a, new: 20)
 insertInHeap(arr: &a, new: 5)
-/* TODO:
-func path(arr:[[Int]],row:Int, col:Int, i: Int, j:Int) -> Bool {
-    if arr[i][j] == 2 {
-        return true
-    }else if arr[i][j] == 0 || i < 0 || i > row || j < 0 || j > col {
-        return false
+
+func firstCommonAncestorBST<T:Comparable>(root:Node<T>?, item1:T, item2:T) -> Node<T>? {
+    if root == nil {
+        return nil
+    }else if (root!.data < item1 && root!.data > item2) || (root!.data < item1 && root!.data > item2) {
+        return root
+    }else if root!.data < item1 && root!.data < item2 {
+       return firstCommonAncestorBST(root: root?.left, item1: item1, item2: item2)
+    }else {
+       return firstCommonAncestorBST(root: root?.right, item1: item1, item2: item2)
     }
-    print("still in")
-    if path(arr: arr, row: row, col: col, i: i-1, j: j) || path(arr: arr, row: row, col: col, i: i+1, j: j)
-        || path(arr: arr, row: row, col: col, i: i, j: j-1) || path(arr: arr, row: row, col: col, i: i, j: j+1) {
-        return true
-    }
-    return false
 }
 
-let mat = [[ 0 , 3 , 2 ],[ 3 , 3 , 0 ],[ 1 , 3 , 0 ]]
+func quickPractice(arr:inout [Int], left: Int, right: Int) {
+    if left < right {
+        let m = right
+        let p = pivot(arr: &arr, s: left, e: right, p: m)
+        quickPractice(arr: &arr, left: left, right: p-1)
+        quickPractice(arr: &arr, left: p, right: right)
+    }
+}
 
-path(arr: mat, row: 3, col: 3, i: 2, j: 0)
-*/
+func pivot(arr:inout [Int], s:Int, e:Int, p:Int) -> Int {
+    let pivot = arr[p]
+    var i = s
+    var j = e
+    while i < j {
+        if pivot >= arr[i] {
+            i += 1
+        }else if pivot < arr[j] {
+            j -= 1
+        }else {
+            print("\(i) \(j)")
+            arr.swapAt(i, j)
+        }
+    }
+    return i
+}
+var s = [1,2,0,3,4,1,5,3,1,9]
+//pivot(arr: &s, s: 0, e: s.count-1, p: 3)
+quickPractice(arr: &s, left: 0, right: s.count-1)
+print(s)
 
 
+func merge(arr:inout [Int], l:Int, m:Int, r:Int) {
+    
+    var arr1 = arr[l...m]
+    var arr2 = arr[m+1...r]
+    var i = l
+    var j = m+1
+    var index = l
+    while (i <= m && j <= r) {
+        if arr1[i] < arr2[j] {
+            arr[index] = arr1[i]
+            i += 1
+            index += 1
+        }else{
+            arr[index] = arr2[j]
+            j += 1
+            print(j)
+            index += 1
+        }
+    }
+    print(i,j)
+    while j <= r {
+        arr[index] = arr2[j]
+        j += 1
+        index += 1
+    }
+    while i <= m {
+        arr[index] = arr1[i]
+        i += 1
+        index += 1
+    }
+}
+
+
+func mergeSort(arr:inout [Int], lft:Int, rgt: Int) {
+    
+    if lft < rgt {
+        let m = (lft+rgt)/2
+        mergeSort(arr: &arr, lft: lft, rgt: m)
+        mergeSort(arr: &arr, lft: m+1, rgt: rgt)
+        merge(arr:&arr, l:lft, m:m, r:rgt)
+    }
+}
+var ae = [1,2,6,8,3,4,5,7,9,10]
+
+//merge(arr: &ae, l: 0, m: 3, r: ae.count - 1)
+mergeSort(arr: &ae, lft: 0, rgt: ae.count-1)
+print(ae)
+
+//q1
+
+func reverseSortedMerge(sml:[Int], scnt:Int, big:inout [Int], bcnt:Int) {
+    var se = scnt
+    var be = bcnt
+    var indx = big.count-1
+    while se >= 0 && be >= 0 {
+        if sml[se] < big[be] {
+            print("big \(be)")
+            big[indx] = big[be]
+            be -= 1
+            indx -= 1
+        }else{
+            big[indx] = sml[se]
+            se -= 1
+            indx -= 1
+        }
+//        print("index \(indx)")
+    }
+    while se >= 0 {
+        big[indx] = sml[se]
+        se -= 1
+        indx -= 1
+    }
+    while be >= 0 {
+        big[indx] = big[be]
+        be -= 1
+        indx -= 1
+    }
+}
+var sml = [1,2,6,8]
+var big = [3,4,5,0,0,0,0]
+reverseSortedMerge(sml: sml, scnt: sml.count-1, big: &big, bcnt: 2)
+print(big)
+
+
+//Chapter 5 Bit manipulation
+//1
+func mergeBitWise(big:UInt16, small:UInt16, s:Int, e:Int) -> UInt16 {
+    let allOne : UInt16 = ~0
+    
+    let left = allOne << e
+//    print(String(left, radix:2))
+    let right:UInt16 = (1 << s) - 1
+//    print(String(right, radix:2))
+
+    let mask = left | right
+//    print(String(mask, radix:2))
+
+    let shiftSmall = small << s
+    let bigMasked = big & mask
+//    print(String(bigMasked, radix:2))
+
+    return bigMasked | shiftSmall
+}
+
+var merged = mergeBitWise(big: 0b0100000000, small: 0b10011, s: 2, e: 7)
+print(String(merged, radix:2))
+
+//2
+func binaryToString(num:Double) -> String {
+    var bs = "."
+    var fract = num
+    var i = 0
+    while fract > 0.0 {
+        fract = fract*2.0
+        i += 1
+        if i > 31 {
+            return "error"
+        }
+        if fract >= 1.0 {
+            bs.append("1")
+            fract = fract - 1.0
+        }else {
+            bs.append("0")
+        }
+        print(fract)
+    }
+    return bs
+}
+
+print(binaryToString(num: 0.8))
+
+//3
+func flipBitToWin(num:UInt64) -> Int {
+    var ones = 0
+    var max = 0
+    var i = 0
+    var zeros = 0
+    var lastOnes = 0
+    while  i < 64 {
+        let mask: UInt64 = 1 << i
+        let bit = (num & mask)
+        //print(bit, i, mask)
+        if bit != 0 {
+            ones += 1
+            zeros = 0
+        }else {
+            zeros += 1
+            if (ones+lastOnes) > max {
+                max = ones+lastOnes
+            }
+            lastOnes = ones
+            ones = 0
+            if zeros > 1 {
+                lastOnes = 0
+            }
+        }
+        i += 1
+    }
+    return max
+}
+
+print("tough",flipBitToWin(num: 0b1111011111101111101111000111111))
+
+
+//11011101111
+
+//4
+
+func nextMax(num:UInt32) -> UInt32 {
+    let set:UInt32 = 1
+    var i = 0
+    var flag = false
+    while i < 32 {
+        let mask = set << i
+        let bit = mask & num
+        if bit != 0 {
+            flag = true
+        }else {
+            if flag == true {
+                break
+            }
+            flag = false
+        }
+        i += 1
+    }
+    let mask = set << (i - 1)
+    return num + mask
+}
+
+print(String(nextMax(num: 0b1110111), radix:2))
+print(String(nextMax(num: 0b11011011111100), radix:2))
+
+func nextMin(num:UInt32) -> UInt32 {
+    let set:UInt32 = 1
+    var i = 0
+    var flag = false
+
+    while i < 32 {
+        let mask = set << i
+        let bit = mask & num
+        if bit == 0 {
+            flag = true
+        }else {
+            if flag == true {
+                break
+            }
+            flag = false
+        }
+        i += 1
+    }
+    let mask = set << (i - 1)
+    return num - mask
+}
+print(String(nextMin(num: 0b1110111), radix:2))
+print(String(nextMin(num: 0b11011011111100), radix:2))
+
+//5
+
+//((n & (n-1)) == 0)
+
+//6
+
+func conversionInteger(a:Int32, b:Int32) -> Int {
+    let result = a ^ b
+    print("odd bit"+String(result, radix:2))
+    let set:Int32 = 1
+    var i = 0
+    var count = 0
+    while i < 32 {
+        let mask = set << i
+        let bit = mask & result
+        if bit != 0 {
+            count += 1
+        }
+        i += 1
+    }
+    return count
+}
+
+print(conversionInteger(a: 29, b: 15))
+print(conversionInteger(a: 19, b: 15))
+//8
+
+func pairSwap(num:Int32) -> Int32 {
+    let alter = num << 1
+    let set:Int32 = 1
+    var copy = num
+    for i in stride(from: 1, to: 32, by: 2) {
+        let mask = set << (i)
+        let alterbit = alter & mask
+        let bit = num & mask
+        let result = bit ^ alterbit
+        if result != 0 {
+            copy = copy ^ mask
+            copy = copy ^ (mask >> 1)
+        }
+    }
+    return copy
+}
+
+print(String(pairSwap(num: 0b01011101), radix:2))
+
+
+//9
+
+func drawline(screen: inout [UInt8], width:Int, x1:Int, x2:Int, y:Int) {
+    let h = screen.count/width
+    if y < 0 || y > h {
+        return
+    }
+    let prevLine = (y)*(8*width)
+    let start = prevLine + x1
+    let end = start + (x2-x1)
+    let blockStart = start/8
+    let blockEnd = end/8
+    
+    for i in blockStart+1..<blockEnd {
+        screen[i] = 0b11111111
+        print("index",i)
+    }
+    
+    let initial = start%8
+    let allOne:UInt8 = ~0
+    let imask = allOne >> initial
+    screen[blockStart] =  imask | screen[blockStart]
+    
+    let closer = end%8
+    let cmask = allOne << abs(closer - 8)
+    screen[blockEnd] =  cmask | screen[blockEnd]
+}
+var screen = [UInt8](repeating: 0, count: 3*3)
+
+
+drawline(screen: &screen, width: 3, x1: 0, x2: 8, y: 0)
+print("screen")
+for i in 0..<(3*3) {
+    print(String(screen[i],radix:2))
+}
