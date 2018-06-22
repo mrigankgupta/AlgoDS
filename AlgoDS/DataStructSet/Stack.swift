@@ -27,4 +27,8 @@ public struct Stack<T> {
     public func top() -> T? {
         return arr.last
     }
+    
+    public func empty() -> Bool {
+        return arr.count <= 0
+    }
 }

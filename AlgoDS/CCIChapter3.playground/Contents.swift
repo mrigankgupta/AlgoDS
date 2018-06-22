@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DataStructSet
 
 //Q1
 struct Stack3in1<T> {
@@ -211,8 +212,8 @@ for i in smpl {
 //Q4
 
 struct TwoStackQ<T> {
-    var pushStack = ArrStack<T>()
-    var popStack = ArrStack<T>()
+    var pushStack = Stack<T>()
+    var popStack = Stack<T>()
     
     mutating func remove() -> T? {
         return popStack.pop()
@@ -236,7 +237,7 @@ struct TwoStackQ<T> {
     }
     
     func peek() -> T? {
-        return popStack.peek()
+        return popStack.top()
     }
 }
 
@@ -249,12 +250,50 @@ for i in sqr {
 for _ in 0..<sqr.count {
     print(sq.remove())
 }
+
+struct TwoQueueStack<T> {
+    var flipQ = Queue<T>()
+    var flopQ = Queue<T>()
+    
+    mutating func push(_ new: T) {
+        
+        if flipQ.count() == 0 {
+            flipQ.add(new)
+            while flopQ.count() > 0 {
+                let item = flopQ.remove()
+                flipQ.add(item!)
+            }
+        } else {
+            flopQ.add(new)
+            while flipQ.count() > 0 {
+                let item = flipQ.remove()
+                flopQ.add(item!)
+            }
+        }
+    }
+    
+    mutating func pop() -> T? {
+        return flipQ.count() > 0 ? flipQ.remove() : flopQ.remove()
+    }
+    
+    mutating func count() -> Int {
+        return flipQ.count() > 0 ? flipQ.count() : flopQ.count()
+    }
+}
+
+var tqs = TwoQueueStack<Int>()
+for i in 1...9 {
+    tqs.push(i)
+}
+for _ in 1...9 {
+    print(tqs.pop())
+}
 //Q5
-func findMin(stack:inout ArrStack<Int>, count:Int) -> Int? {
+func findMin(stack:inout Stack<Int>, count:Int) -> Int? {
     if count == 0 {
         return nil
     }
-    var temp = ArrStack<Int>()
+    var temp = Stack<Int>()
     var min: Int?
     var i = 0
     while i < count {
@@ -276,7 +315,7 @@ func findMin(stack:inout ArrStack<Int>, count:Int) -> Int? {
 }
 
 //Q6
-func sortStack(stack: ArrStack<Int>, count:Int) -> ArrStack<Int>? {
+func sortStack(stack: Stack<Int>, count:Int) -> Stack<Int>? {
     
     var copy = stack
     var i = count
@@ -286,18 +325,18 @@ func sortStack(stack: ArrStack<Int>, count:Int) -> ArrStack<Int>? {
     }
     return copy
 }
-var unsorted = ArrStack<Int>()
+var unsorted = Stack<Int>()
 for i in [3,5,7,4,0,2,1,8] {
     unsorted.push(i)
 }
 findMin(stack: &unsorted, count: 8)
 sortStack(stack: unsorted, count: 8)
 
-func sortStackRec(stack:inout ArrStack<Int>, count:Int) {
+func sortStackRec(stack:inout Stack<Int>, count:Int) {
     if count <= 0 {
         return
     }
-    var temp = ArrStack<Int>()
+    var temp = Stack<Int>()
     var min: Int?
     var i = 0
     while i < count {
@@ -406,6 +445,3 @@ struct Shelter <T:Shelterable> {
         return data
     }
 }
-
-
-

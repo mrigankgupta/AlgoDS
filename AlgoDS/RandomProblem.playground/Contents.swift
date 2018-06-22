@@ -48,6 +48,8 @@ func peekFindBinary<T>(arr:[T], l:Int, r:Int) -> T? where T : Equatable & Compar
         return arr[index]
     }
 }
+var c = [5,6,8,10,7,6,4,3,2]
+
 print(peekFind(arr: c))
 var i = peekFindBinary(arr: c, l: 0, r: c.count-1)
 //3
@@ -180,18 +182,19 @@ func findDuplicatesEfficient<T:Hashable>(arr:[T]) -> [T] {
 findDuplicatesEfficient(arr: [1,2,4,5,6,2,3,4,1])
 
 
-//6func pairCubeCount(num: Int) -> [(Int,Int)] {
-let cubeRoot = Int(pow(Double(num), 1.0/3.0))
-var pairs = [(Int,Int)]()
-for i in 1...cubeRoot {
-    let pairCube = num - Int(pow(Double(i), Double(3)))
-    let pair = pow(Double(pairCube), 1.0/3.0)
-    if pair.truncatingRemainder(dividingBy: 1.0) == 0 { //TODO:Remind yourself
-        pairs.append((i, Int(pair)))
+//6
+func pairCubeCount(num: Int) -> [(Int,Int)] {
+    let cubeRoot = Int(pow(Double(num), 1.0/3.0))
+    var pairs = [(Int,Int)]()
+    for i in 1...cubeRoot {
+        let pairCube = num - Int(pow(Double(i), Double(3)))
+        let pair = pow(Double(pairCube), 1.0/3.0)
+        if pair.truncatingRemainder(dividingBy: 1.0) == 0 { //TODO:Remind yourself
+            pairs.append((i, Int(pair)))
+        }
     }
-}
-print(pairs)
-return pairs
+    print(pairs)
+    return pairs
 }
 
 pairCubeCount(num: 9)
@@ -221,3 +224,4 @@ func fibnachiIterative(_ n:Int) -> Int {
     return fn
 }
 fibnachi(4)
+

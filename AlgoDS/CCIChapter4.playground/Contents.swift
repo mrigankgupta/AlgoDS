@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DataStructSet
 
 var adList = [Adjacency]()
 let cn = [[2],[2],[0,1,3],[2,4],[7,9,10,5],[4,6],[5],[4,9],[9],[8,4],[4]]
@@ -44,7 +45,6 @@ func makeBSTree<T:Comparable>(arr:[T], left:Int, right:Int)-> Node<T>? {
 }
 var fu:Node<Int>?
 fu = makeBSTree(arr: sarr, left: 0, right: sarr.count-1)
-tre.inorderTraversal(root: fu)
 
 //3
 

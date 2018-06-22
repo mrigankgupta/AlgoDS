@@ -1,14 +1,14 @@
 //
 //  CCIChapter2.swift
-//  
+//
 //
 //  Created by Gupta, Mrigank on 13/02/18.
 //
 
 import Foundation
+import DataStructSet
 
 //Q1
-
 
 func removeDupOSpace<T>(root:DNode<T>?) -> [T:Bool]? where T : Equatable & Comparable {
     if root == nil {
@@ -114,7 +114,7 @@ func deleteMiddle<T>(root:SNode<T>?) -> SNode<T>? {
     return root
 }
 
-var slist = SinglyLinkedList()
+var slist = SinglyLinkedList<Int>()
 var sRoot: SNode<Int>?
 for i in [1,2,3,4,5,6,7,8,9] {
     sRoot = slist.insert(root: sRoot, value: i)
@@ -219,7 +219,6 @@ func partitionOSpace<T>(root:SNode<T>?, pivot:T) -> SNode<T>?
         return sHead
 }
 //3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1
-slist = SinglyLinkedList()
 var sroot:SNode<Int>?
 for i in [3,5,8,5,10,2,1] {
     sroot = slist.insert(root: sroot, value: i)
@@ -283,7 +282,7 @@ func isPalindromeBitwise(root:SNode<Character>?) -> Bool {
 }
 
 
-var cList = SinglyLinkedList()
+var cList = SinglyLinkedList<Character>()
 var cRoot: SNode<Character>?
 var cArray:[Character] = ["a","b","c","c","a","b","d","c","c"]
 for ch in cArray {
@@ -447,6 +446,7 @@ for i in [5,1] {
 }
 
 slist.print(root: listSum(root1: digit1, root2: digit2))
+
 struct ArrStack<T> {
     var array = [T]()
     
@@ -587,4 +587,5 @@ for _ in 0...2 {
     lq.remove()
 }
 lq.peek()
+
 

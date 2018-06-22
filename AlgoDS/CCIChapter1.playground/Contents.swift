@@ -1,44 +1,33 @@
 //
 //  CCIChapter1.swift
-//  
+//
 //
 //  Created by Gupta, Mrigank on 02/02/18.
 //
 
 import Foundation
+import DataStructSet
 
-/*String f@#$king shit.... Points to remember
- String.sorted() returns character array
- Strings looping is difficult, string subscript "[]" can only be done
- using indeces.
- If you want to remove something from String while enumerating
- use str.indices.reversed() as its safe to remove element while traversing in reverse order
- as after removal of an element, trailing elements of that array needs to be shifted one place left
- 
- //array of Characters
- let charArr1 = [Character](myString)
- 
- //array of String.element
- let charArr2 = Array(myString)
- 
- for char in myString {
- //char is of type Character
- }
- */
-extension Character {
-    public func unicodeValue() -> UInt32? {
-        if let uniVal = self.unicodeScalars.first?.value {
-            return uniVal
-        }
-        return nil
-    }
-    public func ascii() -> Int {
-        if let val = self.unicodeValue() {
-            return Int(bitPattern:UInt(val))//TODO:Remind yourself
-        }
-        return -1
-    }
+/*
+String.... Points to remember
+String.sorted() returns character array
+Strings looping is difficult, string subscript "[]" can only be done
+using indeces.
+If you want to remove something from String while enumerating
+use str.indices.reversed() as its safe to remove element while traversing in reverse order
+as after removal of an element, trailing elements of that array needs to be shifted one place left
+
+//array of Characters
+let charArr1 = [Character](myString)
+
+//array of String.element
+let charArr2 = Array(myString)
+
+for char in myString {
+//char is of type Character
 }
+*/
+
 //Q1
 func uniqueChar(arr:[Character], range:Int) -> Bool {
     var charSet = [Int](repeating: 0, count: range)
@@ -70,7 +59,7 @@ func anagram(str1:String, str2:String) -> Bool {
     return copy.count == 0
 }
 
-//anagram(str1: "abaac", str2: "aaabc")
+anagram(str1: "abaac", str2: "aaabc")
 
 //Failed
 func anagramXOR(str1:String, str2:String) -> Bool {
@@ -88,15 +77,16 @@ func anagramXOR(str1:String, str2:String) -> Bool {
     return sum == 0
 }
 
-//anagramXOR(str1: "abaacb", str2: "aaafcf")//failed case
-//anagramXOR(str1: "abaac", str2: "aaabc")
+anagramXOR(str1: "abaacb", str2: "aaafcf")//failed case
+anagramXOR(str1: "abaac", str2: "aaabc")
 
 func anagramSort(str1:String, str2:String) -> Bool {
-    var s1 = str1.sorted()
-    var s2 = str2.sorted()
-    if s1.count != s2.count {
+    if str1.count != str2.count {
         return false
     }
+    var s1 = str1.sorted()
+    var s2 = str2.sorted()
+    
     for i in 0..<s1.count {
         if s1[i] != s2[i]{
             return false
@@ -104,8 +94,8 @@ func anagramSort(str1:String, str2:String) -> Bool {
     }
     return true
 }
-//anagramSort(str1: "abaac", str2: "aaabc")
-//anagramSort(str1: "abaacb", str2: "aaafcf")
+anagramSort(str1: "abaac", str2: "aaabc")
+anagramSort(str1: "abaacb", str2: "aaafcf")
 
 //Q3
 
@@ -138,7 +128,7 @@ func urlify(str:String, rep:String) -> String {
     }
     return String(strCh)
 }
-//urlify(str:"Mr John Smith    ", rep: "21%")
+urlify(str:"Mr John Smith    ", rep: "21%")
 
 //Q4
 func permutationPalindrome(str:String) -> Bool {
@@ -162,7 +152,7 @@ func permutationPalindrome(str:String) -> Bool {
     return true
 }
 
-//permutationPalindrome(str: "Tacto coa")
+permutationPalindrome(str: "Tacto coa")
 
 func permutationPalindromeBitWise(str:String) -> Bool {
     let strCh = [Character](str.uppercased())
@@ -192,7 +182,7 @@ func permutationPalindromeBitWise(str:String) -> Bool {
     return odd <= 1
 }
 
-//print(permutationPalindromeBitWise(str: "a"))
+print(permutationPalindromeBitWise(str: "a"))
 
 //Q5
 //improve understanding
@@ -231,12 +221,12 @@ func oneAway(str1:String, str2:String) -> Bool {
     return true
 }
 
-//print(oneAway(str1: "pale", str2: "pal"))
-//print(oneAway(str1: "pales", str2: "pale"))
-//print(oneAway(str1: "pale", str2: "bale"))
-//print(oneAway(str1: "pale", str2: "ale"))
-//print(oneAway(str1: "paled", str2: "balub"))
-//print(oneAway(str1: "pa", str2: "ba"))
+print(oneAway(str1: "pale", str2: "pal"))
+print(oneAway(str1: "pales", str2: "pale"))
+print(oneAway(str1: "pale", str2: "bale"))
+print(oneAway(str1: "pale", str2: "ale"))
+print(oneAway(str1: "paled", str2: "balub"))
+print(oneAway(str1: "pa", str2: "ba"))
 
 //Q6
 
@@ -262,8 +252,8 @@ func stringCompression(str: String) -> String {
     }
     return String(chArr[0...j+count-1])
 }
-//var test = "saasbbbbdcccaaadde"
-//print(stringCompression(str: test))
+var test = "saasbbbbdcccaaadde"
+print(stringCompression(str: test))
 
 //Q7
 
@@ -279,7 +269,7 @@ func rotationMatrix90Clockwise(img:[[Int]],row:Int, col:Int) -> [[Int]] {
 
 var img = [[1,2,3],[4,5,6],[7,8,9]]
 
-//print(rotationMatrix90Clockwise(img: img, row: 3, col: 3))
+print(rotationMatrix90Clockwise(img: img, row: 3, col: 3))
 
 
 func rotationInPlace(img:inout [[Int]], count:Int) -> [[Int]] {
@@ -305,9 +295,9 @@ func rotationInPlace(img:inout [[Int]], count:Int) -> [[Int]] {
 }
 
 
-//var img1 = [[1,2,3],[4,5,6],[7,8,9]]
+var img1 = [[1,2,3],[4,5,6],[7,8,9]]
 
-//print(rotationInPlace(img: &img1, count: 3))
+print(rotationInPlace(img: &img1, count: 3))
 
 
 //Q8
@@ -337,9 +327,9 @@ func zeroMatrix(mat:inout [[Int]],row:Int, col:Int) -> [[Int]] {
     }
     return mat
 }
-//var mat = [[1,2,3,0],[0,4,5,6],[7,8,9,10]]
+var mat = [[1,2,3,0],[0,4,5,6],[7,8,9,10]]
 
-//print(zeroMatrix(mat: &mat, row: 3, col: 4))
+print(zeroMatrix(mat: &mat, row: 3, col: 4))
 
 
 func zeroMatrixOSpace(mat:inout [[Int]],row:Int, col:Int) -> [[Int]] {
@@ -364,8 +354,8 @@ func zeroMatrixOSpace(mat:inout [[Int]],row:Int, col:Int) -> [[Int]] {
     return mat
 }
 
-//var mat1 = [[1,2,3,0],[0,4,5,6],[7,8,9,10]]
-//print(zeroMatrixOSpace(mat: &mat1, row: 3, col: 4))
+var mat1 = [[1,2,3,0],[0,4,5,6],[7,8,9,10]]
+print(zeroMatrixOSpace(mat: &mat1, row: 3, col: 4))
 
 //Q9
 func isStringRotated(str:String, rot:String) -> Bool {
@@ -390,8 +380,8 @@ func isStringRotated(str:String, rot:String) -> Bool {
     return true
 }
 
-//print(isStringRotated(str: "waterBottle", rot: "erBottlewat"))
-//print(isStringRotated(str: "waterBottle", rot: "Bottlewater"))
-//print(isStringRotated(str: "waterBottle", rot: "Bottlewoter"))
+print(isStringRotated(str: "waterBottle", rot: "erBottlewat"))
+print(isStringRotated(str: "waterBottle", rot: "Bottlewater"))
+print(isStringRotated(str: "waterBottle", rot: "Bottlewoter"))
 
 
