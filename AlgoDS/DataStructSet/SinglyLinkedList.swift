@@ -45,17 +45,6 @@ public class SinglyLinkedList<T> {
     }
 }
 
-public class DNode<T> {
-    public var data: T!
-    public var next: DNode?
-    public var prev: DNode?
-    init(data:T) {
-        self.data = data
-        self.next = nil
-        self.prev = nil
-    }
-}
-
 extension SinglyLinkedList: Sequence {
     
     public func makeIterator() -> SinglyLinkedListIterator<T> {
@@ -69,7 +58,7 @@ public struct SinglyLinkedListIterator<T> : IteratorProtocol {
     
     var current: SNode<T>?
     
-    init(root:SNode<T>?) {
+    init(root: SNode<T>?) {
         self.current = root
     }
     
@@ -83,11 +72,22 @@ public struct SinglyLinkedListIterator<T> : IteratorProtocol {
     }
 }
 
-public class DoubleLinkedList {
+public class DNode<T> {
+    public var data: T!
+    public var next: DNode?
+    public var prev: DNode?
+    public init(data:T) {
+        self.data = data
+        self.next = nil
+        self.prev = nil
+    }
+}
+
+public class DoubleLinkedList<T> {
     
     public init(){
     }
-    public func buildLinkedList<T>(root:DNode<T>?, data:T) -> DNode<T>? {
+    public func buildLinkedList(root:DNode<T>?, data:T) -> DNode<T>? {
         if root == nil {
             return DNode(data: data)
         }
@@ -103,7 +103,7 @@ public class DoubleLinkedList {
         return root
     }
     
-    public func traverse<T>(root:DNode<T>?) {
+    public func traverse(root:DNode<T>?) {
         if root == nil {
             return
         }

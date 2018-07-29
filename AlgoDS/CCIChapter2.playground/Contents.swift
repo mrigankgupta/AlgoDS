@@ -27,7 +27,7 @@ func removeDupOSpace<T>(root:DNode<T>?) -> [T:Bool]? where T : Equatable & Compa
 }
 
 var rootT: DNode<Int>? = nil
-var dlist = DoubleLinkedList()
+var dlist = DoubleLinkedList<Int>()
 for i in [10,1,2,1,3,4,5,4,6,7,5,3,4,1,5,8] {
     rootT = dlist.buildLinkedList(root: rootT , data: i)
 }

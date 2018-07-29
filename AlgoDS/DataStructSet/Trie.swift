@@ -12,7 +12,7 @@ public class TrieNode <T : Hashable>{
     public
     var dict: [T:TrieNode<T>]
     var end = false
-    public init(key:T?, end:Bool) {
+    public init(end:Bool) {
         self.dict = [T:TrieNode<T>]()
         self.end = end
     }
@@ -25,7 +25,7 @@ public class Trie {
     public func insert<T>(root:TrieNode<T>?, elements:[T]) -> TrieNode<T> {
         var newRoot = root
         if newRoot == nil {
-            newRoot = TrieNode(key: nil, end: true)
+            newRoot = TrieNode(end: true)
         }
         var prev: TrieNode<T>?
         var current = newRoot
@@ -37,10 +37,10 @@ public class Trie {
             }
             
             if index < elements.count-1 {
-                prev!.dict[ch] = TrieNode(key: nil, end: false)
+                prev!.dict[ch] = TrieNode(end: false)
                 
             }else{
-                prev!.dict[ch] = TrieNode(key: nil, end: true)
+                prev!.dict[ch] = TrieNode(end: true)
             }
         }
         
