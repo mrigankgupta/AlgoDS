@@ -114,5 +114,20 @@ public class DoubleLinkedList<T> {
         }
         print("")
     }
+
+    func reverse(head: DNode<T>) -> DNode<T> {
+
+        var current: DNode<T>? = head
+        var prev: DNode<T>?
+        var nxt: DNode<T>?
+        while current != nil {
+            prev = current!.prev
+            nxt = current!.next
+            current?.prev = nxt
+            current?.next = prev
+            current = nxt
+        }
+        return prev!
+    }
 }
 

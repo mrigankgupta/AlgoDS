@@ -221,7 +221,6 @@ let bst = BinarySearchTree()
 for i in 1...3 {
     testImbalance = bst.insert(root: testImbalance, value: i)
 }
-print("kya")
 bst.inorderTraversal(root: testImbalance)
 checkBalance(root: testImbalance)
 
@@ -330,6 +329,29 @@ func firstCommonAncestor<T:Comparable>(root:PNode<T>, a:T, b:T) -> PNode<T>? {
     return nil
 }
 
+//LowestCommmonAncestor
+// Via Recursion O(n)
+
+func lca(root: PNode<Int>?, fst: Int, sec: Int) -> PNode<Int>? {
+    print("tatti",root?.data)
+    if root == nil {
+        return nil
+    }
+    if root!.data == fst || root!.data == sec {
+        return root
+    }
+
+    let left = lca(root: root?.left, fst: fst, sec: sec)
+    let right = lca(root: root?.right, fst: fst, sec: sec)
+
+    if left != nil && right != nil {
+        return root
+    }
+
+    return left == nil ? right : left
+}
+
+
 func insertLevelOrdr<T>(root:PNode<T>?, val:T) -> PNode<T> {
     if root == nil {
         return PNode(data: val)
@@ -357,12 +379,11 @@ func insertLevelOrdr<T>(root:PNode<T>?, val:T) -> PNode<T> {
     return root!
 }
 var fca: PNode<Int>?
-for i in 1...20 {
+for i in 1...10 {
     fca = insertLevelOrdr(root: fca, val: i)
 }
-
+lca(root: fca, fst: 2, sec: 5)?.data
 print(firstCommonAncestor(root: fca!, a: 6, b: 8)?.data)
-
 //10
 
 //trying something different for finding

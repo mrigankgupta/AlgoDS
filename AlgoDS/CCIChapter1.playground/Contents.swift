@@ -26,6 +26,36 @@ let charArr2 = Array(myString)
 for char in myString {
 //char is of type Character
 }
+
+ Accessing and modifying Strings:
+ You access the indices before and after a given index using the index(before:) and index(after:) methods of String. To access an index farther away from the given index, you can use the index(_:offsetBy:) method instead of calling one of these methods multiple times.
+ You can use subscript syntax to access the Character at a particular String index.
+ let greeting = "Guten Tag!"
+ greeting[greeting.startIndex]
+ // G
+ greeting[greeting.index(before: greeting.endIndex)]
+ // !
+ greeting[greeting.index(after: greeting.startIndex)]
+ // u
+ let index = greeting.index(greeting.startIndex, offsetBy: 7)
+ greeting[index]
+ // a
+ Inserting and Removing
+ var welcome = "hello"
+ welcome.insert("!", at: welcome.endIndex)
+ // welcome now equals "hello!"
+
+ welcome.insert(contentsOf: " there", at: welcome.index(before: welcome.endIndex))
+ // welcome now equals "hello there!"
+
+ To remove a single character from a string at a specified index, use the remove(at:)method, and to remove a substring at a specified range, use the removeSubrange(_:)method:
+ welcome.remove(at: welcome.index(before: welcome.endIndex))
+ // welcome now equals "hello there"
+
+ let range = welcome.index(welcome.endIndex, offsetBy: -6)..<welcome.endIndex
+ welcome.removeSubrange(range)
+ // welcome now equals "hello"
+ You can use the insert(_:at:), insert(contentsOf:at:), remove(at:), and removeSubrange(_:) methods on any type that conforms to the RangeReplaceableCollectionprotocol. This includes String, as shown here, as well as collection types such as Array, Dictionary, and Set.
 */
 
 //Q1
@@ -364,16 +394,16 @@ func isStringRotated(str:String, rot:String) -> Bool {
     if strArr.count != rotArr.count {
         return false
     }
-    var count = strArr.count - 1
+    let count = strArr.count - 1
     var j = 0
     for i in 0...count {
         if strArr[i] == rotArr[j]{
             j = j + 1
         }
     }
-    var diff = count - j
+    let diff = count - j
     for k in 0..<diff {
-        if strArr[k] !=  rotArr[count - diff + k] {
+        if strArr[k] != rotArr[count - diff + k] {
             return false
         }
     }

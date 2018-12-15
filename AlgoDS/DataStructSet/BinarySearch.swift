@@ -47,3 +47,15 @@ func bs(arr:[Int], l:Int, r:Int, v:Int) -> Int? {
     }
 }
 
+// first common ansestor in BST
+func firstCommonAncestorBST<T:Comparable>(root:Node<T>?, item1:T, item2:T) -> Node<T>? {
+    if root == nil {
+        return nil
+    }else if (root!.data < item1 && root!.data > item2) || (root!.data < item1 && root!.data > item2) {
+        return root//in the middle
+    }else if root!.data < item1 && root!.data < item2 {
+        return firstCommonAncestorBST(root: root?.left, item1: item1, item2: item2)
+    }else {
+        return firstCommonAncestorBST(root: root?.right, item1: item1, item2: item2)
+    }
+}

@@ -167,170 +167,109 @@ func insertInHeap(arr:inout [Int], new:Int) {
 insertInHeap(arr: &a, new: 20)
 insertInHeap(arr: &a, new: 5)
 
-func firstCommonAncestorBST<T:Comparable>(root:Node<T>?, item1:T, item2:T) -> Node<T>? {
-    if root == nil {
-        return nil
-    }else if (root!.data < item1 && root!.data > item2) || (root!.data < item1 && root!.data > item2) {
-        return root
-    }else if root!.data < item1 && root!.data < item2 {
-       return firstCommonAncestorBST(root: root?.left, item1: item1, item2: item2)
-    }else {
-       return firstCommonAncestorBST(root: root?.right, item1: item1, item2: item2)
+
+//// Practice
+
+
+
+let lruChe = LRUCache<Int>()
+for indx in 1...14 {
+    lruChe.insert(key: indx, value: indx)
+}
+lruChe.insert(key: 11, value: 11)
+lruChe.head()
+lruChe.search(key: 1)
+lruChe.search(key: 8)
+lruChe.head()
+
+
+var cirarr = CircularArray<Int>()
+for idx in 1...10 {
+    cirarr.append(idx)
+}
+cirarr.itemAt(index: 7)
+cirarr.circular(index: 3)
+cirarr.rotate(shift: 3)
+cirarr.itemAt(index: 7)
+cirarr.remove(at: 1)
+cirarr.itemAt(index: 1)
+for _ in 1...9 {
+    cirarr.removeLast()
+}
+//cirarr.itemAt(index: 0)
+
+
+
+
+
+//func myAtoi(_ str: String) -> Int {
+//    var char = [Character](str)
+//    var valInt: Int = 128
+//    if let valInt32 = char[0].unicodeScalars.first?.value {
+//        valInt = numericCast(valInt32)
+//    }
+//    guard char[0] == "-" || char[0] == " " ||  48...57 ~= valInt else {
+//        return 0
+//    }
+//
+//    while <#condition#> {
+//        <#code#>
+//    }
+//}
+
+class StringSim {
+    var heldString: String
+
+    init(held: String){
+        heldString = held
+    }
+
+    func display(){
+        print(heldString)
+    }
+
+    func append(str: String){
+        heldString.append(str)
+    }
+}
+let myStr = StringSim(held:"Hello, playground")
+var mySecStr = myStr
+mySecStr.append(str: "foo")
+myStr.display()
+mySecStr.display()
+
+
+struct MutableOne {
+    var count = 1
+    mutating func increment() {
+        count += 1
     }
 }
 
-func quickPractice(arr:inout [Int], left: Int, right: Int) {
-    if left < right {
-        let m = right
-        let p = pivot(arr: &arr, s: left, e: right, p: m)
-        quickPractice(arr: &arr, left: left, right: p-1)
-        quickPractice(arr: &arr, left: p, right: right)
-    }
-}
+var test = MutableOne()
+var test1 = test
+test.increment()
 
-func pivot(arr:inout [Int], s:Int, e:Int, p:Int) -> Int {
-    let pivot = arr[p]
-    var i = s
-    var j = e
-    while i < j {
-        if pivot >= arr[i] {
-            i += 1
-        }else if pivot < arr[j] {
-            j -= 1
-        }else {
-            print("\(i) \(j)")
-            arr.swapAt(i, j)
-        }
-    }
-    return i
-}
-var s = [1,2,0,3,4,1,5,3,1,9]
-//pivot(arr: &s, s: 0, e: s.count-1, p: 3)
-quickPractice(arr: &s, left: 0, right: s.count-1)
-print(s)
+print(test.count)
+print(test1.count)
 
+class C {}
+let values: [Any]! = [C()]
+let transformed = values.map { $0 as! [C] }
 
-func merge(arr:inout [Int], l:Int, m:Int, r:Int) {
-    
-    var arr1 = arr[l...m]
-    var arr2 = arr[m+1...r]
-    var i = l
-    var j = m+1
-    var index = l
-    while (i <= m && j <= r) {
-        if arr1[i] < arr2[j] {
-            arr[index] = arr1[i]
-            i += 1
-            index += 1
-        }else{
-            arr[index] = arr2[j]
-            j += 1
-            print(j)
-            index += 1
-        }
-    }
-    print(i,j)
-    while j <= r {
-        arr[index] = arr2[j]
-        j += 1
-        index += 1
-    }
-    while i <= m {
-        arr[index] = arr1[i]
-        i += 1
-        index += 1
-    }
-}
+enum MyOp<Wrapped> {
+    case some(_ has: Wrapped)
+    case none
 
-
-func mergeSort(arr:inout [Int], lft:Int, rgt: Int) {
-    
-    if lft < rgt {
-        let m = (lft+rgt)/2
-        mergeSort(arr: &arr, lft: lft, rgt: m)
-        mergeSort(arr: &arr, lft: m+1, rgt: rgt)
-        merge(arr:&arr, l:lft, m:m, r:rgt)
-    }
-}
-var ae = [1,2,6,8,3,4,5,7,9,10]
-
-//merge(arr: &ae, l: 0, m: 3, r: ae.count - 1)
-mergeSort(arr: &ae, lft: 0, rgt: ae.count-1)
-print(ae)
-
-//q1
-
-func reverseSortedMerge(sml:[Int], scnt:Int, big:inout [Int], bcnt:Int) {
-    var se = scnt
-    var be = bcnt
-    var indx = big.count-1
-    while se >= 0 && be >= 0 {
-        if sml[se] < big[be] {
-            print("big \(be)")
-            big[indx] = big[be]
-            be -= 1
-            indx -= 1
-        }else{
-            big[indx] = sml[se]
-            se -= 1
-            indx -= 1
-        }
-//        print("index \(indx)")
-    }
-    while se >= 0 {
-        big[indx] = sml[se]
-        se -= 1
-        indx -= 1
-    }
-    while be >= 0 {
-        big[indx] = big[be]
-        be -= 1
-        indx -= 1
-    }
-}
-var sml = [1,2,6,8]
-var big = [3,4,5,0,0,0,0]
-reverseSortedMerge(sml: sml, scnt: sml.count-1, big: &big, bcnt: 2)
-print(big)
-//q2
-
-
-//q3
-
-func searchRotated(arr:[Int], item: Int, start: Int, end: Int) -> Int? {
-    if start > end {
-        return nil
-    }
-    let m = start + (end - start)/2
-    
-    if arr[m] == item {
-        return m
-    } else if arr[start] < arr[end] {
-        // normal binary
-        if item < arr[m] {
-            return searchRotated(arr: arr, item: item, start: start, end: m-1)
-        } else {
-            return searchRotated(arr: arr, item: item, start: m+1, end: end)
-        }
-    }else {
-        // middle point to the right
-        if arr[m] > arr[end] {
-            if arr[m] > item && item > arr[start] {
-                //search left
-                return searchRotated(arr: arr, item: item, start: start, end: m-1)
-            }else{
-                return searchRotated(arr: arr, item: item, start: m+1, end: end)
-            }
-        }else {// middle point to the left, middle < end
-            if arr[m] < item && item > arr[end] {
-                //search Left
-                return searchRotated(arr: arr, item: item, start: start, end: m-1)
-            }else{
-                return searchRotated(arr: arr, item: item, start: m+1, end: end)
-            }
+    @inlinable
+    public func map<U>(_ transform: (Wrapped) throws -> U) rethrows -> U? {
+        switch self {
+        case .some(let y):
+            return .some(try transform(y))
+        case .none:
+            return .none
         }
     }
 }
 
 
-searchRotated(arr: [7, 10, 14, 15, 16, 19, 20, 25, 1, 3, 4, 5, ], item: 19, start: 0, end: 11)

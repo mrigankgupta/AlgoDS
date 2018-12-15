@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DataStructSet
 //1
 func addBitwise(a:Int,b:Int) -> Int {
     
@@ -18,7 +19,6 @@ func addBitwise(a:Int,b:Int) -> Int {
     }
     return sum
 }
-
 
 print(addBitwise(a: 329, b: 546))
 
@@ -56,7 +56,7 @@ var i = peekFindBinary(arr: c, l: 0, r: c.count-1)
 func greatestCommonDivisor(num1:Int,num2:Int) -> Int {
     var min = num1
     var max = num2
-    if num2 < num1{
+    if num2 < num1 {
         min = num2
         max = num1
     }
@@ -224,4 +224,250 @@ func fibnachiIterative(_ n:Int) -> Int {
     return fn
 }
 fibnachi(4)
+
+func secretLanguageEncoding(enc:String) {
+    let rev = enc.reversed()
+    let revArr = rev.split(separator: " ")
+    for str in revArr {
+        var fst = [Int]()
+        var cnt = 0
+        for (idx, ch) in str.enumerated() {
+            if isVowel(ch: ch) {
+                fst.append(idx)
+                cnt += 1
+            }
+        }
+        let s = String(str)
+        if cnt == 0 {
+            print("."+s, terminator:" ")
+        }else if cnt == 1 {
+            let indx = fst.first!
+            print(s.prefix(indx+1).reversed()+"."+s.suffix(s.count-indx-1),terminator:" ")
+        }else {
+            let indx = fst[fst.count-1-1]
+            print(s.prefix(indx+1).reversed()+"."+s.suffix(s.count-indx-1),terminator:" ")
+        }
+    }
+}
+
+func isVowel(ch: Character) -> Bool {
+    if ch == "a" || ch == "e" || ch == "i" || ch == "o" || ch == "u" {
+        return true
+    }
+    return false
+}
+
+
+let fcukamz = "my worlds most customer centric company"
+secretLanguageEncoding(enc: fcukamz)
+
+// Store deepest left leaf nodes in a list
+func traverse<T>(root: Node<T>?, level: Int, max: inout Int, arr: inout [T]?, isLeft: Bool) {
+    if root == nil { return }
+    
+    if isLeft, root!.left == nil, root!.right == nil {
+        if level > max {
+            max = level
+            if arr == nil {
+                arr = [T]()
+            }else{
+                arr?.removeAll()
+            }
+            arr?.append(root!.data)
+        } else if level == max {
+            arr?.append(root!.data)
+        }
+    }
+    
+    traverse(root: root?.left, level: level+1, max: &max, arr: &arr, isLeft: true)
+    traverse(root: root?.right, level: level+1, max: &max, arr: &arr, isLeft: false)
+}
+var bst = BinarySearchTree()
+var broot: Node<Int>?
+
+for i in [11,7,3,2,4,9,8,10,18,17,20,16] {
+    broot = bst.insert(root: broot, value: i)
+}
+
+var mx = 0
+var leftlist: [Int]?
+
+traverse(root: broot, level: 0, max: &mx, arr: &leftlist, isLeft: false)
+leftlist
+
+//find kth largest element in binary search tree
+func kthBST(root:Node<Int>?, item: Int, count: inout Int) {
+    if root == nil {
+        return
+    }
+    
+    kthBST(root: root?.right, item: item, count: &count)
+    count += 1
+    if item == count {
+        print(root?.data)
+        return
+    }
+    kthBST(root: root?.left, item: item, count: &count)
+}
+var count = 0
+
+kthBST(root: broot, item: 5, count: &count)
+
+// printing all possible combination of given n items
+// for example abc string, possible cobinations are
+// "bac", "acb", "cab", "abc", "cba", "bca"
+func heapPermutation(arr: String, chCount: Int) -> [String] {
+    if chCount == 1 {
+        return [String(arr.first!)]
+    }
+    let arrCh = Array(arr)
+    let comb = heapPermutation(arr: arr, chCount: chCount - 1)
+    var new = [String]()
+    let last = arrCh[chCount-1]
+    for item in comb {
+        new.append(String(item+String(last)))
+    }
+
+    for each in new {
+        let eachCharArr = Array(each)
+        for i in 0..<eachCharArr.count-1 {
+            var copy = eachCharArr
+            copy.swapAt(i, eachCharArr.count-1)
+            new.append(String(copy))
+        }
+    }
+    return new
+}
+
+var unique = Set(heapPermutation(arr: "abc", chCount: 3))
+unique.count
+print(unique)
+
+// move all positive number at the begining of array
+
+func halfStablePartion(arr: inout [Int]) {
+    if arr.count <= 0 {
+        return
+    }
+    var right = 0
+    for (index, i) in arr.enumerated() {
+        if i < 0 {
+            right = index
+            break
+        }
+    }
+    //first negative
+    var left = right
+    while right < arr.count {
+        guard let firstPos = firstPositive(start: left, arr: arr) else { return }
+        left = firstPos
+        arr.swapAt(left, right)
+        print("swaped", arr[left], arr[right], arr)
+        left += 1
+        right += 1
+    }
+}
+
+func firstPositive(start: Int, arr:[Int]) -> Int? {
+    var left = start
+    while left < arr.count {
+        if arr[left] > 0 {
+            return left
+        }
+        left += 1
+    }
+    return nil
+}
+var half = [-3,-2,1,7,9,-5,-12,15,1,-7,8,78]
+halfStablePartion(arr: &half)
+half = [-2,1,-7,-9,5,-12,-15,78]
+halfStablePartion(arr: &half)
+
+// for sequence of numbers, print fizz if number is divisible by 3
+// buzz if divisible by 5 and fizzbuzz if divisible by both
+
+func fizzBuzz() {
+    for i in 1...100 {
+        if i%3 == 0 {
+            if i%5 == 0 {
+                print("FizzBuzz")
+            }else {
+                print("Fizz")
+            }
+        }else if i%5 == 0 {
+            print("Buzz")
+        }else {
+            print(i)
+        }
+    }
+}
+fizzBuzz()
+
+func fizzBuzzSmart() {
+    var str = ""
+    for i in 1...100 {
+        if i%3 == 0 { str.append("fizz") }
+        if i%5 == 0 { str.append("buzz") }
+
+        if str.count <= 0 {
+            print(i)
+        }else {
+            print(str)
+        }
+    }
+}
+
+func mergeHours(hours:[(Int,Int)]) -> [(Int,Int)] {
+    if hours.count <= 1 {
+        return hours
+    }
+    var first = hours[0]
+    var final = [(Int,Int)]()
+    var start = 1
+    while start < hours.count {
+        if first.1 >= hours[start].0 {
+            first = (first.0,hours[start].1)
+        }else {
+            final.append(first)
+            first = hours[start]
+        }
+        start+=1
+    }
+    final.append(first)
+    return final
+}
+
+mergeHours(hours: [(900, 1500),(1400, 1800),(1800, 2000),(1800, 2200)])
+mergeHours(hours: [(900, 1500),(1530, 1800),(1800, 2000),(1800, 2200)])
+mergeHours(hours: [(900, 1500),(1530, 1800),(1800, 2000),(1800, 2200)])
+
+// fill grid with k random spot
+func fillGrid(grid:inout [[Int]], row: Int, col: Int, places: Int) {
+    let spot = row*col
+    var next = Int(arc4random())%spot
+    var r = next/row
+    var c = next%col
+    for _ in 1...places {
+        while grid[r][c] == 1 {
+            next = Int(arc4random())%spot
+            r = next/row
+            c = next%col
+        }
+        grid[r][c] = 1
+    }
+}
+var arr: [[Int]] = [[Int]](repeating: [Int](repeating: 0, count: 4), count: 3)
+fillGrid(grid: &arr, row: 4, col: 3, places: 5)
+
+func favoriteRestaurant(_ restaurants1: [String], _ restaurants2: [String]) -> String {
+    let first = NSMutableOrderedSet(array: restaurants1)
+    let sec = NSOrderedSet(array: restaurants2)
+    first.intersect(sec)
+    if let first = first[0] as? String {
+        return first
+    }
+    return "Yelpwich"
+}
+
+favoriteRestaurant(["absv", "dbs"], ["abs", "dbs"])
 
