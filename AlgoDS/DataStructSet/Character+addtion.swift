@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+//ascii zero = 48
+// A = 65
+// a = 97
 extension Character {
     public func unicodeValue() -> UInt32? {
         if let uniVal = self.unicodeScalars.first?.value {

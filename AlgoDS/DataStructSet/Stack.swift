@@ -17,7 +17,7 @@ public struct Stack<T> {
     }
     
     public mutating func pop() -> T? {
-        return arr.popLast()
+        return arr.popLast()//TODO: Remember
     }
     
     public func count() -> Int {

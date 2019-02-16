@@ -48,7 +48,7 @@ fu = makeBSTree(arr: sarr, left: 0, right: sarr.count-1)
 
 //3
 
-func lot<T>(root:Node<T>) {
+func levelOrderTraversalViaQueue<T>(root:Node<T>) {
     var qu = Queue<Node<T>>()
     qu.add(root)
     while qu.count() > 0 {
@@ -104,9 +104,9 @@ func listOfDepthBFS<T>(root:Node<T>) -> [SNode<T>] {
 
 
 
-func levelOrderInsert<T>(root:Node<T>?, val:T) -> Node<T> {
-    if root == nil {
-        return Node(data: val)
+func levelOrderInsert<T>(root:Node<T>?, val:T?) -> Node<T> {
+    if root == nil && val != nil {
+        return Node(data: val!)
     }
     var qu = Queue<Node<T>>()
     qu.add(root!)
@@ -115,13 +115,17 @@ func levelOrderInsert<T>(root:Node<T>?, val:T) -> Node<T> {
         if let lft = nxt?.left {
             qu.add(lft)
         }else{
-            nxt?.left = Node(data: val)
+            if let val = val {
+                nxt?.left = Node(data: val)
+            }
             break
         }
         if let rgt = nxt?.right {
             qu.add(rgt)
         }else{
-            nxt?.right = Node(data: val)
+            if let val = val {
+                nxt?.right = Node(data: val)
+            }
             break
         }
     }
@@ -170,10 +174,10 @@ func levelOrderTraversal<T>(root:Node<T>?, plevel:Int, clevel:Int, lList:inout S
 }
 
 var rsh : Node<Int>?
-for i in 1...10 {
+for i in 1...5 {
     rsh = levelOrderInsert(root: rsh, val: i)
 }
-lot(root: rsh!)
+levelOrderTraversalViaQueue(root: rsh!)
 var l = listOfDepthDFS(root: rsh!)
 var s = SinglyLinkedList<Int>()
 var level = 0
@@ -225,8 +229,10 @@ bst.inorderTraversal(root: testImbalance)
 checkBalance(root: testImbalance)
 
 //5
-
-func validateBST<T: Comparable>(root:Node<T>) -> Bool? {
+//REDO: catch is if you think comparing simple left < root < right will work,
+// it won't in case of full tree traversal example fake nodes
+//
+func validateBST<T: Comparable>(root:Node<T>) -> Bool {
     var qu = Queue<Node<T>>()
     qu.add(root)
     while qu.count() > 0 {
@@ -249,8 +255,49 @@ func validateBST<T: Comparable>(root:Node<T>) -> Bool? {
     return true
 }
 
+func isValidBST<T: Comparable>(root: Node<T>?) -> Bool {
+    if root == nil {
+        return true
+    }
+    var prev: T?  = nil
+    return inOrder(root, prev: &prev)
+}
+
+func inOrder<T: Comparable>(_ root: Node<T>?, prev: inout T?) -> Bool {
+    if root == nil {
+        return true
+    }
+
+    let left = inOrder(root?.left, prev: &prev)
+    if prev != nil && root!.data <= prev! {
+        return false
+    }
+    prev = root?.data
+    let right = inOrder(root?.right, prev: &prev)
+    return left == true && right == true
+}
+
+var fake1: Node<Int>?
+for i in [4,2,5,1,3] {
+    fake1 = levelOrderInsert(root: fake1, val: i)
+}
+var fake2: Node<Int>?
+for i in [10,5,15,1,7,6,20] {
+    fake2 = levelOrderInsert(root: fake2, val: i)
+}
+print("testing")
+levelOrderTraversalViaQueue(root: fake2!)
+isValidBST(root: fu)
+isValidBST(root: rsh)
+isValidBST(root: testImbalance)
+isValidBST(root: fake1)
+isValidBST(root: fake2)
+
+validateBST(root: fu!)
 validateBST(root: rsh!)
 validateBST(root: testImbalance!)
+validateBST(root: fake1!)
+validateBST(root: fake2!)
 
 //8
 
@@ -333,7 +380,6 @@ func firstCommonAncestor<T:Comparable>(root:PNode<T>, a:T, b:T) -> PNode<T>? {
 // Via Recursion O(n)
 
 func lca(root: PNode<Int>?, fst: Int, sec: Int) -> PNode<Int>? {
-    print("tatti",root?.data)
     if root == nil {
         return nil
     }

@@ -117,23 +117,26 @@ func reverse(arr:inout [Int],start:Int, end:Int) {
 var s2 = [0,1,2,3,4,5,6]
 rotationReverse(arr: &s2, rotate: 2)
 //4
-func msb(num:Int) -> Int {
+func powBaseTen(num:Int) -> Int {
     var remainder = num
-    var prev = remainder
+    var pow = 0
     while remainder > 0 {
-        prev = remainder
+        pow += 1
         remainder = remainder/10
     }
-    return prev
+    return pow
 }
 
-msb(num: 96208)
+powBaseTen(num: 96208)
 
 func largestSumByArranging(arr:[Int]) -> Int {
     let sorted = arr.sorted { (a, b) -> Bool in
-        let ma = msb(num: a)
-        let mb = msb(num: b)
-        return ma == mb ? a < b: ma > mb
+        let pa = powBaseTen(num: a)
+        let pb = powBaseTen(num: b)
+        let acom = (a*Int(pow(10.0,Double(pb))) + b)
+        let bcom = (b*Int(pow(10.0,Double(pa))) + a)
+        print("shit",acom,bcom)
+        return acom > bcom
     }
     let sum = sorted.reduce("") { (r, a) -> String in
         return r + String(a)
@@ -141,7 +144,7 @@ func largestSumByArranging(arr:[Int]) -> Int {
     return Int(sum)!
 }
 
-largestSumByArranging(arr: [9,10,5,89,53,919,92])
+largestSumByArranging(arr: [9,10,5,89,53,999,92])
 //5
 func findDuplicates<T:Hashable>(arr:[T]) -> [T] {
     var dup = [T]()
@@ -201,6 +204,7 @@ pairCubeCount(num: 9)
 pairCubeCount(num: 28)
 
 //Fibnachi
+
 func fibnachi(_ n:Int) -> Int {
     if n == 1 {
         return 1
@@ -209,9 +213,53 @@ func fibnachi(_ n:Int) -> Int {
     }
     return fibnachi(n-1) + fibnachi(n-2)
 }
-
-fibnachi(4)
-
+fibnachi(10)
+//top down - memoization
+func fibnachiMemo(_ n: Int) -> Int {
+    var memo = [Int](repeating: 0, count: n+1)
+//    for i in 0...n {
+//        fibFromMemo(i, memo: &memo)
+//    }
+    return fibFromMemo(n, memo: &memo)
+}
+func fibFromMemo(_ n: Int, memo: inout [Int]) -> Int {
+    if n <= 0 {return 0}
+    if n == 1 {
+        return 1
+    }else if n == 0 {
+        return 0
+    }
+    if memo[n] > 0 {
+        return memo[n]
+    }else {
+        memo[n] = fibFromMemo(n-1, memo: &memo) + fibFromMemo(n-2, memo: &memo)
+    }
+    return memo[n]
+}
+//func fibFromMemo(_ n: Int, memo: inout [Int:Int]) -> Int {
+//    if n == 1 {
+//        return 1
+//    }else if n == 0 {
+//        return 0
+//    }
+//    if let val = memo[n] {
+//        return val
+//    }
+//    var nMinusOne = memo[n-1]
+//    if nMinusOne == nil {
+//        nMinusOne = fibFromMemo(n-1, memo: &memo)
+//        memo[n-1] = nMinusOne
+//    }
+//    var nMinusTwo = memo[n-2]
+//    if nMinusTwo == nil {
+//        nMinusTwo = fibFromMemo(n-2, memo: &memo)
+//        memo[n-2] = nMinusTwo
+//    }
+//    memo[n] = nMinusOne! + nMinusTwo!
+//    return memo[n]!
+//}
+fibnachiMemo(10)
+//dp version- bottom up
 func fibnachiIterative(_ n:Int) -> Int {
     var fn = 0
     var fn1 = 1
@@ -339,49 +387,58 @@ func heapPermutation(arr: String, chCount: Int) -> [String] {
     return new
 }
 
-var unique = Set(heapPermutation(arr: "abc", chCount: 3))
+var unique = Set(heapPermutation(arr: "abcd", chCount: 4))
 unique.count
 print(unique)
-
+// all can be solved with same approach = half stable partion (slow and fast pointer)
+//26. Remove Duplicates from Sorted Array -Leetcode (almost same)
+//283. Move Zeroes -Leetcode
 // move all positive number at the begining of array
 
 func halfStablePartion(arr: inout [Int]) {
     if arr.count <= 0 {
         return
     }
-    var right = 0
-    for (index, i) in arr.enumerated() {
-        if i < 0 {
-            right = index
+    var firstNegative = 0
+    for (index, item) in arr.enumerated() {
+        if item < 0 {
+            firstNegative = index
             break
         }
     }
     //first negative
-    var left = right
-    while right < arr.count {
-        guard let firstPos = firstPositive(start: left, arr: arr) else { return }
-        left = firstPos
-        arr.swapAt(left, right)
-        print("swaped", arr[left], arr[right], arr)
-        left += 1
-        right += 1
-    }
-}
-
-func firstPositive(start: Int, arr:[Int]) -> Int? {
-    var left = start
-    while left < arr.count {
-        if arr[left] > 0 {
-            return left
+    var lastNegative = firstNegative
+    var index = firstNegative
+    while index < arr.count {
+        if arr[index] < 0 {
+            index += 1
+        }else {
+            arr.swapAt(index, lastNegative)
+            print("swaped", arr[lastNegative], arr[index], arr)
+            lastNegative += 1
+            index += 1
         }
-        left += 1
     }
-    return nil
 }
 var half = [-3,-2,1,7,9,-5,-12,15,1,-7,8,78]
 halfStablePartion(arr: &half)
-half = [-2,1,-7,-9,5,-12,-15,78]
+half = [1,2,3,4,-2,1,-7,-9,5,-12,-15,78]
 halfStablePartion(arr: &half)
+
+func moveAllNegative(_ nums: inout [Int]) {
+    var lastPositive = 0
+    for current in 0...nums.count-1 {
+        if nums[current] > 0 {
+            nums.swapAt(current, lastPositive)
+            lastPositive += 1
+        }
+    }
+}
+var half1 = [-3,-2,1,7,9,-5,-12,15,1,-7,8,78]
+moveAllNegative(&half1)
+half1 = [1,2,3,4,-2,1,-7,-9,5,-12,-15,78]
+moveAllNegative(&half1)
+
 
 // for sequence of numbers, print fizz if number is divisible by 3
 // buzz if divisible by 5 and fizzbuzz if divisible by both
@@ -404,8 +461,8 @@ func fizzBuzz() {
 fizzBuzz()
 
 func fizzBuzzSmart() {
-    var str = ""
     for i in 1...100 {
+        var str = ""
         if i%3 == 0 { str.append("fizz") }
         if i%5 == 0 { str.append("buzz") }
 
@@ -416,6 +473,7 @@ func fizzBuzzSmart() {
         }
     }
 }
+fizzBuzzSmart()
 
 func mergeHours(hours:[(Int,Int)]) -> [(Int,Int)] {
     if hours.count <= 1 {

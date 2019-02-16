@@ -55,7 +55,7 @@ public class BinaryTree {
         print(root!.data)
         inorderTraversalRec(root: root?.right)
     }
-    
+    //REDO:
     public func inorderTraversal<T>(root:Node<T>?) {
         if root == nil {
             return

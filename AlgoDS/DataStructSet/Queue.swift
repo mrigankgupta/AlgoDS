@@ -19,7 +19,7 @@ public struct Queue<T> {
     
     public mutating func remove() -> T? {
         if arr.count > 0 {
-            return arr.remove(at: 0)
+            return arr.remove(at: 0)// O(n) runtime, better use linkedList
         }
         return nil
     }

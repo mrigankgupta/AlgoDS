@@ -77,29 +77,7 @@ func removeDuplicateInSorted(arr: inout [Int]) -> Int {
 var sortedArr = [1,1,2]
 removeDuplicateInSorted(arr: &sortedArr)
 print(sortedArr)
-//leetcode
-//22. Generate Parentheses
 
-func brackets(num: Int) -> [[Int]] {
-    let initial = [[0],[1]]
-    if num == 1 {
-        return initial
-    }
-    let combs = brackets(num: num - 1)
-    var new = [[Int]]()
-    for comb in combs {
-        for i in initial {
-            var mutable = Array(comb)
-            mutable.append(contentsOf: i)
-            print(mutable)
-            new.append(mutable)
-        }
-    }
-    return new
-}
-
-
-brackets(num: 2)
 
 //leetcode
 //27. Remove Element
@@ -373,6 +351,40 @@ func groupAnnagram(arr:[String]) -> [[String]] {
 
 groupAnnagram(arr: ["cat", "dog", "act", "door", "odor"])
 
+func groupAnagramEfficient(_ strs: [String]) -> [[String]] {
+    var arr = [[String]]()
+    var dict = [Int64 : [String]]()
+    for str in strs {
+        let key = calHash(str)
+        if let items = dict[key] {
+            var new = Array(items)
+            new.append(str)
+            dict[key] = new
+        }else {
+            dict[key] = [str]
+        }
+    }
+    for key in dict.keys {
+        arr.append(dict[key]!)
+    }
+    return arr
+}
+
+func calHash(_ str: String) -> Int64 {
+    let prime: [Int64] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 41, 43, 47,
+                          53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103]
+    let chAr = [Character](str)
+    var hash: Int64 = 1// can easyly get overflowed
+    let aAscii: Character = "a"
+    for ch in chAr {
+        hash *= prime[ch.ascii() - aAscii.ascii()]
+    }
+    return hash
+}
+
+groupAnagramEfficient(["eat", "tea", "tan", "ate", "nat", "bat"])
+
+
 /* Given an array of non-negative numbers, find continuous subarray with sum to S.
  http://blog.gainlo.co/index.php/2016/06/01/subarray-with-given-sum/
  */
@@ -403,43 +415,6 @@ func subArraySum(arr: [Int], target: Int) -> [[Int]] {
 subArraySum(arr: [1,4,6,2,5,7,8], target: 14)
 subArraySum(arr: [1,4,6,2,5,7,8,2], target: 10)
 
-
-//return all combination subset arrays with a given sum
-//Given an array of numbers, find subarray with sum to S
-//print all combination with target sum
-//recursion
-func allCombinationSum(arr: [Int], target: Int) -> [[Int]] {
-    var final: [[Int]] = []
-    var current = [Int]()
-    allCombination(result: &final, arr: arr, index:0, target: target, current: &current)
-    return final
-}
-
-func allCombination(result: inout [[Int]], arr:[Int], index: Int, target: Int, current: inout [Int]) -> Bool {
-    if target != 0 && index == arr.count-1 {
-        return false
-    }
-
-    if target == 0 {
-        result.append(current)
-        current.removeAll()
-        return true
-    }
-
-    if arr[index] > target {
-        return allCombination(result: &result, arr: arr, index: index+1, target: target, current: &current)
-    }
-    let notIncluded = allCombination(result: &result, arr: arr, index: index+1, target: target, current: &current)
-
-    var copy = current
-    copy.append(arr[index])
-    let included = allCombination(result: &result, arr: arr, index: index+1, target: target-arr[index], current: &copy)
-
-    return notIncluded || included
-}
-
-allCombinationSum(arr: [1,4,6,2,5,7,8], target: 14)
-allCombinationSum(arr: [1,4,6,2,5,7,8], target: 10)
 
 
 func longestCommonPrefix(_ strs: [String]) -> String {
@@ -571,8 +546,31 @@ func mergeTwoLists(_ l1: SNode<Int>?, _ l2: SNode<Int>?) -> SNode<Int>? {
  If you were only permitted to complete at most one transaction (i.e., buy one and sell one share of the stock), design an algorithm to find the maximum profit.
 
  Note that you cannot sell a stock before you buy one.*/
+func maxProfit(_ prices: [Int]) -> Int {
+    if prices.count <= 1 {
+        return 0
+    }
 
-func maxProfit1(_ prices: [Int]) -> Int {
+    var minSoFar = prices[0]
+    var maxSoFar = prices[0]
+    var maxProfit = maxSoFar - minSoFar
+    for i in 1..<prices.count {
+        let newMin = min(minSoFar,prices[i])
+
+        if minSoFar > newMin {
+            minSoFar = newMin
+            maxSoFar = prices[i]
+        }else {
+            maxSoFar = max(maxSoFar,prices[i])
+        }
+        let newProfit = (maxSoFar - minSoFar)
+        if maxProfit < newProfit {
+            maxProfit = newProfit
+        }
+    }
+    return maxProfit
+}
+func maxProfitMethod2(_ prices: [Int]) -> Int {
     var maxProfit = 0
     if prices.count <= 0 {
         return 0
@@ -585,7 +583,38 @@ func maxProfit1(_ prices: [Int]) -> Int {
     return maxProfit
 }
 
-func maxProfit2(_ prices: [Int]) -> Int {
+
+
+//leetcode
+//122. Best Time to Buy and Sell Stock II
+//method 1 max profit untill next valley comes
+func maxProfitII(_ prices: [Int]) -> Int {
+    if prices.count <= 1 {
+        return 0
+    }
+    var minSoFar = prices[0]
+    var maxSoFar = prices[0]
+    var maxProfit = 0
+    for i in 1..<prices.count {
+        let newMin = min(minSoFar,prices[i])
+        if minSoFar > newMin {
+            minSoFar = newMin
+            maxSoFar = newMin
+            continue
+        }
+        let newMax = max(prices[i],maxSoFar)
+        if maxSoFar == newMax {
+            minSoFar = prices[i]
+            maxSoFar = prices[i]
+        }else {
+            maxProfit = maxProfit + (newMax-maxSoFar)
+            maxSoFar = newMax
+        }
+    }
+    return maxProfit
+}
+
+func maxProfitIIMethod2(_ prices: [Int]) -> Int {
     var max = 0
     for i in 1..<prices.count {
         if prices[i] > prices[i-1] {
@@ -594,7 +623,8 @@ func maxProfit2(_ prices: [Int]) -> Int {
     }
     return max
 }
-maxProfit2([5,10,4,15,13,17,9,10,5])
+maxProfitIIMethod2([5,10,4,15,13,17,9,10,5])
+
 // next Palindrome
 func nextPalindrome(_ num: Int) -> Int {
     let numStr = String(num)
@@ -885,3 +915,520 @@ func lengthOfLongestSubstring(_ s: String) -> Int {
     }
     return max > dict.count ? max : dict.count
 }
+
+//leetcode
+//461. Hamming Distance
+
+func hammingDistance(_ x: Int, _ y: Int) -> Int {
+
+    var result = x^y
+    let mask = 1
+    var count = 0
+    while result > 0 {
+        if mask & result == 1 {
+            count += 1
+        }
+        result = result >> 1
+    }
+    return count
+}
+
+hammingDistance(1, 4)
+
+//88. Merge Sorted Array
+
+func merge(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
+    var i = m-n-1
+    var j = n-1
+    var current = m-1
+
+    while i >= 0 && j >= 0 {
+        if nums1[i] < nums2[j] {
+            nums1[current] = nums2[j]
+            j -= 1
+            current -= 1
+        }else {
+            nums1.swapAt(i, current)
+            current -= 1
+            i -= 1
+        }
+    }
+    while j >= 0 {
+        nums1[current] = nums2[j]
+        current -= 1
+        j -= 1
+    }
+}
+var num1 = [1,2,3,0,0,0]
+merge(&num1, 6, [2,5,6], 3)
+
+num1 = [2,3,4,0,0,0]
+merge(&num1, 6, [1,5,6], 3)
+
+//leetcode
+//67. Add Binary
+
+func addBinary(_ a: String, _ b: String) -> String {
+    var big = [Character](a)
+    var small = [Character](b)
+    if big.count < small.count {
+        let temp = big
+        big = small
+        small = temp
+    }
+    var b = big.count-1
+    var s = small.count-1
+    var result = [Character]()
+    var carry = 0
+    while b >= 0 || s >= 0 || carry > 0 {
+        var sum = 0
+        if s >= 0 && b >= 0 {
+            print("shit",carry)
+            sum =  integerVal(big[b]) + integerVal(small[s]) + carry
+            carry = sum/2
+            let item = sum%2
+            print("sum",sum, item, carry)
+            result.append(item > 0 ? "1" : "0")
+            s -= 1
+            b -= 1
+        }else if b >= 0 {
+            sum =  integerVal(big[b]) + carry
+            carry = sum/2
+            let item = sum%2 + carry
+            result.append(item > 0 ? "1" : "0")
+            b -= 1
+        }else if carry > 0 {
+            result.append(carry > 0 ? "1" : "0")
+            carry = 0
+        }
+
+    }
+    return String(result.reversed())
+}
+
+func integerVal(_ ch: Character) -> Int {
+    return ch == "0" ? 0 : 1
+}
+
+addBinary("1100", "1101")
+//leetcode
+//13. Roman to Integer
+//I             1
+//V             5
+//X             10
+//L             50
+//C             100
+//D             500
+//M             1000
+func romanToInt(_ s: String) -> Int {
+    var chArr = [Character](s)
+    var sum = 0
+    for (index, item) in chArr.enumerated() {
+        if index < chArr.count-1 && valueForRom(chArr[index]) < valueForRom(chArr[index+1]) {
+            sum -= valueForRom(item)
+        }else {
+            sum += valueForRom(item)
+        }
+    }
+    return sum
+}
+
+func valueForRom(_ ch: Character) -> Int {
+    switch ch {
+    case "I":
+        return 1
+    case "V":
+        return 5
+    case "X":
+        return 10
+    case "L":
+        return 50
+    case "C":
+        return 100
+    case "D":
+        return 500
+    case "M":
+        return 1000
+    default:
+        return 0
+    }
+}
+
+romanToInt("LIVIII")
+romanToInt("MCMXCIV")
+
+//leetcode
+//572. Subtree of Another Tree
+
+func isSubtree(_ s: Node<Int>?, _ t: Node<Int>?) -> Bool {
+    var match = false
+    traverse(s, t, &match)
+    return match
+}
+
+func traverse(_ s: Node<Int>?, _ t: Node<Int>?, _ match:inout Bool) {
+    if t == nil {
+        return
+    }
+
+    if s!.data == t!.data {
+        match = isMatch(s, t)
+        if match == true {
+            return
+        }
+    }
+    traverse(s, t?.left, &match)
+    traverse(s, t?.right, &match)
+}
+
+func isMatch(_ s: Node<Int>?, _ t: Node<Int>?) -> Bool {
+    if s == nil && t == nil {
+        return true
+    }
+    if s != nil && t == nil {
+        return false
+    }
+    if s == nil && t != nil {
+        return false
+    }
+    if t!.data != s!.data {
+        return false
+    }
+    let left = isMatch(s?.left, t?.left)
+    let right = isMatch(s?.right, t?.right)
+    return left == true && right == true
+}
+
+var bt = BinaryTree()
+var t : Node<Int>?
+for i in [3,4,5,1,2,6,7] {
+    t = bt.levelOrderInsert(root: t, data: i)
+}
+var s : Node<Int>?
+for i in [4,1,2] {
+    s = bt.levelOrderInsert(root: s, data: i)
+}
+isSubtree(s, t)
+//leetcode
+//680. Valid Palindrome II
+
+func validPalindrome(_ s: String) -> Bool {
+    let chArr = [Character](s)
+    _ = chArr.count/2
+    let start = 0
+    let end = chArr.count-1
+    let shit = isPalindrome(chArr, start, end)
+    if -1 != shit  {
+        return -1 == isPalindrome(chArr, start+shit, end-shit-1) ||
+            -1 == isPalindrome(chArr, start+shit+1, end-shit)
+    }
+    return true
+}
+
+func isPalindrome(_ chArr: [Character], _ start: Int, _ end: Int) -> Int {
+    let mid = (start+end)/2
+    var left = start
+    var right = end
+
+    while left <= mid && right >= mid {
+        if chArr[left] == chArr[right] {
+            left += 1
+            right -= 1
+        }else{
+            print(left)
+            return left
+        }
+    }
+    return -1
+}
+validPalindrome("aabbaaa")
+validPalindrome("abc")
+
+//func validPalindromeClean(_ s: String) -> Bool {
+//    let chArr = [Character](s)
+//    let start = 0
+//    let end = chArr.count-1
+//    let offset = isPalindromeClean(chArr, start, end)
+//    if -1 != offset {
+//        return -1 == isPalindromeClean(chArr, start+offset, end-offset-1) ||
+//            -1 == isPalindromeClean(chArr, start+offset+1, end-offset)
+//    }
+//    return true
+//}
+//
+//func isPalindromeClean(_ chArr: [Character], _ start: Int, _ end: Int) -> Int {
+//    let mid = (start+end)/2
+//    for i in start...mid {
+//        if chArr[i] != chArr[end-i] {
+//            return i
+//        }
+//    }
+//    return -1
+//}
+//validPalindromeClean("aabbaaa")
+//validPalindromeClean("abc")
+
+//isPalindromeClean([Character]("aabaaa"), 0, 5)
+//isPalindromeClean([Character]("ab"), 0, 1)
+
+
+
+//leetcode
+//637. Average of Levels in Binary Tree
+
+func calHeight(_ root: Node<Int>?, _ height: Int) -> Int {
+    if root == nil {
+        return height
+    }
+    return max(calHeight(root?.left, height), calHeight(root?.right, height)) + 1
+}
+var test: Node<Int>?
+for i in [1,2,3,4,5,6]  {
+    test = bt.levelOrderInsert(root: test, data: i)
+}
+calHeight(test, -1)
+
+func levelOrderTrav(_ root: Node<Int>?) {
+    let height = calHeight(root, -1)
+    for i in (0...height).reversed() {
+        traverseLevel(root, i)
+    }
+}
+
+func traverseLevel(_ root: Node<Int>?, _ level: Int) {
+    if root == nil {
+        return
+    }
+    if level == calHeight(root, -1) {
+        print(root?.data, level)
+    }
+    traverseLevel(root?.left, level)
+    traverseLevel(root?.right, level)
+}
+
+levelOrderTrav(test)
+
+struct LevelNode <T> {
+    var level: Int
+    var node: Node<T>
+}
+func levelOrderTravQue(_ root: Node<Int>?) -> [[Int]] {
+    if root == nil {
+        return [[]]
+    }
+    var queue = Queue<LevelNode<Int>>()
+    var level = 0
+    var current: LevelNode<Int>?
+    var list = [[Int]]()
+    queue.add(LevelNode(level: level+1, node: root!))
+
+    while queue.count() > 0 {
+        current = queue.remove()
+        if current!.level != level {
+            list.append([current!.node.data])
+            level = current!.level
+        }else{
+           var last = list.removeLast()
+            last.append(current!.node.data)
+            list.append(last)
+        }
+        if let current = current {
+            print("level",level,current.node.data)
+            if let left = current.node.left {
+                queue.add(LevelNode(level: level + 1, node: left))
+            }
+
+            if let right = current.node.right {
+                queue.add(LevelNode(level: level + 1, node: right))
+            }
+        }
+    }
+    return list
+}
+
+struct MyQueue<T> {
+
+    var arr1 = [T]()
+
+    mutating func add(_ item: T) {
+        arr1.append(item)
+    }
+
+    mutating func remove() -> T? {
+        if arr1.count > 0 {
+            return arr1.remove(at: 0)
+        }
+        return nil
+    }
+
+    func count() -> Int {
+        return arr1.count
+    }
+}
+
+levelOrderTravQue(test)
+
+//404. Sum of Left Leaves
+
+func sumOfLeftLeaves(_ root: Node<Int>?) -> Int {
+    var sum = 0
+    leftLeaves(root, false, &sum)
+    return sum
+}
+
+func leftLeaves(_ root: Node<Int>?, _ left: Bool, _ sum: inout Int) {
+    if root == nil {
+        return
+    }
+    if left == true && root!.left == nil && root!.right == nil {
+        sum += root!.data
+    }
+
+    leftLeaves(root?.left, true, &sum)
+    leftLeaves(root?.right, false, &sum)
+}
+
+//653. Two Sum IV - Input is a BST
+//O(n) space
+func findTarget(_ root: Node<Int>?, _ k: Int) -> Bool {
+    var arr = [Int]()
+    inOrderFind(root, &arr)
+
+    var left = 0
+    var right = arr.count-1
+    while left < right {
+        let sum = arr[left] + arr[right]
+        if sum > k {
+            right -= 1
+        }else if sum < k {
+            left += 1
+        }else {
+            return true
+        }
+    }
+    return false
+}
+
+func inOrderFind(_ root: Node<Int>?, _ arr: inout [Int]) {
+    if root == nil {
+        return
+    }
+    inOrderFind(root?.left, &arr)
+    arr.append(root!.data)
+    inOrderFind(root?.right, &arr)
+}
+
+func findTargetNoExtraSpace(_ root: Node<Int>?, _ k: Int) -> Bool {
+    if root == nil {
+        return false
+    }
+    return inOrderBinarySearch(root!, root, k)
+}
+
+func inOrderBinarySearch(_ root: Node<Int>, _ current: Node<Int>?, _ k: Int) -> Bool {
+    if current == nil {
+        return false
+    }
+    return bSearch(root, k - current!.data, current!) || inOrderBinarySearch(root, current?.left, k) || inOrderBinarySearch(root, current?.right, k)
+}
+
+func bSearch(_ root: Node<Int>?, _ diff: Int, _ current: Node<Int>) -> Bool {
+    if root == nil {
+        return false
+    }
+    if root!.data == diff && current.data != root!.data {
+        return true
+    }else if diff > root!.data {
+        return bSearch(root?.right, diff, current)
+    }else {
+        return bSearch(root?.left, diff, current)
+    }
+}
+
+let bst = BinarySearchTree()
+var rb : Node<Int>?
+for i in [5,3,6,2,4,7,9] {
+    rb = bst.insert(root: rb, value: i)
+}
+findTargetNoExtraSpace(rb, 9)
+findTargetNoExtraSpace(rb, 11)
+
+for i in [1] {
+    rb = bst.insert(root: rb, value: i)
+}
+findTargetNoExtraSpace(rb, 2)
+
+for i in [2,1,3] {
+    rb = bst.insert(root: rb, value: i)
+}
+findTargetNoExtraSpace(rb, 3)
+
+for i in [5,3,6,2,4] {
+    rb = bst.insert(root: rb, value: i)
+}
+findTargetNoExtraSpace(rb, 28)
+
+//leetcode
+//543. Diameter of Binary Tree
+
+func diameterOfBinaryTree(_ root: Node<Int>?) -> Int {
+    var maximum = 0
+    diameter(root, &maximum)
+    return maximum
+}
+
+func diameter(_ root: Node<Int>?, _ maximum: inout Int) -> Int {
+    if root == nil {
+        return 0
+    }
+    let left = diameter(root?.left, &maximum)
+    let right = diameter(root?.right, &maximum)
+    let current = max(left, right) + 1
+    maximum = max(current, maximum)
+    return current
+}
+
+diameterOfBinaryTree(rb)
+
+//leetcode
+//REDO
+//4. Median of Two Sorted Arrays
+
+func findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {
+
+    var result = merge(nums1, nums2)
+    let total = nums1.count + nums2.count
+    let mid = (total)/2
+    let median = total%2 != 1 ? Double(result[mid-1] + result[mid])/2.0 : Double(result[mid])
+    return median
+}
+
+func merge(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+
+    var left = 0
+    var right = 0
+
+    var result = [Int]()
+    while left < nums1.count && right < nums2.count {
+        if nums1[left] < nums2[right] {
+            result.append(nums1[left])
+            left += 1
+        }else {
+            result.append(nums2[right])
+            right += 1
+        }
+    }
+
+
+    if left < nums1.count {
+        result.append(contentsOf: nums1[left...nums1.count-1])
+    }else if right < nums2.count {
+        result.append(contentsOf: nums2[right...nums2.count-1])
+    }
+    return result
+}
+
+findMedianSortedArrays([1,3], [2])
+findMedianSortedArrays([1,2], [3,4])
+findMedianSortedArrays([], [3,4])
+

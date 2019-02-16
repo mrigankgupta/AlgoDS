@@ -38,7 +38,7 @@ print(big)
 
 
 //q3
-
+//REDO
 func searchRotated(arr:[Int], item: Int, start: Int, end: Int) -> Int? {
     if start > end {
         return nil
@@ -117,7 +117,7 @@ sortedSearchNoSize(arr: arr, item: 0)
 //q5
 
 
-func sparceSearch(arr:[String], item: String, lft: Int, rgt: Int) -> Int? {
+func sparseSearch(arr:[String], item: String, lft: Int, rgt: Int) -> Int? {
     if lft > rgt {
         return nil
     }
@@ -139,16 +139,16 @@ func sparceSearch(arr:[String], item: String, lft: Int, rgt: Int) -> Int? {
         var fst = [Character](arr[mid])
         var scd = [Character](item)
         if fst[0].ascii() < scd[0].ascii() {
-            return sparceSearch(arr: arr, item: item, lft: mid, rgt: rgt)
+            return sparseSearch(arr: arr, item: item, lft: mid, rgt: rgt)
         }else {
-            return sparceSearch(arr: arr, item: item, lft: lft, rgt: mid)
+            return sparseSearch(arr: arr, item: item, lft: lft, rgt: mid)
         }
     }
     
 }
 
 let sps = ["","at","","","","ball","","","car","","","dad","","",""]
-sparceSearch(arr: sps, item: "car", lft: 0, rgt: sps.count-1)
+sparseSearch(arr: sps, item: "car", lft: 0, rgt: sps.count-1)
 
 //q6
 
