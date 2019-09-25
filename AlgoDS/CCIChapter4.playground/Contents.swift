@@ -68,9 +68,8 @@ struct LevelNode<T> {
     var level: Int
 }
 
-func listOfDepthBFS<T>(root:Node<T>) -> [SNode<T>] {
+func listOfDepthBFS<T>(root:Node<T>) -> SNode<T> {
     var qu = Queue<LevelNode<T>>()
-    var list = [SNode<T>]()
     var level = 0
     var head: SNode<T>?
     qu.add(LevelNode(node: root, level: level+1))
@@ -86,9 +85,6 @@ func listOfDepthBFS<T>(root:Node<T>) -> [SNode<T>] {
             prev?.next = SNode(data: nxt.node.data)
         }else {
             level = nxt.level
-            if head != nil {
-                list.append(head!)
-            }
             head = SNode(data: nxt.node.data)
         }
         if let lft = nxt.node.left {
@@ -98,8 +94,7 @@ func listOfDepthBFS<T>(root:Node<T>) -> [SNode<T>] {
             qu.add(LevelNode(node: rgt, level: level+1))
         }
     }
-    list.append(head!)
-    return list
+    return head!
 }
 
 
@@ -143,7 +138,7 @@ func listOfDepthDFS<T>(root: Node<T>) -> [SNode<T>] {
     let h = height(root: root)
     var list = [SNode<T>]()
     for i in 0...h {
-        var levelList:SNode<T>?
+        var levelList: SNode<T>?
         levelOrderTraversal(root: root, plevel: i, clevel: h, lList: &levelList)
         list.append(levelList!)
         levelList = nil
@@ -151,7 +146,7 @@ func listOfDepthDFS<T>(root: Node<T>) -> [SNode<T>] {
     return list
 }
 
-func levelOrderTraversal<T>(root:Node<T>?, plevel:Int, clevel:Int, lList:inout SNode<T>?) {
+func levelOrderTraversal<T>(root: Node<T>?, plevel: Int, clevel: Int, lList: inout SNode<T>?) {
     if root == nil {
         return
     }
@@ -186,14 +181,14 @@ for item in l.reversed() {
     print("level \(level)")
     s.print(root: item)
 }
-l = listOfDepthBFS(root: rsh!)
+var sn = listOfDepthBFS(root: rsh!)
 level = 0
 for item in l {
     level = level + 1
     print("level \(level)")
     s.print(root: item)
 }
-//4
+//4 REDO: Optimised
 
 func checkBalance<T>(root:Node<T>?) -> Bool {
     var levelList = [[Int]]()
@@ -300,7 +295,8 @@ validateBST(root: fake1!)
 validateBST(root: fake2!)
 
 //8
-
+//when you have parent pointer
+//Naive approach : find the differenc and going up
 class PNode<T>{
     var data: T
     var left:PNode?
@@ -375,11 +371,48 @@ func firstCommonAncestor<T:Comparable>(root:PNode<T>, a:T, b:T) -> PNode<T>? {
     
     return nil
 }
+// another approach searching sibling
+
+func lcaSearchSibing(root: PNode<Int>, node1: PNode<Int>, node2: PNode<Int>) -> PNode<Int>? {
+    
+    if cover(root: root, node: node1) || cover(root: root, node: node2) {
+        return nil // any of two is not in covered in root, so any of two might not belong to same tree
+    }else if cover(root: node1, node: node2) {// before going up check if one of them covers the other
+        return node1
+    }else if cover(root: node2, node: node1) {
+        return node2
+    }
+    
+    var parent: PNode<Int>? = node1.parent
+    var sibling = getSibling(node1)
+
+    while !cover(root: sibling, node: node2) {
+        sibling = getSibling(parent)
+        parent = parent?.parent
+    }
+    
+    return parent
+}
+// check if root has node as decendent
+func cover(root: PNode<Int>?, node: PNode<Int>) -> Bool {
+    
+    if root == nil { return false }
+    if root! === node { return true }
+    return cover(root: root?.left, node: node) || cover(root: root?.right, node: node)
+}
+
+func getSibling(_ node: PNode<Int>?) -> PNode<Int>? {
+    if node?.parent == nil || node == nil {
+        return nil
+    }
+    return node?.parent?.right === node ? node?.parent?.left : node?.parent?.right
+}
+
 
 //LowestCommmonAncestor
 // Via Recursion O(n)
-
-func lca(root: PNode<Int>?, fst: Int, sec: Int) -> PNode<Int>? {
+//TODO:
+func lca(root: Node<Int>?, fst: Int, sec: Int) -> Node<Int>? {
     if root == nil {
         return nil
     }
@@ -428,10 +461,11 @@ var fca: PNode<Int>?
 for i in 1...10 {
     fca = insertLevelOrdr(root: fca, val: i)
 }
-lca(root: fca, fst: 2, sec: 5)?.data
 print(firstCommonAncestor(root: fca!, a: 6, b: 8)?.data)
-//10
-
+var btree = BinaryTree()
+var rroot: Node<Int>? = btree.buildTree(0, [3,5,1,6,2,0,8,nil,nil,7,4])
+lca(root: rroot, fst: 6, sec: 4)
+//Question 10
 //trying something different for finding
 func findNode<T:Comparable>(root:Node<T>?, val:T, elem:inout Node<T>?) {
     if root == nil {

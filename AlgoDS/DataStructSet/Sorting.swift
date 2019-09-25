@@ -8,7 +8,7 @@
 
 import Foundation
 
-func partion<T>(arr:inout [T], start:Int, end:Int) -> Int where T: Equatable & Comparable {
+func partion<T>(arr:inout [T], start:Int, end:Int) -> Int where T: Comparable {
     let p = arr[end]
     var s = start
     var e = end
@@ -24,16 +24,16 @@ func partion<T>(arr:inout [T], start:Int, end:Int) -> Int where T: Equatable & C
     return s
 }
 
-public func quickSort<T>(arr:inout [T], start:Int, end:Int) where T: Equatable & Comparable {
+public func quickSort<T>(arr:inout [T], start:Int, end:Int) where T: Comparable {
     if start < end {
         let splitPos = partion(arr: &arr, start: start, end: end)
         quickSort(arr: &arr, start: start, end: splitPos)
         quickSort(arr: &arr, start: splitPos+1, end: end)
     }
 }
+// pick one element from start and place it in a suitable place in sorted array
 
-
-public func insertionSort<T>(arr:inout [T]) where T: Equatable & Comparable {
+public func insertionSort<T>(arr:inout [T]) where T: Comparable {
     for index in 1..<arr.count {
         var inner = 0
         while inner < index {
@@ -45,8 +45,8 @@ public func insertionSort<T>(arr:inout [T]) where T: Equatable & Comparable {
     }
 }
 
-
-public func selectionSort<T>(arr:inout [T]) where T: Equatable & Comparable {
+// Pick min one by one and arrange
+public func selectionSort<T>(arr:inout [T]) where T: Comparable {
     for index in 0..<arr.count {
         let min = searchMin(arr,index,arr.count)
         if index != min {
@@ -55,7 +55,7 @@ public func selectionSort<T>(arr:inout [T]) where T: Equatable & Comparable {
     }
 }
 
-func searchMin<T>(_ arr:[T], _ start:Int, _ end:Int) -> Int where T: Equatable & Comparable {
+func searchMin<T>(_ arr:[T], _ start:Int, _ end:Int) -> Int where T: Comparable {
     var min = start
     for i in start..<end {
         if arr[min] > arr[i] {
@@ -67,24 +67,24 @@ func searchMin<T>(_ arr:[T], _ start:Int, _ end:Int) -> Int where T: Equatable &
 
 // *****MergeSort*****//
 
-public func mergeSort<T>(arr:inout [T], left:Int, right:Int) where T: Equatable & Comparable {
+public func mergeSort<T>(arr:inout [T], left:Int, right:Int) where T: Comparable {
     
     if right > left {
         let mid: Int = (left + right)/2
         mergeSort(arr: &arr, left: left, right: mid)//mergeSort(arr: &arr, left: left, right: mid-1)
         mergeSort(arr: &arr, left: mid+1, right: right)//mergeSort(arr: &arr, left: mid, right: right) what if take condition like this, it took me some time to figureout why it goes infinite loop. the second part is where mid will always remain less then right and terminate never hit
-        merge(arr: &arr, l: left, m: mid, r: right)
+        merge(arr: &arr, left: left, mid: mid, right: right)
     }
 }
 
-public func merge<T>(arr:inout [T], l:Int, m:Int, r:Int) where T: Equatable & Comparable {
-    var i = l
-    var j = m+1
-    var index = l
-    var arrA = arr[l...m]
-    var arrB = arr[m+1...r]
+public func merge<T>(arr: inout [T], left:Int, mid:Int, right:Int) where T: Comparable {
+    var i = left
+    var j = mid+1
+    var index = left
+    let arrA = arr[left...mid]
+    let arrB = arr[mid+1...right]
     
-    while (m >= i && r >= j) {
+    while (mid >= i && right >= j) {
         if arrA[i] < arrB[j] {
             arr[index] = arrA[i]
             i+=1
@@ -96,12 +96,12 @@ public func merge<T>(arr:inout [T], l:Int, m:Int, r:Int) where T: Equatable & Co
         }
     }
     print(j,i)
-    while j <= r {
+    while j <= right {
         arr[index] = arrB[j]
         j+=1
         index+=1
     }
-    while i <= m {
+    while i <= mid {
         arr[index] = arrA[i]
         i+=1
         index+=1

@@ -15,6 +15,7 @@ struct Card {
         case five
         case six
         case seven
+        case eight
         case nine
         case ten
         case jack
@@ -30,7 +31,8 @@ class Deck {
     }
 
     func suffle(){}
-    func distribute(players:Int, numOfCard:Int) -> [[Card]]{ return [[Card]]() }
+    func distribute(players:Int, numOfCard:Int) -> [[Card]]
+    { return [[Card]]() }
     func peak() -> Card { return Card() }
     func remainingCard() -> Int {return 0}
 }

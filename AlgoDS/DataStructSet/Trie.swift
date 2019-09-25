@@ -19,35 +19,29 @@ public class TrieNode <T : Hashable>{
 }
 
 public class Trie {
-    public init() {
-        
-    }
+    public init() {}
+
     public func insert<T>(root:TrieNode<T>?, elements:[T]) -> TrieNode<T> {
-        var newRoot = root
-        if newRoot == nil {
-            newRoot = TrieNode(end: true)
+        var head = root
+        if head == nil {
+            head = TrieNode(end: true)
         }
-        var prev: TrieNode<T>?
-        var current = newRoot
+        var current = head
         for index in 0..<elements.count {
             let ch = elements[index]
-            while current != nil {
-                prev = current
-                current = current?.dict[ch]
-            }
+            let end = index == elements.count-1
             
-            if index < elements.count-1 {
-                prev!.dict[ch] = TrieNode(end: false)
-                
-            }else{
-                prev!.dict[ch] = TrieNode(end: true)
+            if let current = current, current.dict[ch] == nil {
+                current.dict[ch] = TrieNode<T>(end: end)
             }
+            current = current?.dict[ch]
+            current?.end = end
         }
         
-        return newRoot!
+        return head!
     }
     
-    public func search<T>(root:TrieNode<T>?,val:[T], fullType:Bool) -> Bool {
+    public func search<T>(root:TrieNode<T>?, val:[T], fullType: Bool) -> Bool {
         if root == nil {
             return false
         }

@@ -22,9 +22,7 @@ public struct CircularArray<T> {
     }
 
     public func isValid(index: Int) -> Bool {
-        if index < 0 || index > array.count - 1 {
-            NSException(name: NSExceptionName("ArrayOutOfBoundException"), reason: "Index out of bond", userInfo: nil).raise()
-        }
+        precondition(index < 0 || index > array.count - 1, "Index out of bond")
         return true
     }
 

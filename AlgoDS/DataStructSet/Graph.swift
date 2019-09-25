@@ -18,15 +18,15 @@ Spanning tree of graph = is a subgraph which is a tree and contain all vertices 
  */
 
 public struct Adjacency {
-    var list:[Int]
-    var visited:Bool
-    public init(list:[Int],visited:Bool){
+    var list: [Int]
+    var visited: Bool
+    public init(list: [Int], visited: Bool){
         self.list = list
         self.visited = visited
     }
 }
 
-public func dfsGraph(start:Int, arr:inout [Adjacency]){
+public func dfsGraph(start: Int, arr: inout [Adjacency]){
     
     let current = arr[start]
     if current.visited {
@@ -41,7 +41,7 @@ public func dfsGraph(start:Int, arr:inout [Adjacency]){
     }
 }
 
-public func bfsGraph(start:Int, arr:inout [Adjacency]) {
+public func bfsGraph(start: Int, arr: inout [Adjacency]) {
     var qu = Queue<Int>()
     qu.add(start)
     arr[start].visited = true
@@ -57,3 +57,85 @@ public func bfsGraph(start:Int, arr:inout [Adjacency]) {
     }
 }
 
+
+
+//Consider the following as an array of tuples that define the relationships along the branches of a tree.
+//
+//[[C,B],[F,D],[C],[F,A],[C,E],[C,F]]
+//
+//1. Write a simple data structure to represent a tree.
+//2. Write a function that takes as input an array of tuples like those above, and returns the data structure representation of the tree.
+
+
+
+public class MNode {
+
+    var data: String
+    var childs: [MNode]?
+
+    init(data: String) {
+        self.data = data
+    }
+}
+
+public func traverseAndBuild(arr: [(String, String?)]) -> MNode? {
+
+    var dict = [String: [MNode]]()
+    var rootString: String?
+    for (first, sec) in arr {
+        if let secd = sec {
+            if dict[first] == nil {
+                var val = [MNode]()
+                val.append(MNode(data: secd))
+                dict[first] = val
+            }else {
+                var item = dict[first]!
+                item.append(MNode(data: secd))
+                dict[first] = item
+            }
+        }else {
+            rootString = first
+        }
+    }
+    var root: MNode?
+    if let rootString = rootString {
+        root = MNode(data: rootString)
+    }else {
+        return nil
+    }
+
+    var queue = Queue<MNode>()
+    queue.add(root!)
+
+    while queue.count() > 0 {
+        let next = queue.remove()!
+        if let childs = dict[next.data] {
+            next.childs = childs
+            for child in childs {
+                queue.add(child)
+            }
+        }
+    }
+
+    return root
+}
+
+public func levelOrder(root: MNode?) {
+    if root == nil {
+        return
+    }
+    var queue = Queue<MNode>()
+    queue.add(root!)
+    while queue.count() > 0 {
+        let next = queue.remove()!
+        print(next.data)
+        if let childs = next.childs {
+            for child in childs {
+                queue.add(child)
+            }
+        }
+    }
+}
+
+//let mroot = traverseAndBuild(arr: [("C","B"),("F","D"),("C",nil),("F","A"),("C","E"),("C","F")])
+//levelOrder(root: mroot)

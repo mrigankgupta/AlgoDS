@@ -49,3 +49,49 @@ func magicIndex(arr: [Int], lft: Int, rgt: Int) -> Int? {
 magicIndex(arr: [-40,-20,-1,1,2,3,5,7,9,12,13], lft: 0, rgt: 10)
 
 
+func paste(arr: [String]) -> String {
+//    return arr.flatMap { (item) -> String in
+//        return item
+//    }
+
+//    let joined: String = arr.reduce(String("")) { (final, item) -> String in
+//        return final.append(item)
+//    }
+    var joined: String = arr.reduce("") { (final, item) -> String in
+        return final + item + ";"
+    }
+    joined.removeLast()
+    return joined
+}
+
+paste(arr: ["lol","fol"])
+
+
+func usernameDisparity(inputs: [String]) -> [Int] {
+
+    var sums = [Int]()
+    for item in inputs {
+        var chArr = [Character](item)
+        var i = 0
+        var j = i
+        var sum = 0
+            while i < chArr.count {
+                j = i
+                var k = 0
+                for j in j...chArr.count-1 {
+                    if chArr[j] == chArr[k] {
+                        sum += 1
+                    }else{
+                        break
+                    }
+                    k += 1
+                }
+                i += 1
+            }
+
+        sums.append(sum)
+    }
+    return sums
+}
+
+usernameDisparity(inputs: ["ababaa"])

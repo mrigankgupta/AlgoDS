@@ -214,7 +214,7 @@ func permutationPalindromeBitWise(str:String) -> Bool {
 
 print(permutationPalindromeBitWise(str: "a"))
 
-//Q5
+//Q5 REDO:
 //improve understanding
 func oneAway(str1:String, str2:String) -> Bool {
     let ch1 = [Character](str1)
@@ -301,6 +301,7 @@ var img = [[1,2,3],[4,5,6],[7,8,9]]
 
 print(rotationMatrix90Clockwise(img: img, row: 3, col: 3))
 
+//REDO: from the approach given in book
 
 func rotationInPlace(img:inout [[Int]], count:Int) -> [[Int]] {
     var temp = [Int](repeating:0,count:count)
@@ -328,7 +329,6 @@ func rotationInPlace(img:inout [[Int]], count:Int) -> [[Int]] {
 var img1 = [[1,2,3],[4,5,6],[7,8,9]]
 
 print(rotationInPlace(img: &img1, count: 3))
-
 
 //Q8
 

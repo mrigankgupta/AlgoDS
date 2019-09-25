@@ -27,5 +27,6 @@ public struct Queue<T> {
     public func count() -> Int {
         return arr.count
     }
+
 }
 

@@ -226,8 +226,6 @@ func fibFromMemo(_ n: Int, memo: inout [Int]) -> Int {
     if n <= 0 {return 0}
     if n == 1 {
         return 1
-    }else if n == 0 {
-        return 0
     }
     if memo[n] > 0 {
         return memo[n]
@@ -479,15 +477,16 @@ func mergeHours(hours:[(Int,Int)]) -> [(Int,Int)] {
     if hours.count <= 1 {
         return hours
     }
-    var first = hours[0]
+    var sorted = hours.sorted { $0.0 < $1.0}
+    var first = sorted[0]
     var final = [(Int,Int)]()
     var start = 1
-    while start < hours.count {
-        if first.1 >= hours[start].0 {
-            first = (first.0,hours[start].1)
+    while start < sorted.count {
+        if first.1 >= sorted[start].0 {
+            first = (first.0,max(first.1, sorted[start].1))
         }else {
             final.append(first)
-            first = hours[start]
+            first = sorted[start]
         }
         start+=1
     }
@@ -498,6 +497,12 @@ func mergeHours(hours:[(Int,Int)]) -> [(Int,Int)] {
 mergeHours(hours: [(900, 1500),(1400, 1800),(1800, 2000),(1800, 2200)])
 mergeHours(hours: [(900, 1500),(1530, 1800),(1800, 2000),(1800, 2200)])
 mergeHours(hours: [(900, 1500),(1530, 1800),(1800, 2000),(1800, 2200)])
+mergeHours(hours: [(900, 1500),(1430, 1480),(1800, 2000),(1800, 2200)])
+mergeHours(hours: [(0, 30),(5, 10),(15, 20)])
+mergeHours(hours: [(0, 30),(5, 100)])
+
+mergeHours(hours: [(1, 5), (3, 14), (6, 10), (9, 12)])
+
 
 // fill grid with k random spot
 func fillGrid(grid:inout [[Int]], row: Int, col: Int, places: Int) {
@@ -528,4 +533,173 @@ func favoriteRestaurant(_ restaurants1: [String], _ restaurants2: [String]) -> S
 }
 
 favoriteRestaurant(["absv", "dbs"], ["abs", "dbs"])
+//Zolando
 
+public func zolandoFirstSolution(_ A : inout [Int]) -> Int {
+    if A.count <= 0 {
+        return 0
+    }
+    var shine = 0
+
+    for index in 0..<A.count {
+        let current = A[index]
+        shine += 1
+        for j in index..<A.count {
+            if current > A[j] {
+                shine -= 1
+                break
+            }
+        }
+    }
+    return shine
+}
+var A = [2,1,3,5,4]
+A = [2,3,4,1,5]
+zolandoFirstSolution(&A)
+
+struct Info {
+    var pos: Int
+    var count: Int
+    var time: TimeInterval
+    var ext: String
+    var final: String = ""
+}
+
+public func zolandoSecondSolution(_ S : inout String) -> String {
+    var dict = [ String : [Info]]()
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    let newlineChars = NSCharacterSet.newlines
+    let arr = S.components(separatedBy: newlineChars).filter{!$0.isEmpty}
+    for (index, item) in arr.enumerated() {
+        let comp = item.components(separatedBy: ",")
+        if dict[comp[1]] == nil {
+            let date = formatter.date(from: comp[2])
+            let time = date?.timeIntervalSinceReferenceDate
+            dict[comp[1]] = [Info(pos: index, count: 1, time: time!, ext: comp[0].components(separatedBy: ".").last!, final: "")]
+        }else {
+            var infoArr = dict[comp[1]]!
+            let count = infoArr[0].count + 1
+            let date = formatter.date(from: comp[2])
+            let time = date?.timeIntervalSinceReferenceDate
+            infoArr.append(Info(pos: index, count: count, time: time!, ext: comp[0].components(separatedBy: ".").last!, final: ""))
+            dict[comp[1]] = infoArr
+        }
+    }
+    for key in dict.keys {
+        var infoArr = dict[key]
+        infoArr?.sort(by: { (fir, sec) -> Bool in
+            fir.time < sec.time
+        })
+        dict[key] = infoArr
+    }
+
+    var finalArr = [String](repeating: "", count: arr.count)
+    for key in dict.keys {
+        var infoArr = dict[key]!
+        for i in 0..<infoArr.count {
+            infoArr[i].final = key +  String(format: "%0"+String(String(infoArr.count).count)+"d", i+1) + "." + infoArr[i].ext
+            finalArr[infoArr[i].pos] = infoArr[i].final
+        }
+    }
+    var final = ""
+    for str in finalArr {
+        final.append(str+"\r\n")
+    }
+    return final
+}
+
+var zolando = """
+photo.jpg, Warsaw, 2013-09-05 14:08:15
+john.png, London, 2015-06-20 15:13:22
+myFriends.png, Warsaw, 2013-09-05 14:07:13
+Eiffel.jpg, Paris, 2015-07-23 08:03:02
+pisatower.jpg, Paris, 2015-07-22 23:59:59
+BOB.jpg, London, 2015-08-05 00:02:03
+notredame.png, Paris, 2015-09-01 12:00:00
+me.jpg, Warsaw, 2013-09-06 15:40:22
+a.png, Warsaw, 2016-02-13 13:33:50
+b.jpg, Warsaw, 2016-01-02 15:12:22
+c.jpg, Warsaw, 2016-01-02 14:34:30
+d.jpg, Warsaw, 2016-01-02 15:15:01
+e.png, Warsaw, 2016-01-02 09:49:09
+f.png, Warsaw, 2016-01-02 10:55:32
+g.jpg, Warsaw, 2016-02-29 22:13:11
+"""
+zolandoSecondSolution(&zolando)
+/*
+ photo.jpg, Warsaw, 2013-09-05 14:08:15
+ john.png, London, 2015-06-20 15:13:22
+ myFriends.png, Warsaw, 2013-09-05 14:07:13
+ Eiffel.jpg, Paris, 2015-07-23 08:03:02
+ pisatower.jpg, Paris, 2015-07-22 23:59:59
+ BOB.jpg, London, 2015-08-05 00:02:03
+ notredame.png, Paris, 2015-09-01 12:00:00
+ me.jpg, Warsaw, 2013-09-06 15:40:22
+ a.png, Warsaw, 2016-02-13 13:33:50
+ b.jpg, Warsaw, 2016-01-02 15:12:22
+ c.jpg, Warsaw, 2016-01-02 14:34:30
+ d.jpg, Warsaw, 2016-01-02 15:15:01
+ e.png, Warsaw, 2016-01-02 09:49:09
+ f.png, Warsaw, 2016-01-02 10:55:32
+ g.jpg, Warsaw, 2016-02-29 22:13:11
+ Warsaw02.jpg
+ London1.png
+ Warsaw01.png
+ Paris2.jpg
+ Paris1.jpg
+ London2.jpg
+ Paris3.png
+ Warsaw03.jpg
+ Warsaw09.png
+ Warsaw07.jpg
+ Warsaw06.jpg
+ Warsaw08.jpg
+ Warsaw04.png
+ Warsaw05.png
+ Warsaw10.jpg
+ */
+
+//InterviewBit
+//Find the intersection of two sorted arrays.
+//OR in other words,
+//Given 2 sorted arrays, find all the elements which occur in both the arrays.
+//
+//Example :
+//
+//Input :
+//A : [1 2 3 3 4 5 6]
+//B : [3 3 5]
+//
+//Output : [3 3 5]
+//
+//Input :
+//A : [1 2 3 3 4 5 6]
+//B : [3 5]
+//
+//Output : [3 5]
+
+func intersect(_ A: [Int], _ B: [Int]) -> [Int] {
+    
+    var large: [Int] = A
+    var small: [Int] = B
+    if A.count < B.count {
+        large = B
+        small = A
+    }
+    var l = 0
+    var s = 0
+    var common = [Int]()
+    while l < large.count && s < small.count {
+        if large[l] > small[s] {
+            s += 1
+        }else if large[l] < small[s] {
+            l += 1
+        }else {
+            common.append(large[l])
+            l += 1
+            s += 1
+        }
+    }
+    return common
+}

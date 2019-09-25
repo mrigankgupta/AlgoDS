@@ -166,6 +166,8 @@ for _ in 0..<smpl.count {
     print()
 }
 
+//Q2
+//TODO: do effecient solution from book
 
 //Q3
 
@@ -205,7 +207,7 @@ for i in smpl {
     sPlate.push(i)
 }
 
-for i in smpl {
+for _ in smpl {
     print("stacksofPlate",sPlate.pop())
 }
 
@@ -358,6 +360,45 @@ func sortStackRec(stack:inout Stack<Int>, count:Int) {
 }
 sortStackRec(stack:&unsorted, count: 8)
 
+
+//Sort stack using another stack (clean)
+
+func sortStack(stack: Stack<Int>) -> Stack<Int> {
+    
+    // 1. pop stack1 and push in stack2 until top element of stack1 is bigger then top of stack2
+    // 2. now pop that elemnt from stack1 and save in temp
+    // 3. push all from stack2 in stack1, now push temp in stack2, repeat 1 until stack 1 is empty
+    if stack.count() == 0 {
+        return stack
+    }
+    var stack1 = stack
+    var stack2 = Stack<Int>()
+    
+    while stack1.count() > 0 {
+        let current = stack1.pop()!
+        if stack2.count() == 0 || current < stack2.top()! {
+            stack2.push(current)
+        }else {
+            //pop all from stack2 and push in stack 1
+            while stack2.count() > 0 {
+                stack1.push(stack2.pop()!)
+            }
+            stack2.push(current)
+        }
+        
+    }
+    while stack2.count() > 0 {
+        stack1.push(stack2.pop()!)
+    }
+    return stack1
+}
+
+var stack = Stack<Int>()
+for i in [10,3,9,5,7] {
+    stack.push(i)
+}
+sortStack(stack: stack)
+
 //Q7
 protocol Pat {
     
@@ -376,7 +417,7 @@ protocol Shelterable {
     var admissionTime: Time {get set}
 }
 
-struct Animal<T>:Shelterable {
+struct Animal<T> : Shelterable {
     var admissionTime: Int
     var type: Pat
 }
@@ -392,7 +433,7 @@ struct Shelter <T:Shelterable> {
     var dRoot: SNode<T>?
     var cRoot: SNode<T>?
     
-    func enqueue(new:T,type:Int) -> SNode<T> {
+    func enqueue(new:T, type:Int) -> SNode<T> {
         var root = dRoot
         if type == 0 {
             root = cRoot

@@ -91,7 +91,7 @@ func kthToLastElement<T>(root:DNode<T>?, kth:Int) -> T? {
 print(kthToLastElement(root: rootT, kth: 3))
 
 //Q3
-
+//REDO: solution from the book
 func deleteMiddle<T>(root:SNode<T>?) -> SNode<T>? {
     if root == nil {
         return nil
@@ -124,7 +124,7 @@ print(slist.print(root: sRoot))
 
 
 //Q4
-//TODO
+//TODO: check from the book for all approach
 func partition<T>(root:DNode<T>?, pivot:T) -> DNode<T>? where T: Equatable & Comparable {
     if root == nil {
         return nil
@@ -355,7 +355,7 @@ slist.print(root: r2)
 print(isIntersecting(root1: r1, root2: r2)?.data)
 
 //Q8
-
+//TODO: Part 3: How Do You Find The Start of the Loop?
 func loopDetection<T>(root:SNode<T>?) -> SNode<T>? {
     if root == nil {
         return nil
@@ -456,7 +456,7 @@ struct ArrStack<T> {
     
     mutating func  pop() -> T? {
         if array.count > 0 {
-            return array.removeLast()
+            return array.popLast()
         }
         return nil
     }

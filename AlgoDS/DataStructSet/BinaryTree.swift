@@ -20,6 +20,20 @@ public class Node<T>{
 public class BinaryTree {
     
     public init() {}
+    //REDO:
+    //Binarytree insert with nil value
+    public func buildTree(_ index: Int, _ arr: [Int?]) -> Node<Int>? {
+        if index >= arr.count {
+            return nil
+        }
+        var node: Node<Int>?
+        if arr[index] != nil {
+            node = Node<Int>(data: arr[index]!)
+            node?.left = buildTree(2*index+1, arr)
+            node?.right = buildTree(2*index+2, arr)
+        }
+        return node
+    }
     
     // level order insertion
     public func levelOrderInsert<T>(root:Node<T>?, data:T) -> Node<T> {
@@ -56,6 +70,26 @@ public class BinaryTree {
         inorderTraversalRec(root: root?.right)
     }
     //REDO:
+    func inOrderTraversalEasy(_ root: Node<Int>?) {
+        if root == nil {
+            return
+        }
+        
+        var stack = Stack<Node<Int>>()
+        var current: Node<Int>? = root
+        while current != nil || stack.count() > 0 {
+            
+            while current != nil {
+                stack.push(current!)
+                current = current?.left
+            }
+            current = stack.pop()
+            if let data = current?.data {
+                print(data)
+            }
+            current = current?.right
+        }
+    }
     public func inorderTraversal<T>(root:Node<T>?) {
         if root == nil {
             return
@@ -64,6 +98,10 @@ public class BinaryTree {
         var stack = Stack<Node<T>>()
         stack.push(current!)
         while current != nil || stack.count() > 0 {
+            //1. push left until you find nil
+            //2. if current is nil, pop the stack
+            //3. check the right, if not nil push to stack and current is now right repeat from 1
+            //4. else current is nil
             if current?.left != nil {
                 current = current!.left
                 stack.push(current!)
@@ -77,6 +115,27 @@ public class BinaryTree {
             }else{
                 current = nil
             }
+        }
+    }
+    
+    func preOrderTraversalEasy(_ root: Node<Int>?) {
+        if root == nil {
+            return
+        }
+        
+        var stack = Stack<Node<Int>>()
+        var current: Node<Int>? = root
+        while current != nil || stack.count() > 0 {
+            
+            while current != nil {
+                if let data = current?.data {
+                    print(data)
+                }
+                stack.push(current!)
+                current = current?.left
+            }
+            current = stack.pop()
+            current = current?.right
         }
     }
     
@@ -207,6 +266,8 @@ public class BinarySearchTree: BinaryTree {
         }
         return root
     }
+    
+    
     
     public func deletion<T>(root:inout Node<T>?, value:T) -> Bool where T: Comparable & Equatable {
         if root == nil {
