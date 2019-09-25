@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A0BBDAF22A7E2C900F1302B /* ThreadExperiments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0BBDAC22A7E0AA00F1302B /* ThreadExperiments.swift */; };
 		3A0D114A20689C100021A8AC /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF6B2320596995002BAB28 /* Graph.swift */; };
 		3A1391942006160200F44AA1 /* BinarySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4946831FC00EF200203255 /* BinarySearch.swift */; };
 		3A1391952006160700F44AA1 /* Sorting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF857B2004EE670043AFA6 /* Sorting.swift */; };
 		3A4946821FBFF94000203255 /* BinaryTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4946801FBFF85F00203255 /* BinaryTree.swift */; };
 		3A55F39C1FCC8E8900F434AA /* SinglyLinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A55F39A1FCC8E8900F434AA /* SinglyLinkedList.swift */; };
-		3A55F39F1FCC8F3000F434AA /* HashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A55F39D1FCC8F3000F434AA /* HashTable.swift */; };
+		3A55F39F1FCC8F3000F434AA /* MapTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A55F39D1FCC8F3000F434AA /* MapTable.swift */; };
+		3A6D577222A7E914001747AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6D577122A7E914001747AC /* AppDelegate.swift */; };
 		3A70B7E820DD268000DD4933 /* Character+addtion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70B7E620DD242500DD4933 /* Character+addtion.swift */; };
 		3A96BE8E20EEFB2300DB22CA /* LRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A96BE8D20EEFB2300DB22CA /* LRUCache.swift */; };
 		3A9C149E1FB62BE500487C2C /* AlgoDSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9C149D1FB62BE500487C2C /* AlgoDSTests.swift */; };
@@ -66,11 +68,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A0BBDAC22A7E0AA00F1302B /* ThreadExperiments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadExperiments.swift; sourceTree = "<group>"; };
 		3A4946801FBFF85F00203255 /* BinaryTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryTree.swift; sourceTree = "<group>"; };
 		3A4946831FC00EF200203255 /* BinarySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinarySearch.swift; sourceTree = "<group>"; };
 		3A55F39A1FCC8E8900F434AA /* SinglyLinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglyLinkedList.swift; sourceTree = "<group>"; };
-		3A55F39D1FCC8F3000F434AA /* HashTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
+		3A55F39D1FCC8F3000F434AA /* MapTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTable.swift; sourceTree = "<group>"; };
 		3A6870E71FE005CE00DBC6EB /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = AlgoDS/MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		3A6D577122A7E914001747AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3A70176D225C3C1400A07ADE /* LeetCodeEasy.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = LeetCodeEasy.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3A70B7DC20DD191600DD4933 /* CCIChapter1.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CCIChapter1.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3A70B7E020DD1B2000DD4933 /* CCIChapter3.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CCIChapter3.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3A70B7E120DD1B9D00DD4933 /* CCIChapter2.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CCIChapter2.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -78,6 +83,7 @@
 		3A70B7E320DD1DA600DD4933 /* CCIChapter5.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CCIChapter5.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3A70B7E520DD1EEA00DD4933 /* RandomProblem.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = RandomProblem.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3A70B7E620DD242500DD4933 /* Character+addtion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+addtion.swift"; sourceTree = "<group>"; };
+		3A76FBB122A6817B009372E8 /* Threads.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Threads.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3A7A37DD20F08CB700671842 /* CCIChapter7.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CCIChapter7.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3A961DE6216B2EEC0099AD0D /* CCIChapter8.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CCIChapter8.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3A96BE8D20EEFB2300DB22CA /* LRUCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUCache.swift; sourceTree = "<group>"; };
@@ -164,7 +170,11 @@
 		3A9C14871FB62BE500487C2C /* AlgoDS */ = {
 			isa = PBXGroup;
 			children = (
+				3A6D577122A7E914001747AC /* AppDelegate.swift */,
+				3A0BBDAC22A7E0AA00F1302B /* ThreadExperiments.swift */,
 				3A9C14941FB62BE500487C2C /* Info.plist */,
+				3A70176D225C3C1400A07ADE /* LeetCodeEasy.playground */,
+				3A76FBB122A6817B009372E8 /* Threads.playground */,
 				3ABAFB5C21C49A9F008FAB46 /* GainloLeetcode.playground */,
 				3AC5C71C2117747C00E5E751 /* CodingHunger.playground */,
 				3A70B7E520DD1EEA00DD4933 /* RandomProblem.playground */,
@@ -216,7 +226,7 @@
 				3AC94FF72010B49A00835C3D /* Heap.swift */,
 				3A9C14DD1FB6947A00487C2C /* Queue.swift */,
 				3A9C14DA1FB6939600487C2C /* Stack.swift */,
-				3A55F39D1FCC8F3000F434AA /* HashTable.swift */,
+				3A55F39D1FCC8F3000F434AA /* MapTable.swift */,
 				3A4946801FBFF85F00203255 /* BinaryTree.swift */,
 				3A4946831FC00EF200203255 /* BinarySearch.swift */,
 				3A55F39A1FCC8E8900F434AA /* SinglyLinkedList.swift */,
@@ -405,6 +415,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A6D577222A7E914001747AC /* AppDelegate.swift in Sources */,
+				3A0BBDAF22A7E2C900F1302B /* ThreadExperiments.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,7 +449,7 @@
 				3AEF6B222059380A002BAB28 /* Trie.swift in Sources */,
 				3A0D114A20689C100021A8AC /* Graph.swift in Sources */,
 				3AC94FF82010B49A00835C3D /* Heap.swift in Sources */,
-				3A55F39F1FCC8F3000F434AA /* HashTable.swift in Sources */,
+				3A55F39F1FCC8F3000F434AA /* MapTable.swift in Sources */,
 				3A1391952006160700F44AA1 /* Sorting.swift in Sources */,
 				3A55F39C1FCC8E8900F434AA /* SinglyLinkedList.swift in Sources */,
 				3A4946821FBFF94000203255 /* BinaryTree.swift in Sources */,
@@ -580,7 +592,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
@@ -588,7 +599,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cogicx.AlgoDS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "AlgoDS/DataStructSet/AlgoDS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -599,7 +609,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
@@ -607,7 +616,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cogicx.AlgoDS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "AlgoDS/DataStructSet/AlgoDS-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -616,6 +624,7 @@
 		3A9C14B11FB62BE500487C2C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QR9565V3SM;
@@ -632,6 +641,7 @@
 		3A9C14B21FB62BE500487C2C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QR9565V3SM;
@@ -648,6 +658,7 @@
 		3A9C14B41FB62BE500487C2C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QR9565V3SM;
 				INFOPLIST_FILE = AlgoDSUITests/Info.plist;
@@ -663,6 +674,7 @@
 		3A9C14B51FB62BE500487C2C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QR9565V3SM;
 				INFOPLIST_FILE = AlgoDSUITests/Info.plist;
