@@ -7,13 +7,13 @@
 //
 
 import Foundation
-
-func partion<T>(arr:inout [T], start:Int, end:Int) -> Int where T: Comparable {
+/* does not handle duplicates */
+func partition<T>(arr:inout [T], start:Int, end:Int) -> Int where T: Comparable {
     let p = arr[end]
     var s = start
     var e = end
     while s < e {
-        if arr[s] <= p {
+        if arr[s] < p {
             s += 1
         }else if arr[e] > p {
             e -= 1
@@ -26,8 +26,8 @@ func partion<T>(arr:inout [T], start:Int, end:Int) -> Int where T: Comparable {
 
 public func quickSort<T>(arr:inout [T], start:Int, end:Int) where T: Comparable {
     if start < end {
-        let splitPos = partion(arr: &arr, start: start, end: end)
-        quickSort(arr: &arr, start: start, end: splitPos)
+        let splitPos = partition(arr: &arr, start: start, end: end)
+        quickSort(arr: &arr, start: start, end: splitPos-1)
         quickSort(arr: &arr, start: splitPos+1, end: end)
     }
 }
@@ -72,7 +72,7 @@ public func mergeSort<T>(arr:inout [T], left:Int, right:Int) where T: Comparable
     if right > left {
         let mid: Int = (left + right)/2
         mergeSort(arr: &arr, left: left, right: mid)//mergeSort(arr: &arr, left: left, right: mid-1)
-        mergeSort(arr: &arr, left: mid+1, right: right)//mergeSort(arr: &arr, left: mid, right: right) what if take condition like this, it took me some time to figureout why it goes infinite loop. the second part is where mid will always remain less then right and terminate never hit
+        mergeSort(arr: &arr, left: mid+1, right: right)//mergeSort(arr: &arr, left: mid, right: right) what if take condition like this, it took me some time to figure out why it goes infinite loop. the second part is where mid will always remain less then right and terminate never hit
         merge(arr: &arr, left: left, mid: mid, right: right)
     }
 }

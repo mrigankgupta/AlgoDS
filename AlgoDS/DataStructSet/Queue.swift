@@ -13,7 +13,7 @@ public struct Queue<T> {
     private var arr = [T]()
     
     public init(){}
-    public mutating func add(_ value:T) {
+    public mutating func append(_ value:T) {
         arr.append(value)
     }
     

@@ -109,6 +109,7 @@
 		3AEF6B2320596995002BAB28 /* Graph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		3AF6F3AD21453F6700EFEDF9 /* CircularArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularArray.swift; sourceTree = "<group>"; };
 		3AFF857B2004EE670043AFA6 /* Sorting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sorting.swift; sourceTree = "<group>"; };
+		EA9C762F2424736400ED64C2 /* LeetcodeMedium.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = LeetcodeMedium.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,9 +171,10 @@
 		3A9C14871FB62BE500487C2C /* AlgoDS */ = {
 			isa = PBXGroup;
 			children = (
-				3A6D577122A7E914001747AC /* AppDelegate.swift */,
-				3A0BBDAC22A7E0AA00F1302B /* ThreadExperiments.swift */,
 				3A9C14941FB62BE500487C2C /* Info.plist */,
+				3A0BBDAC22A7E0AA00F1302B /* ThreadExperiments.swift */,
+				3A6D577122A7E914001747AC /* AppDelegate.swift */,
+				EA9C762F2424736400ED64C2 /* LeetcodeMedium.playground */,
 				3A70176D225C3C1400A07ADE /* LeetCodeEasy.playground */,
 				3A76FBB122A6817B009372E8 /* Threads.playground */,
 				3ABAFB5C21C49A9F008FAB46 /* GainloLeetcode.playground */,

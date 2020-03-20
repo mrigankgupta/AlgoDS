@@ -21,7 +21,8 @@ public class BinaryTree {
     
     public init() {}
     //REDO:
-    //Binarytree insert with nil value
+    //Binarytree insert with nil value, this can only happen if input is in form of array having
+    // nil values. This would be similar to heap where array is used to store heap tree.
     public func buildTree(_ index: Int, _ arr: [Int?]) -> Node<Int>? {
         if index >= arr.count {
             return nil
@@ -42,17 +43,17 @@ public class BinaryTree {
         }
         let current: Node<T> = root!
         var qu = Queue<Node<T>>()
-        qu.add(current)
+        qu.append(current)
         while qu.count() > 0 {
             let next = qu.remove()
             if next!.left != nil {
-                qu.add(next!.left!)
+                qu.append(next!.left!)
             }else {
                 next?.left = Node(data: data)
                 break
             }
             if next!.right != nil {
-                qu.add(next!.right!)
+                qu.append(next!.right!)
             }else{
                 next?.right = Node(data: data)
                 break
@@ -187,7 +188,7 @@ public class BinaryTree {
         }
         let current:Node<T> = root!
         if pLevel == level {
-            print(current.data)
+            print((current.data,pLevel))
         }
         levelOrderPrint(root: current.left, level: level-1, pLevel:pLevel)
         levelOrderPrint(root: current.right, level: level-1, pLevel:pLevel)
@@ -202,10 +203,10 @@ public class BinaryTree {
         while current != nil || que.count() > 0 {
             print(current!.data)
             if let left = current?.left {
-                que.add(left)
+                que.append(left)
             }
             if let right = current?.right {
-                que.add(right)
+                que.append(right)
             }
             current = que.remove()
         }

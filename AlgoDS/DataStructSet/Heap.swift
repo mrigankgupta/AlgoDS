@@ -22,11 +22,9 @@ import Foundation
 // *****Heap*****//
 /* Heapify procedure can be applied to a node only when left tree of node and right tree of node
  have heap property. because leaf are following heap property.
- We only apply heapify procedure 0..n/2 non leafs, from down to top.
+ We only apply heapify procedure 0..n/2 non-leafs, from down to top.
  heapify traces path down to tree and make all nodes follow heap property.*/
  
-
-
 public func heapify<T>(arr: inout [T], index:Int) where T: Comparable {
     let left = 2*index+1
     let right = 2*index+2
@@ -56,18 +54,18 @@ public func buildHeap<T>(arr: inout [T]) where T: Comparable {
 public func heapSort<T>(arr: inout [T]) where T: Comparable {
     var end = arr.count-1
     while end >= 0 {
-        _ = delete(arr: &arr, count: end)
+        delete(arr: &arr, count: end)
         end-=1
     }
 }
 
-public func delete<T>(arr: inout [T], count: Int) -> T where T: Comparable {
+@discardableResult public func delete<T>(arr: inout [T], count: Int) -> T where T: Comparable {
     let min = arr[0]
     arr.swapAt(0, count)
     heapify(arr: &arr, index: 0)
     return min
 }
-//TODO:insetion
+//REDO:insetion
 
 public func insert<T:Comparable>(arr: inout [T], new:T) {
     arr.append(new)

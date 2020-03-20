@@ -703,3 +703,53 @@ func intersect(_ A: [Int], _ B: [Int]) -> [Int] {
     }
     return common
 }
+
+
+/*
+ Given nested arrays, write an enumerator class such that next() returns the elements in sequential order, e.g.:
+[1,[4,3],6,[5,[1,0]]]  1, 4, 3, 6, 5, 1, 0
+also implement allObjects for this class.
+*/
+
+//class Enumerator {
+//
+//    private var arr: [[Int]]]
+//    private index = 0
+//
+//    init(_ arr: [[Int]]) {
+//        self.arr = arr
+//    }
+//
+//    func next() {
+//
+//    }
+//}
+
+
+var nestedArray: [Any] = [1,[4,3],6,[5,[1,0]]]
+
+
+
+ /*
+ Consider a list of heights of buildings.
+ The buildings overlook the ocean like so: [2, 3, 4, 2, 3, 1, 1] ~~ ocean ~~~.
+ Return back, in order, the list of indexes of the buildings that can see the ocean.
+*/
+
+func watchOcean(_ arr: [Int]) -> [Int] {
+    if arr.isEmpty {
+        return []
+    }
+    var max = arr.last!
+    var watch = [Int]()
+    watch.append(arr.count-1)
+    for (index, item) in arr.reversed().enumerated() {
+        if item > max {
+            watch.append(index)
+            max = item
+        }
+    }
+    return watch
+}
+
+watchOcean([2, 3, 4, 2, 3, 1, 1])

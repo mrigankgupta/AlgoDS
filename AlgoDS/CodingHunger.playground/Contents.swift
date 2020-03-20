@@ -64,15 +64,15 @@ func serialize<T>(root: Node<T>?) {
     }
     var current = root!
     var queue = Queue<Node<T>>()
-    queue.add(current)
+    queue.append(current)
     while queue.count() > 0 {
         current = queue.remove()!
         print(current.data)
         if let left = current.left {
-            queue.add(left)
+            queue.append(left)
         }
         if let right = current.right {
-            queue.add(right)
+            queue.append(right)
         }
     }
 }
@@ -261,5 +261,23 @@ func spiralOrder(_ mat: [[Int]]) {
 print("spiral")
 spiralOrder([[1,2,3,4],[5,6,7,8],[9,10,11,12], [13,14,15,16]])
 
+/*#476
+You are given an array of length n + 1 whose elements belong to the set {1, 2, ..., n}. By the pigeonhole principle, there must be a duplicate. Find it in linear time and space.
+*/
 
-// #258 Given a binary tree, write an algorithm to print the nodes in boustrophedon order.
+func onlySingleRepeat(_ arr: [Int]) -> Int? {
+    var copy = arr
+    for item in copy {
+        copy[item-1] = -copy[item-1]
+    }
+    for (index, item) in copy.enumerated() {
+        if item > 0 {
+            return index+1
+        }
+    }
+    return nil
+}
+
+onlySingleRepeat([1,2,5,4,3,5])
+
+

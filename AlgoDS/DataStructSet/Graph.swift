@@ -20,7 +20,7 @@ Spanning tree of graph = is a subgraph which is a tree and contain all vertices 
 public struct Adjacency {
     var list: [Int]
     var visited: Bool
-    public init(list: [Int], visited: Bool){
+    public init(list: [Int], visited: Bool = false){
         self.list = list
         self.visited = visited
     }
@@ -43,7 +43,7 @@ public func dfsGraph(start: Int, arr: inout [Adjacency]){
 
 public func bfsGraph(start: Int, arr: inout [Adjacency]) {
     var qu = Queue<Int>()
-    qu.add(start)
+    qu.append(start)
     arr[start].visited = true
     while qu.count() > 0 {
         let current = qu.remove()!
@@ -51,7 +51,7 @@ public func bfsGraph(start: Int, arr: inout [Adjacency]) {
         for node in arr[current].list {
             if !arr[node].visited {
                 arr[node].visited = true
-                qu.add(node)
+                qu.append(node)
             }
         }
     }
@@ -105,14 +105,14 @@ public func traverseAndBuild(arr: [(String, String?)]) -> MNode? {
     }
 
     var queue = Queue<MNode>()
-    queue.add(root!)
+    queue.append(root!)
 
     while queue.count() > 0 {
         let next = queue.remove()!
         if let childs = dict[next.data] {
             next.childs = childs
             for child in childs {
-                queue.add(child)
+                queue.append(child)
             }
         }
     }
@@ -125,13 +125,13 @@ public func levelOrder(root: MNode?) {
         return
     }
     var queue = Queue<MNode>()
-    queue.add(root!)
+    queue.append(root!)
     while queue.count() > 0 {
         let next = queue.remove()!
         print(next.data)
         if let childs = next.childs {
             for child in childs {
-                queue.add(child)
+                queue.append(child)
             }
         }
     }

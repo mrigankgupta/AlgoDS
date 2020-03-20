@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+/* best use to search a word in collection, best suited data structure to store dictionary
+ sort the words in lexographically
+ Merit from hash table - yopu cant do prefix based search and dictionary takes a lot of space*/
 public class TrieNode <T : Hashable>{
     public
     var dict: [T:TrieNode<T>]
