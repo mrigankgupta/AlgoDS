@@ -10,18 +10,18 @@ import Foundation
 
 public class Node<T>{
     public var data: T
-    public var left:Node?
-    public var right:Node?
+    public var left: Node?
+    public var right: Node?
     public init(data:T) {
         self.data = data
     }
 }
-
+/// Complete binary tree can be made via preorder only, but for any other binary tree you need preorder and inorder
 public class BinaryTree {
     
     public init() {}
     //REDO:
-    //Binarytree insert with nil value, this can only happen if input is in form of array having
+    //Binary tree insert with nil value, this can only happen if input is in form of array having
     // nil values. This would be similar to heap where array is used to store heap tree.
     public func buildTree(_ index: Int, _ arr: [Int?]) -> Node<Int>? {
         if index >= arr.count {

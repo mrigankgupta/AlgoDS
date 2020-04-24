@@ -1,7 +1,5 @@
 import DataStructSet
 
-
-
 //717. 1-bit and 2-bit Characters
 
 func isOneBitCharacter(_ bits: [Int]) -> Bool {
@@ -1647,3 +1645,839 @@ var iterator = StringIterator(sam)
 for _ in 0..<10{
     print(iterator.next())
 }
+
+//299. Bulls and Cows
+//TODO:
+func getHint(_ secret: String, _ guess: String) -> String {
+    
+    var sdict = [Character: Int]()
+
+    let sChars = [Character](secret)
+    let gChars = [Character](guess)
+    var bulls = 0
+    var cows = 0
+    for item in sChars {
+        if let exist = sdict[item]  {
+            sdict[item] = exist + 1
+        }else{
+            sdict[item] = 1
+        }
+    }
+    
+    for item in gChars {
+        if let preexist = sdict[item] {
+            if preexist - 1 == 0 {
+                sdict[item] = nil
+            }else {
+                sdict[item] = preexist - 1
+            }
+            cows += 1
+        }
+    }
+    for i in 0..<gChars.count {
+        if gChars[i] == sChars[i] {
+            bulls += 1
+            cows -= 1
+        }
+    }
+    return "\(bulls)A\(cows)B"
+}
+getHint("1807","7871")
+getHint("11","10")
+getHint("11","01")
+getHint("1123","0111")
+getHint("1807","7871")
+getHint("1122","1222")
+
+///359. Logger Rate Limiter
+//TODO:
+class Logger {
+
+    var msgDict: [String : [Int]]
+    /** Initialize your data structure here. */
+    init() {
+        self.msgDict = [String : [Int]]()
+    }
+
+    /** Returns true if the message should be printed in the given timestamp, otherwise returns false.
+        If this method returns false, the message will not be printed.
+        The timestamp is in seconds granularity. */
+    func shouldPrintMessage(_ timestamp: Int, _ message: String) -> Bool {
+        if var exist = msgDict[message] {
+            if timestamp - exist.last! < 10 {
+                return false
+            }else {
+                while let first = exist.first, timestamp - first > 10  {
+                    // TODO: Do remember that dropFirst() will return
+                    // new array slice but do not modify cureent array.
+                    exist.removeFirst()
+                }
+                exist.append(timestamp)
+                msgDict[message] = exist
+                return true
+            }
+        } else {
+            msgDict[message] = [timestamp]
+            return true
+        }
+    }
+}
+let loger = Logger()
+
+//let items = [(0,"A0"),(4,"A2"),(8,"A2"),(12,"A4"),(16,"A1"),(20,"A3"),(24,"A2"),(28,"A4"),(32,"A3"),(36,"A1")]
+let items = [(0,"A"),(0,"B"),(0,"C"),(0,"A"),(0,"B"),(0,"C"),(11,"A"),(11,"B"),(11,"C"),(11,"A")]
+for item in items {
+    print(loger.shouldPrintMessage(item.0, item.1))
+}
+
+//844. Backspace String Compare
+//TODO: REDO: //shit
+func backspaceCompare(_ S: String, _ T: String) -> Bool {
+    
+    var i = S.count-1
+    var j = T.count-1
+    let sChar = [Character](S)
+    let tChar = [Character](T)
+    var hashS = 0
+    var hashT = 0
+    while i >= 0 || j >= 0 {
+        
+        if i >= 0 && sChar[i] == "#" {
+            hashS += 1
+            i -= 1
+        }else if hashS > 0 {
+            hashS -= 1
+            i -= 1
+        }else if j >= 0 && tChar[j] == "#" {
+            hashT += 1
+            j -= 1
+        }else if hashT > 0 {
+            hashT -= 1
+            j -= 1
+        }else if i >= 0 && j >= 0 && sChar[i] == tChar[j] {
+            i -= 1
+            j -= 1
+        }else if (i >= 0 && j >= 0 && sChar[i] != tChar[j]) || i < 0 || j < 0 {
+//            print(sChar[i], tChar[j])
+            return false
+        }
+    }
+    return true
+}
+
+
+
+backspaceCompare("ab#c", "ad#c")
+backspaceCompare("ab##", "c#d#")
+backspaceCompare("a##c", "#a#c")
+backspaceCompare("a#c", "b")
+backspaceCompare("bxj##tw", "bxj###tw")
+
+//1047. Remove All Adjacent Duplicates In String
+
+func removeDuplicates(_ S: String) -> String {
+    if S.count < 1 {
+        return S
+    }
+    let chars = [Character](S)
+    var stack = Stack<Character>()
+    stack.push(chars[0])
+    for i in 1..<chars.count {
+        if let top = stack.top(), top == chars[i] {
+            stack.pop()
+        }else {
+            stack.push(chars[i])
+        }
+    }
+    var new = ""
+    while !stack.empty() {
+        new.append(stack.pop()!)
+    }
+    return String(new.reversed())
+}
+
+removeDuplicates("abbaca")
+
+//1209. Remove All Adjacent Duplicates in String II
+
+func removeDuplicates(_ s: String, _ k: Int) -> String {
+    if s.count < 1 {
+        return s
+    }
+    let chars = [Character](s)
+    var stack = Stack<Character>()
+    var nstack = Stack<Int>()
+    stack.push(chars[0])
+    nstack.push(1)
+    for i in 1..<chars.count {
+        if let top = stack.top(), top == chars[i] {
+            if let count = nstack.top(), count + 1 == k {
+                var toPop = count
+                while toPop > 0 {
+                    stack.pop()
+                    nstack.pop()
+                    toPop -= 1
+                }
+            } else if let count = nstack.top() {
+                stack.push(chars[i])
+                nstack.push(count+1)
+            }
+        }else {
+            stack.push(chars[i])
+            nstack.push(1)
+        }
+    }
+    var new = ""
+    while !stack.empty() {
+        new.append(stack.pop()!)
+    }
+    return String(new.reversed())
+}
+
+removeDuplicates("pbbcggttciiippooaais", 2)
+removeDuplicates("deeedbbcccbdaa", 3)
+
+
+//496. Next Greater Element I
+
+func nextGreaterElement(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+    var result = [Int]()
+    for item in nums1 {
+        var min = -1
+        var found = false
+        for index in 0..<nums2.count {
+            if nums2[index] == item {
+                found = true
+            }else if found && nums2[index] > item {
+                min = nums2[index]
+                break
+            }
+        }
+        result.append(min)
+    }
+    return result
+}
+
+nextGreaterElement([4,1,2], [1,3,4,2])
+nextGreaterElement([2,4], [1,2,3,4])
+
+//1342. Number of Steps to Reduce a Number to Zero
+
+func numberOfSteps(_ num: Int) -> Int {
+    var target = num
+    var step = 0
+    while target != 0 {
+        if target % 2 == 0 {
+            target /= 2
+            step += 1
+        }else {
+            target -= 1
+            step += 1
+        }
+    }
+    return step
+}
+
+numberOfSteps(14)
+numberOfSteps(8)
+numberOfSteps(123)
+
+//1281. Subtract the Product and Sum of Digits of an Integer
+
+func subtractProductAndSum(_ n: Int) -> Int {
+    var sum = 0
+    var multi = 1
+    var tar = n
+    while tar > 0 {
+        let elem = tar % 10
+        tar /= 10
+        sum += elem
+        multi *= elem
+    }
+    return multi - sum
+}
+
+subtractProductAndSum(234)
+subtractProductAndSum(21)
+
+//1021. Remove Outermost Parentheses
+// dont push if counter is zero
+func removeOuterParentheses(_ paranths: String) -> String {
+    
+    var counter = 0
+    var final = ""
+    for pran in paranths {
+        if pran == ")" {
+            counter -= 1
+        }
+        if counter != 0 {
+            final.append(pran)
+        }
+    
+        if pran == "(" {
+            counter += 1
+        }
+    }
+    return final
+}
+
+removeOuterParentheses("()")
+
+removeOuterParentheses("(()())(())(()(()))")
+
+removeOuterParentheses("(()())(())")
+
+removeOuterParentheses("()()")
+
+
+func peakIndexInMountainArray(_ arr: [Int]) -> Int {
+    
+    for i in 1..<arr.count-1 {
+        if arr[i-1] < arr[i] && arr[i] > arr[i+1] {
+            return i
+        }
+    }
+    return -1
+}
+
+func peakIndexInMountainArrayBinary(_ arr: [Int]) -> Int {
+    var lo = 0
+    var hi = arr.count-1
+    while lo < hi {
+        let mid = lo + (hi-lo)/2
+        
+        if arr[mid] < arr[mid+1] {
+            lo = mid+1
+        }else{
+            hi = mid
+        }
+    }
+    return lo
+}
+
+peakIndexInMountainArray([0,1,0])
+peakIndexInMountainArray([0,2,1,0])
+
+peakIndexInMountainArrayBinary([0,1,0])
+peakIndexInMountainArrayBinary([0,2,1,0])
+peakIndexInMountainArrayBinary([0,2,4,17,100,1000,1017,1040,20,11,9,7,4,3,2,1])
+
+//1051. Height Checker
+
+func heightChecker(_ heights: [Int]) -> Int {
+    let sorted = heights.sorted()
+    var diff = 0
+    for i in 0..<heights.count {
+        if sorted[i] != heights[i] {
+            diff += 1
+        }
+    }
+    return diff
+}
+heightChecker([1,1,4,2,1,3])
+heightChecker([5,1,2,3,4])
+
+//821. Shortest Distance to a Character
+/*
+ 1. go forward and fill distance, if char is not seen fill Int.max or count+1 to distance
+ 2. go backward and calculate distance, take the min of forward and backward calculated distance and save in array
+ */
+func shortestToChar(_ sample: String, _ C: Character) -> [Int] {
+    let chars = [Character](sample)
+    var dist = sample.count+1
+    var arr = [Int]()
+    //forward
+    for item in sample {
+        if item == C {
+            dist = 0
+        }else if dist != sample.count+1 {
+            dist += 1
+        }
+        arr.append(dist)
+    }
+    //backward
+    dist = sample.count+1
+    for i in (0..<sample.count).reversed() {
+        if chars[i] == C {
+            dist = 0
+        }else if dist != sample.count+1 {
+            dist += 1
+        }
+        arr[i] = min(arr[i], dist)
+    }
+    return arr
+}
+
+shortestToChar("loveleetcode", "e")
+
+///349. Intersection of Two Arrays
+
+func intersection(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+    let set1 = Set(nums1)
+    let set2 = Set(nums2)
+    
+    return [Int](set1.intersection(set2))
+}
+
+intersection([1,2,2,1], [2,2])
+intersection([4,9,5], [9,4,9,8,4])
+
+///242. Valid Anagram
+
+func isAnagram(_ s: String, _ t: String) -> Bool {
+    if s.count != t.count {
+        return false
+    }
+    var chars = [Int](repeating: 0, count: 26)
+    let a: Character = "a"
+    let asciiA = a.asciiValue!
+    for item in s {
+        chars[Int(item.asciiValue! - asciiA)] += 1
+    }
+    
+    for item in t {
+        chars[Int(item.asciiValue! - asciiA)] -= 1
+        if chars[Int(item.asciiValue! - asciiA)] < 0 {
+            return false
+        }
+    }
+    return true
+}
+
+isAnagram("anagram", "nagrama")
+isAnagram("anagram", "nagramaa")
+isAnagram("cat", "tac")
+isAnagram("ab", "a")
+
+///389. Find the Difference
+
+func findTheDifference(_ s: String, _ t: String) -> Character {
+    
+    var dict = [Character: Int]()
+    
+    for item in s {
+        if let count = dict[item] {
+            dict[item] = count+1
+        }else {
+            dict[item] = 1
+        }
+    }
+    var char: Character?
+    for item in t {
+        if let count = dict[item] {
+            dict[item] = count-1
+            if count-1 == 0 {
+                dict[item] = nil
+            }
+        }else{
+            char = item
+        }
+    }
+    
+    guard let chr = char else {
+        return dict.keys.first!
+    }
+    return chr
+}
+
+findTheDifference("abdc", "eadcb")
+findTheDifference("a", "aa")
+
+//1056. Confusing Number
+
+func confusingNumber(_ N: Int) -> Bool {
+    if N == 0 {
+        return false
+    }
+    var remain = N
+    var next = 0
+    let set = [0, 1, 6, 8, 9]
+    var rev = ""
+    while remain > 0 {
+        next = remain % 10
+        if !set.contains(next) {
+            return false
+        }
+        remain /= 10
+        if next == 6 {
+            next = 9
+        }else if next == 9 {
+            next = 6
+        }
+        rev.append(String(next))
+    }
+    if Int(rev) == N {
+        return false
+    }
+    return true
+}
+
+confusingNumber(68)
+confusingNumber(25)
+confusingNumber(1)
+confusingNumber(11)
+confusingNumber(18)
+confusingNumber(0)
+
+//665. Non-decreasing Array
+/* Algo
+ 
+
+*/
+func checkPossibility(_ nums: [Int]) -> Bool {
+    var count = 0
+    for i in 0..<nums.count {
+        if !((i == 0 || nums[i-1] < nums[i]) && (i == nums.count-1 || nums[i+1] > nums[i])) {
+            if count > 3 {
+                return false
+            }else if i == 0 || i == nums.count-1 {
+                count += 2
+            }else {
+                count += 1
+            }
+        }
+    }
+    return true
+}
+
+func checkPossibilityBrute(_ nums: [Int]) -> Bool {
+    for i in 0..<nums.count {
+        var count = 0
+        for index in i..<nums.count-1 {
+            if nums[index+1] < nums[i] {
+                if count+1 > 1 {
+                    return false
+                }else {
+                    count += 1
+                }
+            }
+        }
+        
+    }
+    return true
+}
+
+checkPossibility([3,5,6,7,9,8])
+checkPossibility([1,4,2])
+checkPossibility([3,5,6])
+checkPossibility([3,4,2,3])
+checkPossibility([4,2,1])
+checkPossibility([4,2,3])
+
+//246. Strobogrammatic Number
+
+func isStrobogrammatic(_ num: String) -> Bool {
+    if num.count == 0 {
+        return false
+    }
+    var rev = ""
+    
+    for item in num.reversed() {
+        var next = item
+        let set: [Character] = ["0", "1", "6", "8", "9"]
+        if !set.contains(item) {
+            return false
+        }
+        if next == "6" {
+            next = "9"
+        }else if next == "9" {
+            next = "6"
+        }
+        rev.append(String(next))
+    }
+    print(rev,num)
+    if rev == num {
+        return true
+    }
+    return false
+}
+
+isStrobogrammatic("6")
+isStrobogrammatic("69")
+isStrobogrammatic("969")
+isStrobogrammatic("88")
+isStrobogrammatic("11")
+isStrobogrammatic("968018661806000118986811000908199810896")
+
+//1394. Find Lucky Integer in an Array
+
+func findLucky(_ arr: [Int]) -> Int {
+    
+    var dict = [Int: Int]()
+    
+    for item in arr {
+        if let count = dict[item] {
+            dict[item] = count + 1
+        }else {
+            dict[item] = 1
+        }
+    }
+    var max = -1
+    for key in dict.keys {
+        if key == dict[key] && key > max {
+            max = key
+        }
+    }
+    return max
+}
+
+func findLuckyHigh(_ arr: [Int]) -> Int {
+    
+    return arr.reduce(into:[Int:Int]()) { dict,item in dict[item , default: 0] += 1 }.reduce(into: -1) { (r, arg1)  in
+        if arg1.key == arg1.value && r < arg1.key {
+            r = arg1.key
+        }
+    }
+}
+findLuckyHigh([2,2,3,4])
+findLuckyHigh([1,2,2,3,3,3])
+findLuckyHigh([2,2,2,3,3])
+findLuckyHigh([7,7,7,7,7,7,7])
+
+
+
+///581. Shortest Unsorted Continuous Subarray
+//REDO:
+func findUnsortedSubarray(_ nums: [Int]) -> Int {
+    let count = nums.count
+    var allSorted = true
+    // find first down slope and then min
+    var minIndex = 0
+    var min = 0
+    for i in 0..<count-1 {
+        if nums[i] > nums[i+1] {
+            minIndex = i
+            min = nums[i+1]
+            allSorted = false
+            break
+        }
+    }
+    if allSorted {
+        return 0
+    }
+    
+    for i in minIndex..<count {
+        if nums[i] < min {
+            min = nums[i]
+        }
+    }
+    // find the correct position of min
+//    print(min)
+    for i in 0..<count {
+        if nums[i] > min {
+            minIndex = i
+            break
+        }
+    }
+    
+    // find first up slope and then max from reverse
+    var maxIndex = count-1
+    var max = 0
+    for i in (1..<count).reversed() {
+        if nums[i] < nums[i-1] {
+            maxIndex = i
+            max = nums[i-1]
+            break
+        }
+    }
+    
+    for i in (0..<maxIndex).reversed() {
+        if nums[i] > max {
+            max = nums[i]
+        }
+    }
+//    print(max)
+    // find the correct position of max
+    for i in (0..<count).reversed() {
+        if nums[i] < max {
+            maxIndex = i
+            break
+        }
+    }
+    return abs(maxIndex - minIndex)+1
+}
+
+findUnsortedSubarray([2, 6, 4, 8, 10, 9, 15])
+findUnsortedSubarray([2, 1])
+findUnsortedSubarray([5,4,3,2,1])
+findUnsortedSubarray([1,3,2,3,3])
+findUnsortedSubarray([1,2,3,4])
+findUnsortedSubarray([1,3,2,2,2])
+
+/**
+ https://leetcode.com/problems/shortest-unsorted-continuous-subarray/discuss/103057/Java-O(n)-Time-O(1)-Space
+ iterate from the beginning, find out *last* element which is lesser then last seen max from the left side
+ mark it as the end
+ 
+ 
+ iterate from the end, find out *last* element which is greater then last seen min from the right side
+ mark it as the beginning
+ 
+ length = end - beginning + 1
+ **/
+
+func findUnsortedSubarrayAwesome(_ arr: [Int]) -> Int {
+    let count = arr.count
+    var maxSoFar = Int.min
+    var end = -2
+    for i in 0..<count {
+        maxSoFar = max(arr[i], maxSoFar)
+        if arr[i] < maxSoFar {
+            end = i
+        }
+    }
+    print(end)
+    var minSoFar = Int.max
+    var begin = -1
+
+    for i in (0..<count).reversed() {
+        minSoFar = min(arr[i], minSoFar)
+        if arr[i] > minSoFar {
+            begin = i
+        }
+    }
+    print(begin)
+    // for sorted case -2 + 1 + 1 = 0
+    return end - begin + 1
+}
+findUnsortedSubarrayAwesome([2, 6, 4, 8, 10, 9, 15])
+findUnsortedSubarrayAwesome([2, 1])
+findUnsortedSubarrayAwesome([5,4,3,2,1])
+findUnsortedSubarrayAwesome([1,3,2,3,3])
+findUnsortedSubarrayAwesome([1,2,3,4])
+findUnsortedSubarrayAwesome([1,3,2,2,2])
+
+
+//298. Binary Tree Longest Consecutive Sequence
+
+func longestConsecutive(_ root: Node<Int>?) -> Int {
+    
+    var maxm = 0
+    sequence(root, 0, &maxm)
+    return maxm > 0 ? maxm+1 : 0
+}
+
+//func sequence(_ root: Node<Int>?, _ current: Int) -> Int {
+//    if root == nil {
+//        return 0
+//    }
+//
+//    if let left = root?.left, left.data - root!.data == 1 {
+//        return max(current+1, sequence(left, current+1))
+//    }else {
+//        return sequence(root?.left, 0)
+//    }
+//    if let right = root?.right, right.data - root!.data == 1 {
+//        return max(current+1,sequence(right, current+1))
+//    }else {
+//        return sequence(root?.right, 0)
+//    }
+//}
+
+func sequence(_ root: Node<Int>?, _ current: Int, _ maxm: inout Int) {
+    if root == nil {
+        return
+    }
+    
+    if let left = root?.left, left.data - root!.data == 1 {
+        maxm = max(maxm, current+1)
+        sequence(left, current+1, &maxm)
+    }else {
+        sequence(root?.left, 0, &maxm)
+    }
+    if let right = root?.right, right.data - root!.data == 1 {
+        maxm = max(maxm, current+1)
+        sequence(right, current+1, &maxm)
+    }else {
+        sequence(root?.right, 0, &maxm)
+    }
+}
+let lbt = BinaryTree()
+//var lbtRoot = lbt.buildTree(0, [1,nil,3,2,4,nil,nil,nil,5])
+func treeForCon() -> Node<Int> {
+    let root = Node(data: 1)
+    root.right = Node(data:3)
+    root.right?.left = Node(data:2)
+    root.right?.right = Node(data:4)
+    root.right?.right?.right = Node(data:5)
+    return root
+}
+
+longestConsecutive(treeForCon())
+
+//941. Valid Mountain Array
+
+func validMountainArray(_ arr: [Int]) -> Bool {
+    if arr.count == 0 {
+        return false
+    }
+    var increasing = 0
+    for i in 1..<arr.count {
+        if increasing == 0 {
+            if arr[i] > arr[i-1] {
+                increasing = 1
+            }else{
+                return false
+            }
+        }else if increasing == 1 && arr[i] < arr[i-1] {
+            increasing = -1
+        }else if increasing == -1 && arr[i] >= arr[i-1] {
+            return false
+        }
+    }
+    return increasing == -1
+}
+
+validMountainArray([2,1])
+validMountainArray([3,5,5])
+validMountainArray([0,3,2,1])
+validMountainArray([0,1,2,1,0])
+validMountainArray([2,1,2,3,5,7,9,10,12,14,15,16,18,14,13])
+validMountainArray([14,82,89,84,79,70,70,68,67,66,63,60,58,54,
+                   44,43,32,28,26,25,22,15,13,12,10,8,7,5,4,3])
+
+validMountainArray([0,1,2,3,2,1,4,5,6,5,4])
+
+//994. Rotting Oranges
+
+func orangesRotting(_ grid: [[Int]]) -> Int {
+    var mGrid = grid
+    var counter = 0
+    rotting(&mGrid, &counter, 0, 0)
+    return counter
+}
+
+func rotting(_ grid: inout [[Int]], _ counter: inout Int, _ r: Int, _ c: Int) {
+    if grid[r][c] != 1
+        || r > 0 || r < grid.count-1
+        || c > 0 || c < grid[0].count-1 {
+        return
+    }
+    
+    grid[r][c] = 2
+    counter += 1
+    
+    for r in 0..<row {
+        for c in 0..<col {
+            // up
+//            if r > 0 {
+                rotting(&grid, &counter, r-1, c)
+//            }
+            // down
+//            if r < grid.count-1 {
+                rotting(&grid, &counter, r+1, c)
+//            }
+            // left
+//            if c > 0 {
+                rotting(&grid, &counter, r, c-1)
+//            }
+            // right
+//            if c < grid[0].count-1 {
+                rotting(&grid, &counter, r, c+1)
+//            }
+        }
+    }
+    
+}
+var rottingm = [[2,1,1],[1,1,0],[0,1,1]]
+orangesRotting(rottingm)

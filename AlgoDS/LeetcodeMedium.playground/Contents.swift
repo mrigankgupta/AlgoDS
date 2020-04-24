@@ -77,3 +77,86 @@ func filterRestaurants(_ restaurants: [[Int]], _ veganFriendly: Int, _ maxPrice:
 }
 filterRestaurants([[1,4,1,40,10],[2,8,0,50,5],[3,8,1,30,4],[4,10,0,10,3],[5,1,1,15,1]], 1, 50, 10)
 filterRestaurants([[1,4,1,40,10],[2,8,0,50,5],[3,8,1,30,4],[4,10,0,10,3],[5,1,1,15,1]],0,50,10)
+
+//692. Top K Frequent Words
+
+func topKFrequent(_ words: [String], _ k: Int) -> [String] {
+    var dict = [String: Int]()
+    
+    for item in words {
+        if let freq = dict[item] {
+            dict[item] = freq + 1
+        } else {
+            dict[item] = 1
+        }
+    }
+    
+    let all = dict.sorted{
+        if $0.1 > $1.1 {
+            return true
+        }else if $0.1 == $1.1 {
+            return $0.0 < $1.0 // tricky as to compare full string, smaller comes first
+        }
+        return false
+    }.map { $0.0 }
+    return [String](all[0..<k])
+}
+
+topKFrequent(["i", "love", "leetcode", "i", "love", "coding"],2)
+topKFrequent(["a","aa","aaa"],2)
+
+///767. Reorganize String
+//REDO:
+/*
+ 1. Sort letter with their freq
+ 2. Put letter with max frequencies on even slot
+ 3. fill rest positions with remaining
+ */
+func reorganizeString(_ sample: String) -> String {
+    var dict = [Character: Int]()
+    for char in sample {
+        if let val = dict[char] {
+            dict[char] = val+1
+        }else{
+            dict[char] = 1
+        }
+    }
+    
+    let sortedKeys = dict.sorted { $0.1 > $1.1 }.map{ $0.0 }
+    if let max = dict[sortedKeys[0]], max > (sample.count+1)/2 {
+        return ""
+    }
+    var rearranged = [Character](repeating: "%", count: sample.count)
+    var index = 0
+    for i in stride(from: 0, to: sample.count, by: 2) {
+        if let items = dict[sortedKeys[index]], items > 0 {
+            rearranged[i] = sortedKeys[index]
+            if items-1 == 0 {
+                dict[sortedKeys[index]] = nil
+                index += 1
+            }else {
+                dict[sortedKeys[index]] = items-1
+            }
+        }
+    }
+    for i in stride(from: 1, to: sample.count, by: 2) {
+        if let items = dict[sortedKeys[index]], items > 0 {
+            rearranged[i] = sortedKeys[index]
+            if items-1 == 0 {
+                dict[sortedKeys[index]] = nil
+                index += 1
+            }else {
+                dict[sortedKeys[index]] = items-1
+            }
+        }
+    }
+    return String(rearranged)
+}
+
+reorganizeString("aab")
+reorganizeString("aaba")
+reorganizeString("aaabbbccdd")
+reorganizeString("baaba")
+reorganizeString("vvvlo")
+
+

@@ -48,10 +48,9 @@ func peekFindBinary<T>(arr:[T], l:Int, r:Int) -> T? where T : Equatable & Compar
         return arr[index]
     }
 }
-var c = [5,6,8,10,7,6,4,3,2]
 
-print(peekFind(arr: c))
-var i = peekFindBinary(arr: c, l: 0, r: c.count-1)
+print(peekFind(arr: [5,6,8,10,7,6,4,3,2]))
+peekFindBinary(arr: [5,6,8,10,7,6,4,3,2], l: 0, r: 8)
 //3
 func greatestCommonDivisor(num1:Int,num2:Int) -> Int {
     var min = num1
@@ -93,8 +92,8 @@ func rotationJuggling(arr: inout [Int], rotate:Int) {
         }
     }
 }
-var s = [1,2,3,4,5,6,7,8,9,10]
-rotationJuggling(arr:&s,rotate: 5)
+var som = [1,2,3,4,5,6,7,8,9,10]
+rotationJuggling(arr:&som,rotate: 5)
 
 
 func rotationReverse(arr:inout [Int], rotate:Int) {
@@ -753,3 +752,130 @@ func watchOcean(_ arr: [Int]) -> [Int] {
 }
 
 watchOcean([2, 3, 4, 2, 3, 1, 1])
+
+
+/*
+ Print the multiplication result of rest of elements
+ of array [2,3,4] -> [3*4,2*4,2*3]
+ */
+
+func processArray(input: [Int]) -> [Int] {
+    var isZero = 0
+    let multi = input.reduce(1) { (r, item) in
+        if r == 0 {
+            isZero += 1
+            return item
+        }else {
+            return r*item
+        }
+    }
+    
+    return input.map{
+        if isZero > 1 {
+            return 0
+        }
+        return $0 == 0 ? multi : isZero != 0 ? 0 : multi/$0
+    }
+}
+
+processArray(input: [0,1])
+processArray(input: [0,1,3])
+processArray(input: [0,0,1])
+processArray(input: [0,0,1,1,1,1])
+processArray(input: [1,1,1,1])
+processArray(input: [1,1,1,2])
+processArray(input: [0,1,1,2])
+processArray(input: [0,0,0,1])
+processArray(input: [6,1,-1,2])
+processArray(input: [6,-1,-1,2])
+//HOtStar interview
+///Binary tree from ternary string
+/*
+
+ a?b:c
+ a?:e?f:g
+ a?b?c:d:e
+ a?b?c:d:e?f:g
+ Using stack, if char is not operator m ake a node
+ 1. if encounter ?, set current to previous node and pushed to stack.
+ 2. if encounter :, pop the stack and set current to poped item
+ 3. if left of current is nil and item is char, set left to new node
+ 4. if right of current is nil and item is char, set right to new node
+
+*/
+
+func completeBinaryTreeFromTernaryString(_ str: String) -> Node<Character> {
+    
+    var stack = Stack<Node<Character>>()
+    let count = str.count-1
+    var index = 0
+    var current: Node<Character>?
+    var root: Node<Character>?
+    var next: Node<Character>?
+
+    while count-index >= 0 {
+        let currChar = str[str.index(str.startIndex, offsetBy: index)]
+        if currChar != "?" && currChar != ":" {
+            next = Node<Character>(data: currChar)
+            if root == nil {
+                root = next
+            }
+        }
+    
+        if currChar == "?" {
+            current = next
+            stack.push(current!)
+        }else if currChar == ":" {
+            current = stack.pop()
+        }else if current?.left == nil {
+            current?.left = next
+        }else if current?.right == nil {
+            current?.right = next
+        }
+        index += 1
+    }
+    return root!
+}
+let bts = BinaryTree()
+bts.preorderTraversal(root: completeBinaryTreeFromTernaryString("a?b?c:d:e?f:g"))
+bts.preorderTraversal(root: completeBinaryTreeFromTernaryString("a?b?c:d:g"))
+bts.preorderTraversal(root: completeBinaryTreeFromTernaryString("a?d:c"))
+
+/*
+ Input: "Some Sample Text Code"
+ Pattern: CodeSome == true
+ Pattern: Sample Text CodeSome == true
+ Pattern: "Some " // true
+ "Code" // true
+ "deSo"// true
+ */
+
+func matchPattern(_ sample: String, _ pattern: String) -> Bool {
+    var j = 0
+    var k = 0
+    while j < sample.count {
+        var match = true
+        for i in 0..<pattern.count {
+            if j + i + k > sample.count-1 {
+                k = -(j+i)
+            }
+            if sample[sample.index(sample.startIndex, offsetBy: j + i + k)] != pattern[pattern.index(pattern.startIndex, offsetBy: i)] {
+//                print(sample[sample.index(sample.startIndex, offsetBy: j + i + k)],pattern[pattern.index(pattern.startIndex, offsetBy: i)])
+                j += i+1
+                match = false
+                break
+            }
+        }
+        if match == true {
+            return true
+        }
+    }
+    return false
+}
+
+matchPattern("Some Sample Text Code", "CodeSome")
+matchPattern("Some Sample Text Code", "Text")
+matchPattern("Some Sample Text Code", "Sample")
+matchPattern("Some Sample Text Code", "Code")
+matchPattern("Some Sample Text Code", "Code Some")
+

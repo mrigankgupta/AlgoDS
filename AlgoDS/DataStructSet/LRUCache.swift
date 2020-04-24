@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+/*
+ A cache LRU (Least Recently Used) is similar to a dictionary. It stores data associated to a key. The difference between a dictionary and a Cache is that the latter has a limited capacity. Every time we reach the capacity, the Cache deletes the least recently used element.
+ */
 public class Cache <T> {
     var prev: SNode<T>?
     var data: Any
