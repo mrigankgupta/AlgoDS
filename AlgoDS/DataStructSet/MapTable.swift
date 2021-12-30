@@ -20,17 +20,16 @@ Mapping the keys to HashTable is Hash function
 
  Hashcode Map :-
  . Integer Cast
- . Component Sum
+ . Component Sum - Anagram - map character with prime numbers
  . Polynimial accumlation:-
  If char is Ascii(A0,A1,A2,A3....An-1) then polynomial = A0 + A1*X + A3*X*X + A4*X*X*X ....AnXN-1 times
-
 
  Compression Map :- is a process of coneverting range 0..k to range 0..m
  1. Modulo (%) :-
  h(K) = K%m where k is key
 
  m is bad if it is pow(2, x)
- m as a prime is good but do not take close to pow(2, x)
+ m as a prime is good but do not take close to pow(2, x), prime number gives you better distribution in compression map
  (* why because numbers are divisible by 2 or multiple of 2 but not easyly divisible by prime numbers)
 
  2. 0..Kmax multiply by A
@@ -39,16 +38,15 @@ Mapping the keys to HashTable is Hash function
  Algo
  . Multiply K*A
  . Take a fraction part of result
- . Now make a range 0..m-1 by multiping m
-
-
+ . Now make a range 0..m-1 by multipling m
+ 
  h(k) = |m*((k*A)%1)|
  m can pow(2, p)
 
  3. MAD(Multiply, add, divide) :-
-h(k) = [(ay + b) mod p] mod m
- where m is the size of the hash table, p is a prime number larger than m, and a and b are integers chosen at random from the interval [0, p-1], with a > 0.
+ The MAD method: h2(y) = [(ay + b) mod p] mod m
  
+ where m is the size of the hash table, p is a prime number larger than N, and a and b are integers chosen at random from the interval [0, p-1], with a > 0.
 
 https://www.cpp.edu/~ftang/courses/CS240/lectures/hashing.htm
  */
@@ -165,7 +163,7 @@ public class Element<T, K: Hashable> {
     public
     var data: T
     var next: Element<T, K>?
-    let hash: Int
+    let hash: Int // comparing hash is faster then comparing keys
     let key: K
 
     init(data: T, key: K, hash: Int) {
@@ -181,7 +179,7 @@ public struct MapTable<T, K: Hashable> {
 
     var arr: [Element<T,K>?]
     var alphaM: Int
-    public init(count:Int) {
+    public init(count: Int) {
         alphaM = 3*count/4  //0.75 seems to be a good
         self.arr = [Element<T,K>?](repeating: nil, count: alphaM)// initializing with nil
     }
@@ -195,7 +193,7 @@ public struct MapTable<T, K: Hashable> {
         }
 
         var current = arr[index]
-        var prev:Element<T, K>?
+        var prev: Element<T, K>?
         while current != nil && current?.hash != hash && current?.key != key {
             prev = current
             current = current?.next

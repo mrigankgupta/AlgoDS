@@ -72,7 +72,7 @@ public func mergeSort<T>(arr:inout [T], left:Int, right:Int) where T: Comparable
     if right > left {
         let mid: Int = (left + right)/2
         mergeSort(arr: &arr, left: left, right: mid)//mergeSort(arr: &arr, left: left, right: mid-1)
-        mergeSort(arr: &arr, left: mid+1, right: right)//mergeSort(arr: &arr, left: mid, right: right) what if take condition like this, it took me some time to figure out why it goes infinite loop. the second part is where mid will always remain less then right and terminate never hit
+        mergeSort(arr: &arr, left: mid+1, right: right)//mergeSort(arr: &arr, left: mid, right: right) what if take condition like this, it took me some time to figure out why it goes infinite loop. the second part is where mid will always remain less then right and terminate never hit.
         merge(arr: &arr, left: left, mid: mid, right: right)
     }
 }

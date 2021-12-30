@@ -2220,10 +2220,10 @@ func findLucky(_ arr: [Int]) -> Int {
     }
     return max
 }
-
+//REDO:
 func findLuckyHigh(_ arr: [Int]) -> Int {
-    
-    return arr.reduce(into:[Int:Int]()) { dict,item in dict[item , default: 0] += 1 }.reduce(into: -1) { (r, arg1)  in
+    //Remember
+    return arr.reduce(into: [Int:Int]()) { dict,item in dict[item , default: 0] += 1 }.reduce(into: -1) { (r, arg1)  in
         if arg1.key == arg1.value && r < arg1.key {
             r = arg1.key
         }
@@ -2357,23 +2357,6 @@ func longestConsecutive(_ root: Node<Int>?) -> Int {
     return maxm > 0 ? maxm+1 : 0
 }
 
-//func sequence(_ root: Node<Int>?, _ current: Int) -> Int {
-//    if root == nil {
-//        return 0
-//    }
-//
-//    if let left = root?.left, left.data - root!.data == 1 {
-//        return max(current+1, sequence(left, current+1))
-//    }else {
-//        return sequence(root?.left, 0)
-//    }
-//    if let right = root?.right, right.data - root!.data == 1 {
-//        return max(current+1,sequence(right, current+1))
-//    }else {
-//        return sequence(root?.right, 0)
-//    }
-//}
-
 func sequence(_ root: Node<Int>?, _ current: Int, _ maxm: inout Int) {
     if root == nil {
         return
@@ -2438,46 +2421,4 @@ validMountainArray([14,82,89,84,79,70,70,68,67,66,63,60,58,54,
 
 validMountainArray([0,1,2,3,2,1,4,5,6,5,4])
 
-//994. Rotting Oranges
 
-func orangesRotting(_ grid: [[Int]]) -> Int {
-    var mGrid = grid
-    var counter = 0
-    rotting(&mGrid, &counter, 0, 0)
-    return counter
-}
-
-func rotting(_ grid: inout [[Int]], _ counter: inout Int, _ r: Int, _ c: Int) {
-    if grid[r][c] != 1
-        || r > 0 || r < grid.count-1
-        || c > 0 || c < grid[0].count-1 {
-        return
-    }
-    
-    grid[r][c] = 2
-    counter += 1
-    
-    for r in 0..<row {
-        for c in 0..<col {
-            // up
-//            if r > 0 {
-                rotting(&grid, &counter, r-1, c)
-//            }
-            // down
-//            if r < grid.count-1 {
-                rotting(&grid, &counter, r+1, c)
-//            }
-            // left
-//            if c > 0 {
-                rotting(&grid, &counter, r, c-1)
-//            }
-            // right
-//            if c < grid[0].count-1 {
-                rotting(&grid, &counter, r, c+1)
-//            }
-        }
-    }
-    
-}
-var rottingm = [[2,1,1],[1,1,0],[0,1,1]]
-orangesRotting(rottingm)

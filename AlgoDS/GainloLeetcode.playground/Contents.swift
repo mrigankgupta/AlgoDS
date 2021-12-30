@@ -117,12 +117,12 @@ func minDistanceBST(root: Node<Int>?) -> Int {
     }
     var minDis = root!.data
     var queue = Queue<Node<Int>>()
-    queue.add(root!)
+    queue.append(root!)
     while queue.count() > 0 {
         let next = queue.remove()
 
         if let left = next?.left {
-            queue.add(left)
+            queue.append(left)
             let current = next!.data - left.data
             if current < minDis {
                 minDis = current
@@ -130,7 +130,7 @@ func minDistanceBST(root: Node<Int>?) -> Int {
         }
 
         if let right = next?.right {
-            queue.add(right)
+            queue.append(right)
             let current = right.data - next!.data
             if current < minDis {
                 minDis = current
@@ -1220,7 +1220,7 @@ func levelOrderTravQue(_ root: Node<Int>?) -> [[Int]] {
     var level = 0
     var current: LevelNode<Int>?
     var list = [[Int]]()
-    queue.add(LevelNode(level: level+1, node: root!))
+    queue.append(LevelNode(level: level+1, node: root!))
 
     while queue.count() > 0 {
         current = queue.remove()
@@ -1235,11 +1235,11 @@ func levelOrderTravQue(_ root: Node<Int>?) -> [[Int]] {
         if let current = current {
             print("level",level,current.node.data)
             if let left = current.node.left {
-                queue.add(LevelNode(level: level + 1, node: left))
+                queue.append(LevelNode(level: level + 1, node: left))
             }
 
             if let right = current.node.right {
-                queue.add(LevelNode(level: level + 1, node: right))
+                queue.append(LevelNode(level: level + 1, node: right))
             }
         }
     }
@@ -1447,7 +1447,7 @@ func rightSideViewComplexO_N(root: Node<Int>?) -> [Int] {
     var rightSide = [Int]()
     var current: Level<Int>? = Level(node: root!, level: 0)
     var queue = Queue<Level<Int>?>()
-    queue.add(current)
+    queue.append(current)
     var printed = 0
 
     while queue.count() > 0 {
@@ -1459,10 +1459,10 @@ func rightSideViewComplexO_N(root: Node<Int>?) -> [Int] {
             printed += 1
         }
         if let right = node.right {
-            queue.add(Level(node: right, level: level+1))
+            queue.append(Level(node: right, level: level+1))
         }
         if let left = node.left {
-            queue.add(Level(node: left, level: level+1))
+            queue.append(Level(node: left, level: level+1))
         }
 
     }
@@ -1911,13 +1911,13 @@ minPathSumRec(grid, 1, 1)
 //78. Subsets
 /*
  test case [1,2,3]
-                                       root
-                |------------------------|------------------------|
-               1                                                 [Empty]
-              |-----------|-------------|                         |-----------|-------------|
-             1,2                       1                         2                       [Empty]
- |-------|-------|              |-------|-------|        |-------|-------|         |-------|-------|
- 1,2,3           1,2            1,3              1       2,3             2         3             [Empty]
+                                                root
+                        |------------------------|------------------------|
+                        1                                                 [Empty]
+            |-----------|-------------|                         |-----------|-------------|
+            1,2                        1                         2                       [Empty]
+    |-------|-------|           |-------|-------|        |-------|-------|         |-------|-------|
+1,2,3             1,2          1,3              1       2,3              2         3             [Empty]
 
  */
 func powerSet(_ nums: [Int]) -> [[Int]] {
@@ -1938,7 +1938,20 @@ func subsets(_ nums: [Int], _ start: Int, _ set: inout [[Int]], _ current: inout
     subsets(nums, start+1, &set, &current)
 }
 
-
+/*
+                                                              0..<3
+                                                                []
+                                                                |
+                        1..<3                                  2..<3                    3..<3
+                        |----------------------------------------|------------------------|
+                      [1][]                                    [1][]                     [][1]
+           2..<3                   3..<3                       3..<3
+            |------------------------|                           |
+         [1,2][2]                   [1,2][2]                   [1,3][3]
+            |
+          3..<3
+        [1,2,3][2,3]
+*/
 func powerSetMethod2(_ nums: [Int]) -> [[Int]] {
     var set = [[Int]]()
     var current = [Int]()
@@ -1950,7 +1963,7 @@ func subsetsMethod2(_ nums: [Int], _ start: Int, _ set: inout [[Int]], _ current
     set.append(current)
     for i in start..<nums.count {// closed range for terminating condition as start become nums.count
         current.append(nums[i])
-        subsetsMethod2(nums, i+1, &set, &current)// i+1 for avoiding infinite loop
+        subsetsMethod2(nums, i+1, &set, &current)// i+1 for avoiding infinite loop here and dup
         current.removeLast()
     }
 }
@@ -1986,6 +1999,8 @@ func dupSet(_ nums: [Int], _ start: Int, _ list: inout [[Int]], _ current: inout
     list.append(current)
 
     for i in start..<nums.count {
+        // num[i] != num[i+1] will not work as it will skip some permutaion due to for loop starting.
+        // for example 1,2,2 if we take last 2 as pair then it is not making any pair with 2
         if i==start || nums[i-1] != nums[i] {//run only for these so to skip duplicate
             current.append(nums[i])
             dupSet(nums, i+1, &list, &current)
@@ -1998,7 +2013,16 @@ subsetsWithDup([1,2,2])
 
 //leetcode
 //46. Permutations
-
+/*
+ this will build from down to Top
+ so first permutation will be
+ [1]
+ then for two
+ [1,2] [2,1]
+ so first take previous combinations
+ append the new item in last position
+ then swap that last element with all other elements
+ */
 func allPermutation(_ nums: [Int]) -> [[Int]] {
     return permute(nums, nums.count-1)
 }
@@ -2007,12 +2031,15 @@ func permute(_ nums: [Int], _ end: Int) -> [[Int]] {
     if end <= 0 {
         return [[nums[0]]]
     }
+    /* calculate prev*/
     let prev = permute(nums, end-1)
+    // append item
     var new: [[Int]] = prev.map {
         var fo = [Int]($0)
         fo.append(nums[end])
         return fo
     }
+    // swap
     for item in new {
         for i in 0..<item.count-1 {
             var swaped = item
@@ -2061,8 +2088,35 @@ func permuteNoDup(_ nums: [Int], _ end: Int) -> [[Int]] {
 
 allPermutationNoDup([2,2,1,1])
 
-//leetcode
-/*Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+func permuteUnique(_ nums: [Int]) -> [[Int]] {
+    return permuteUniqPartial(nums, nums.count-1)
+}
+
+func permuteUniqPartial(_ nums: [Int], _ end: Int) -> [[Int]] {
+    if end == 0 {
+        return [[nums[0]]]
+    }
+    
+    let prev = permuteUniqPartial(nums, end-1)
+    var new = Set<[Int]>()
+    for var item in prev {
+        item.append(nums[end])
+        new.insert(item)
+    }
+    
+    for item in new {
+        for i in 0..<item.count-1 {
+            var swap = item
+            swap.swapAt(item.count-1, i)
+            new.insert(swap)
+        }
+    }
+    return new.map{ $0 }
+}
+
+//39. Combination Sum
+
+/* Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
  The same repeated number may be chosen from candidates unlimited number of times.
  Note:
  All numbers (including target) will be positive integers.
@@ -2103,7 +2157,7 @@ func allComb(_ candidates: [Int], _ target: Int, _ sum: Int, _ comb: inout [[Int
         }else if sum+item < target {
             var copy = current
             copy.append(item)
-            allComb(candidates, target, sum + item, &comb, &copy, i)// why i not i + 1 because we want repeat numbers
+            allComb(candidates, target, sum + item, &comb, &copy, i)// why i not i + 1 because we want repeat number
         }
     }
 }

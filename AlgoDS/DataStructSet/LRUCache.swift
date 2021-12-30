@@ -77,3 +77,97 @@ public class LRUCache<T: Hashable> {
         return found
     }
 }
+
+
+/*
+How deque for cellForIndexPath works
+ https://medium.com/@theobendixson/interviewing-with-facebook-phone-screen-questions-part-4-a0b8f3b3bd68
+ 
+ I am thinking more about
+ 
+ var dict: [String: Queue]
+ */
+
+
+/*
+Design and implement a data structure for LRU (Least Recently Used) cache. It should support the following operations: get and set.
+
+get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return nil.
+
+set(key, value) - Set or insert the value if the key is not already present. When the cache reaches its capacity,
+it should invalidate the least recently used item before inserting the new item.
+
+The LRU Cache will be initialized with an integer corresponding to its capacity. Capacity indicates the maximum number of unique keys it can hold at a time.
+
+Definition of “least recently used” : An access to an item is defined as a get or a set operation of the item.
+“Least recently used” item is the one with the oldest access time.
+
+*/
+
+class LRUCached<T> {
+    var head: CacheNode<T>?
+    var max: Int = 10
+    var current: Int = 0
+    var lastKey: String?
+    var dict = [String: CacheNode<T>]()
+    
+    func set(key: String, val: T) {
+        if head == nil {
+            let new = CacheNode<T>(key, val)
+            dict[key] = new
+            head = new
+            current = 1
+        } else if let found = dict[key] {
+            // update the linked list
+            // find the node and remove from the list, so that it can be latest head
+            let prev = found.prev
+            let next = found.next
+            prev?.next = next
+            // this will new head
+            found.next = head
+        } else {
+            if current >= max {
+                //remove the last node
+                let last = dict[lastKey!]
+                let secondlast = last?.prev
+                secondlast?.next = nil
+                lastKey = secondlast?.key
+            } else {
+                // add node and update the list
+                let new = CacheNode<T>(key, val)
+                dict[key] = new
+                current += 1
+                new.next = head
+                head = new
+            }
+            
+        }
+    }
+    
+    func get(key: String) -> T? {
+        let found = dict[key]
+        if found != nil {
+            // update the order of linkedlist
+            // find the node and remove from the list
+            let prev = found?.prev
+            let next = found?.next
+            prev?.next = next
+            // this will new head
+            found?.next = head
+            return found?.val
+        }
+        return nil
+    }
+}
+
+class CacheNode<T> {
+    var next: CacheNode?
+    var prev: CacheNode?
+    var val: T
+    var key: String?
+    
+    init(_ key: String, _ val: T) {
+        self.val = val
+        self.key = key
+    }
+}

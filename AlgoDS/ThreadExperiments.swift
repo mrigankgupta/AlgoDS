@@ -31,7 +31,7 @@ class TestRace {
     var countOne: Int {
         // here read and write procedure are atomic individually
         // so there will be no data race or access race when multiple
-        // threads gona access the variable but this doesn't ensure the
+        // threads gonna access the variable but this doesn't ensure the
         // race which can be seen in func safeFromAccessRaceIncrement()
         get {
             return serialQueue.sync { self._countOne }
@@ -85,7 +85,7 @@ class TestRace {
     }
     
     func raceExample(_ name: String) {
-        accessRaceIncrement()
+//        accessRaceIncrement()
         safeFromAccessRaceButNotFromRace()
     }
 

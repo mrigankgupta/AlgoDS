@@ -115,7 +115,7 @@ mergeSort(arr: &a, left: 0, right: a.count-1)
 print(a)
 
 var noHeap = [10,12,15,4,1,5,9,3]
-buildHeap(arr: &noHeap)
+//buildHeap(arr: &noHeap)
 noHeap = [7,1,2]
 heapSort(arr: &noHeap)
 print(noHeap)
@@ -209,7 +209,7 @@ minCostClimbingStairs([0,0,0,1])
 minCostClimbingStairs([0,1,1,1])
 minCostClimbingStairs([1,1,1,1])
 minCostClimbingStairs([0,1,1,0])
-
+// 70: climbing stairs
 func climbStairs(_ n: Int) -> Int {
     if n == 0 {
         return 0
@@ -290,7 +290,7 @@ func minFallingPathSum(_ A: [[Int]]) -> Int {
         sum[i] = A[0][i]
     }
     for i in 0..<A.count {
-        for k in 0..<A[0].count {
+        for _ in 0..<A[0].count {
             let first = i > 0 ? min(A[i][i-1], A[i][i]) : A[i][i]
             sum[i] = sum[i] + i < A[i].count-1 ? min(first,  A[i][i+1]) : first
         }
@@ -309,13 +309,14 @@ func minFallingPathSum(_ A: [[Int]]) -> Int {
 //(Number of ways root can be choosen)*
 //(Number of Left binary search sub-trees) *
 //(Number of Right binary search sub-trees)
+//input
 /// 1,2,3,4,
 
 /* if we need to calculate value for 4 as f(4)
  it would be all permutation of left * right side
  
  f(4) =  P(1) + P(2) + P(3) + P(4)
- f(4) =  f(0)*f(3) + f(1)*f(2) + f(2)*f(1) + f(0)*f(3)
+ f(4) =  f(0)*f(3) + f(1)*f(2) + f(2)*f(1) + f(3)*f(0)
 
  https://www.quora.com/Given-n-how-many-structurally-unique-BSTs-binary-search-trees-that-store-values-1-to-n-are-there-How-would-I-come-up-with-the-solution-Can-you-explain-the-thought-process-that-leads-to-the-solution
 */
@@ -500,3 +501,91 @@ func fibnachi(_ num: Int) -> Int {
     return fnext
 }
 fibnachi(6)
+
+//572. Subtree of Another Tree
+
+func isSubtree(_ s: Node<Int>?, _ t: Node<Int>?) -> Bool {
+         
+    if s == nil && t != nil || s != nil && t == nil {
+        return false
+    }
+    var heads = [Node<Int>]()
+    findNode(s, t!.data, &heads)
+    if heads.count == 0 {
+        return false
+    }
+    for head in heads {
+        print(head.data)
+        if match(head, t) {
+            return true
+        }
+    }
+    return false
+}
+
+func findNode(_ s: Node<Int>?, _ tar: Int, _ found: inout [Node<Int>]) {
+    
+    if s == nil {
+        return
+    }
+    
+    if s!.data == tar {
+        found.append(s!)
+    }
+    findNode(s?.left, tar, &found)
+    findNode(s?.right, tar, &found)
+}
+
+func match(_ s: Node<Int>?, _ t: Node<Int>?) -> Bool {
+    if (s == nil && t != nil) || (s != nil && t == nil) || s?.data != t?.data {
+        return false
+    }else if s == nil && t == nil {
+        return true
+    }
+    return match(s?.left, t?.left) && match(s?.right, t?.right)
+}
+
+let btr = BinaryTree()
+
+//isSubtree(btr.buildTree(0, [3,4,5,1,2,nil,nil]), btr.buildTree(0, [4,1,2]))
+//isSubtree(btr.buildTree(0, [3,4,5,1,2,nil,nil,nil,nil, 0]), btr.buildTree(0, [4,1,2]))
+isSubtree(btr.buildTree(0, [1,1]), btr.buildTree(0, [1]))
+
+//819. Most Common Word
+
+func mostCommonWord(_ paragraph: String, _ banned: [String]) -> String {
+    let banSet = Set<String>(banned)
+    var common = paragraph.components(separatedBy: CharacterSet(charactersIn: " .,!")).map{ $0.lowercased() }.filter {
+        !banSet.contains($0) && $0.count > 0 }.reduce(into: [String: Int]()) { (dict, item) in
+            dict[item, default: 0] += 1 }.sorted { $0.value > $1.value }.map { $0.key }
+    return common[0]
+}
+
+mostCommonWord("Bob hit a ball, the hit BALL flew far after it was hit.", ["hit"])
+mostCommonWord("Bob hit a ball, the hit BALL flew far after it was hit.", ["hit"])
+mostCommonWord("Bob!", ["hit"])
+mostCommonWord("Bob. hIt, baLl", ["bob", "hit"])
+
+
+
+//896. Monotonic Array
+
+func isMonotonic(_ arr: [Int]) -> Bool {
+    
+    var i = 0
+    while i < arr.count-1 && arr[i] <= arr[i+1] {
+        i += 1
+    }
+    if i == arr.count-1 {
+        return true
+    }
+    i = arr.count-1
+    while i > 0 && arr[i-1] >= arr[i] {
+        i -= 1
+    }
+    if i == 0 {
+        return true
+    }
+    return false
+}
+

@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UISplitViewControllerDeleg
 //        showRaceMultiThread()
         showNoRaceNoDataRace()
         testStockUpdate()
-        testStockUpdateConcurrent()
-        testReaderWriter()
+//        testStockUpdateConcurrent()
+//        testReaderWriter()
         return true
     }
 
@@ -49,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UISplitViewControllerDeleg
         let test = TestRace()
         var count1 = 100
         var count2 = 100
+        let total = { count1 + count2 }()
         let group = DispatchGroup()
         let myConcurrent = DispatchQueue(label:"concurrentQueue" , attributes: .concurrent)
         myConcurrent.async(group: group) {
@@ -66,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UISplitViewControllerDeleg
         }
         group.notify(queue: DispatchQueue.main) {
             print("count not sync", test.count)
-            print("safe from access race but not safe from Race final count", test.countOne)
+            print("safe from access race but not safe from Race: final count should be \( total) but final count \(test.countOne)")
         }
     }
     
@@ -74,6 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UISplitViewControllerDeleg
         let test = TestRace()
         var count1 = 100
         var count2 = 100
+        let total = { count1 + count2 }()
         let group = DispatchGroup()
         let myConcurrent = DispatchQueue(label:"concurrentQueue" , attributes: .concurrent)
         myConcurrent.async(group: group) {
@@ -90,7 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UISplitViewControllerDeleg
             }
         }
         group.notify(queue: DispatchQueue.main) {
-            print("safe from all race", test.countTwo)
+            print("safe from all race: final count should be \(total) and final count \(test.countTwo)")
         }
     }
     
@@ -109,9 +111,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UISplitViewControllerDeleg
         
         stock.maxTraded(1)
     }
-    
-    
-    
     
     func testStockUpdate() {
         let stock  = StockClass()
@@ -209,8 +208,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UISplitViewControllerDeleg
         group.notify(queue: DispatchQueue.main) {
             print("Reader writer problem \(rw.sharedRes)")
         }
-        
     }
 }
-
-

@@ -160,3 +160,212 @@ reorganizeString("baaba")
 reorganizeString("vvvlo")
 
 
+//994. Rotting Oranges
+//REDO:
+//func orangesRotting(_ grid: [[Int]]) -> Int {
+//    var mGrid = grid
+//    var counter = 0
+//    for i in 0..<grid.count {
+//    for j in 0..<grid[0].count {
+//            if grid[i][j] == 2 {
+//                counter = max(counter, rotting(&mGrid, 0, i, j))
+//            }
+//        }
+//    }
+//    return counter
+//}
+//
+//func rotting(_ grid: inout [[Int]], _ counter: Int, _ r: Int, _ c: Int) -> Int {
+//
+//    grid[r][c] = 2
+//    var up = 0
+//    if r > 0 && grid[r-1][c] == 1 {
+//        up = rotting(&grid, counter+1, r-1, c)
+//    }
+//    var down = 0
+//    if r < grid.count-1 && grid[r+1][c] == 1 {
+//        down = rotting(&grid, counter+1, r+1, c)
+//    }
+//    var left = 0
+//    if c > 0 && grid[r][c-1] == 1 {
+//        left = rotting(&grid, counter+1, r, c-1)
+//    }
+//    var right = 0
+//    if c < grid[0].count-1 && grid[r][c+1] == 1 {
+//        right = rotting(&grid, counter+1, r, c+1)
+//    }
+//    let leftRight = max(left, right)
+//    let upDown = max(up,down)
+//    return max(counter , max(leftRight, upDown))
+//}
+
+func orangesRotting(_ grid: [[Int]]) -> Int {
+    var mGrid = grid
+    var counter = 0
+    var queue = Queue<(Int,Int, Int)>()
+    for i in 0..<grid.count {
+    for j in 0..<grid[0].count {
+            if grid[i][j] == 2 {
+                queue.append((i, j, 0))
+            }else if grid[i][j] == 1 {
+                counter += 1
+            }
+        }
+    }
+    var maxStep = 0
+    while queue.count() > 0 {
+        if let (r,c, step) = queue.remove() {
+            maxStep = max(maxStep, step)
+            if mGrid[r][c] == 2 {
+                mGrid[r][c] = -2
+                if r > 0 && mGrid[r-1][c] == 1 {
+                    mGrid[r-1][c] = 2
+                    queue.append((r-1,c, step+1))
+                    counter -= 1
+                }
+                if r < mGrid.count-1 && mGrid[r+1][c] == 1 {
+                    mGrid[r+1][c] = 2
+                    queue.append((r+1,c,step+1))
+                    counter -= 1
+                }
+                if c > 0 && mGrid[r][c-1] == 1 {
+                    mGrid[r][c-1] = 2
+                    queue.append((r,c-1,step+1))
+                    counter -= 1
+                }
+                if c < mGrid[0].count-1 && mGrid[r][c+1] == 1 {
+                    mGrid[r][c+1] = 2
+                    queue.append((r,c+1,step+1))
+                    counter -= 1
+                }
+            }
+        }
+    }
+    return counter > 0 ? -1 : maxStep
+}
+
+
+var rottingm = [[2,1,1],[1,1,0],[0,1,1]]
+orangesRotting(rottingm)
+rottingm = [[1,1,1,2,1,1,2,1,1,1,1]]
+orangesRotting(rottingm)
+rottingm = [[2],[1],[1],[1],[2],[1],[1]]
+orangesRotting(rottingm)
+
+//138. Copy List with Random Pointer
+
+class MNode: Hashable {
+    public var val: Int
+    public var next: MNode?
+    public var random: MNode?
+    public init(_ val: Int) {
+        self.val = val
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(val)
+    }
+}
+
+extension MNode : Equatable {
+    static func ==(_ lhs: MNode, _ rhs: MNode) -> Bool {
+        return lhs.val == rhs.val && lhs.next == rhs.next && lhs.random == rhs.random
+    }
+}
+
+func copyRandomList(_ head: MNode?) -> MNode? {
+
+    if head == nil {
+        return nil
+    }
+    var new: MNode?
+    var dict = [MNode : MNode]()
+    copyList(head, &dict, &new)
+    return new
+}
+
+func copyList(_ head: MNode?, _ dict: inout [MNode : MNode], _ new: inout MNode?) {
+    if let head = head {
+        if new == nil {
+            new = MNode(head.val)
+            dict[head] = new!
+        }
+        
+        if let next = head.next, let nxtNode = dict[next] {
+            dict[head]?.next = nxtNode
+        }else if let next = head.next {
+            let nxtNode = MNode(next.val)
+            dict[next] = nxtNode
+            dict[head]?.next = nxtNode
+        }
+        
+        if let rand = head.random, let rndNode = dict[rand] {
+            dict[head]?.random = rndNode
+        }else if let rand = head.random {
+            let rndNode = MNode(rand.val)
+            dict[rand] = rndNode
+            dict[head]?.random = rndNode
+        }
+        copyList(head.next, &dict, &new)
+    }
+}
+
+func copyRandomList1(_ head: MNode?) -> MNode? {
+    if head == nil {
+        return nil
+    }
+    var current: MNode? = head
+    let new = MNode(head!.val)
+    var newCurr: MNode? = new
+    var dict = [MNode : MNode]()
+
+    while current != nil {
+        let next = current?.next
+        if let next = next, let exist = dict[next] {
+            newCurr?.next = exist
+        }else if let next = next {
+            let new = MNode(next.val)
+            newCurr?.next = new
+            dict[next] = new
+        }
+        let nextRand = current?.random
+        if let nextRand = nextRand, let rand = dict[nextRand] {
+            newCurr?.random = rand
+        }else if let nextRand = nextRand {
+            let new = MNode(nextRand.val)
+            newCurr?.random = new
+            dict[nextRand] = new
+        }
+        current = current?.next
+        newCurr = newCurr?.next
+        
+    }
+    return new
+}
+
+
+//Minimum Number of Platforms Required for a Railway/Bus Station
+
+func station(_ arrivl: [Int], _ depart: [Int], _ n: Int) -> Int {
+    
+    let arv = arrivl.sorted()
+    let dep = depart.sorted()
+    var i = 1
+    var j = 0
+    var reqStation = 1
+    var maxS = 1
+    
+    while i < n && j < n {
+        if arv[i] <= dep[j] {
+            reqStation += 1
+            i += 1
+        }else if arv[i] > dep[j] {
+            reqStation -= 1
+            j += 1
+        }
+        
+        maxS = max(reqStation, maxS)
+    }
+    return maxS
+}
+
+station([900, 940, 950, 1100, 1500, 1800], [910, 1200, 1120, 1130, 1900, 2000], 6)
